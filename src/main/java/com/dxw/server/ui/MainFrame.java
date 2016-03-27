@@ -152,7 +152,10 @@ public class MainFrame extends javax.swing.JFrame {
                         (short)c.get(Calendar.MINUTE),(short)c.get(Calendar.SECOND)});
             ModbusResponse res = master.send(req);
             
-            System.out.println(res.isException());
+           if (res.getExceptionCode() != 0) {
+                System.out.println("Plc发生异常:" + res.getExceptionMessage());
+                
+            }
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             System.out.println(ex.getMessage());

@@ -88,9 +88,11 @@ public class PlcProxyImpl implements PlcProxy {
                     new short[]{code});
             ModbusResponse res = master.send(req);
 
-            if (res.getExceptionCode() != 0) {
+            if( res.isException()){
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
-                
+            }
+            else{
+                sendNotification("发送指令成功");
             }
         } catch (ModbusInitException | ModbusTransportException ex) {
             sendNotification("Modbus发生异常:" + ex.getMessage());
@@ -101,9 +103,7 @@ public class PlcProxyImpl implements PlcProxy {
         Notification n = new Notification();
         n.setContent(message);
         n.setWhen( System.currentTimeMillis());
-        
         notificationManager.notify("PLC", n);
-        
     }
 
     @Override
@@ -141,7 +141,7 @@ public class PlcProxyImpl implements PlcProxy {
                     new short[]{1});
             ModbusResponse res = master.send(req);
 
-            if (res.getExceptionCode() != 0) {
+            if(res.isException()){
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
             }
         } catch (ModbusInitException | ModbusTransportException ex) {
@@ -156,7 +156,7 @@ public class PlcProxyImpl implements PlcProxy {
             master.init();
             ModbusRequest req = new ReadInputRegistersRequest(SLAVE_ID, PlcConsts.PRODUCTION_UPDATE_FLAG, 1);
             ReadInputRegistersResponse res = (ReadInputRegistersResponse) master.send(req);
-            if (res.getExceptionCode() != 0) {
+            if(res.isException()){
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
             }
             short[] data = res.getShortData();
@@ -175,7 +175,7 @@ public class PlcProxyImpl implements PlcProxy {
             master.init();
             ModbusRequest req = new ReadInputRegistersRequest(SLAVE_ID, PlcConsts.MIXING_BARREL_STATUS, 1);
             ReadInputRegistersResponse res = (ReadInputRegistersResponse) master.send(req);
-            if (res.getExceptionCode() != 0) {
+            if(res.isException()){
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
             }
             short[] data = res.getShortData();
@@ -194,7 +194,7 @@ public class PlcProxyImpl implements PlcProxy {
             master.init();
             ModbusRequest req = new ReadInputRegistersRequest(SLAVE_ID, PlcConsts.FERMENT_BARREL_STATUS, 13 + 2);
             ReadInputRegistersResponse res = (ReadInputRegistersResponse) master.send(req);
-            if (res.getExceptionCode() != 0) {
+            if(res.isException()){
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
             }
             short[] data = res.getShortData();
@@ -228,7 +228,7 @@ public class PlcProxyImpl implements PlcProxy {
             master.init();
             ModbusRequest req = new ReadInputRegistersRequest(SLAVE_ID, PlcConsts.MATERIAL_TOWER_ALARM, 2);
             ReadInputRegistersResponse res = (ReadInputRegistersResponse) master.send(req);
-            if (res.getExceptionCode() != 0) {
+            if(res.isException()){
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
             }
             short[] data = res.getShortData();
@@ -280,7 +280,7 @@ public class PlcProxyImpl implements PlcProxy {
             master.init();
             ModbusRequest req = new WriteRegistersRequest(SLAVE_ID, PlcConsts.STY_STATUS_ADDRESS, status);
             ModbusResponse res = master.send(req);
-            if (res.getExceptionCode() != 0) {
+            if(res.isException()){
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
             }
         } catch (ModbusInitException | ModbusTransportException ex) {
@@ -307,7 +307,7 @@ public class PlcProxyImpl implements PlcProxy {
                     new short[]{1});
             ModbusResponse res = master.send(req);
 
-            if (res.getExceptionCode() != 0) {
+            if(res.isException()){
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
             }
         } catch (ModbusInitException | ModbusTransportException ex) {
@@ -322,7 +322,7 @@ public class PlcProxyImpl implements PlcProxy {
             master.init();
             ModbusRequest req = new ReadInputRegistersRequest(SLAVE_ID, PlcConsts.STY_STATUS_UPDATE_FLAG, 1);
             ReadInputRegistersResponse res = (ReadInputRegistersResponse) master.send(req);
-            if (res.getExceptionCode() != 0) {
+            if(res.isException()){
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
             }
             short[] data = res.getShortData();

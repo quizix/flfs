@@ -15,7 +15,7 @@ public class PlcConsts {
         Discretes Input: 只读，二进制，寄存器地址在
     */
     //final static 
-    final static int SYS_COMMAND_ADDRESS = 100;
+    final static int SYS_COMMAND_ADDRESS = 101;
     final static int STY_STATUS_ADDRESS = 200;
     final static int MATERIAL_TOWER_ALARM = 300;
     final static int PRODUCTION_UPDATE_FLAG = 330;
