@@ -21,7 +21,7 @@ public class PollMaterialTowerStatusJob extends AbstractJob{
         notify("开始轮询料塔状态");
         PlcProxy proxy = PlcProxyImpl.getInstance();
         
-        proxy.getMaterialTowerAlarm();
+        proxy.getMaterialTowerStatus();
     }
     
 }

@@ -62,11 +62,11 @@ public interface PlcProxy {
     short getMixingBarrelStatus();
 
     /**
-     * 获取7个发酵罐的状态 7个罐的状态：有料/空 正在进料/出料的发酵罐
-     *
-     * @return
+     * 获取7个发酵罐的状态 
+     * @return 
+     * boolean数组，可能返回的数组长度为8
      */
-    short[] getFermentBarrelStatus();
+    boolean[] getFermentBarrelStatus();
 
     /**
      * 获取当天泵出的料的体积
@@ -91,10 +91,13 @@ public interface PlcProxy {
 
     /**
      * 获取料塔低位和空位预警信号
-     *
-     * @return short数组， 如果第一位为1，表示低位警告 如果第二位为1，表示空位警告
+     * 
+     * @return 
+     * boolean数组，可能返回的数组长度为8
+     * data[0]: 料位低警报 
+     * data[1]: 料位空警报
      */
-    short[] getMaterialTowerAlarm();
+    boolean[] getMaterialTowerStatus();
 
     /**
      * 获取27个夹管阀累计动作次数

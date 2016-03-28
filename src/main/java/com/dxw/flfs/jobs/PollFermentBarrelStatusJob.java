@@ -5,10 +5,8 @@
  */
 package com.dxw.flfs.jobs;
 
-import com.dxw.common.ms.NotificationManager;
 import com.dxw.flfs.communication.PlcProxy;
 import com.dxw.flfs.communication.PlcProxyImpl;
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -25,7 +23,7 @@ public class PollFermentBarrelStatusJob extends AbstractJob{
         //
         PlcProxy proxy = PlcProxyImpl.getInstance();
         
-        short[] status = proxy.getFermentBarrelStatus();
+        boolean[] status = proxy.getFermentBarrelStatus();
     }
     
 }

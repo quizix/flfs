@@ -85,34 +85,122 @@ public class Simulator {
         //processImage.setAllowInvalidAddress(true);
         processImage.setInvalidAddressValue(Short.MIN_VALUE);
 
+        //coil register
         processImage.setCoil(10, true);
         processImage.setCoil(11, false);
         processImage.setCoil(12, true);
         processImage.setCoil(13, true);
         processImage.setCoil(14, false);
 
-        processImage.setInput(10, false);
-        processImage.setInput(11, false);
-        processImage.setInput(12, true);
-        processImage.setInput(13, false);
-        processImage.setInput(14, true);
+        //discrete input
+        processImage.setInput(1, false);    //紧停开关
+        processImage.setInput(2, false);    //料位低警报
+        processImage.setInput(3, true);    //料位空警报
+        processImage.setInput(4, false);    //发酵罐1#空
+        processImage.setInput(5, true);     //发酵罐2#空
+        processImage.setInput(6, true);     //发酵罐3#空
+        processImage.setInput(7, true);     //发酵罐4#空
+        processImage.setInput(8, true);     //发酵罐5#空
+        processImage.setInput(9, true);     //发酵罐6#空
+        processImage.setInput(10, true);    //发酵罐7#空
+        
 
-        processImage.setBinary(16, true);
-        processImage.setBinary(10016, true);
+        //processImage.setBinary(16, true);
+        //processImage.setBinary(10016, true);
 
-        processImage.setHoldingRegister(10, (short) 1);
-        processImage.setHoldingRegister(11, (short) 10);
-        processImage.setHoldingRegister(12, (short) 100);
-        processImage.setHoldingRegister(13, (short) 1000);
-        processImage.setHoldingRegister(14, (short) 10000);
+        //processImage.setHoldingRegister(10, (short) 1);
+        //processImage.setHoldingRegister(11, (short) 10);
+        //processImage.setHoldingRegister(12, (short) 100);
+        //processImage.setHoldingRegister(13, (short) 1000);
+        //processImage.setHoldingRegister(14, (short) 10000);
 
-        processImage.setInputRegister(10, (short) 10000);
-        processImage.setInputRegister(11, (short) 1000);
-        processImage.setInputRegister(12, (short) 100);
-        processImage.setInputRegister(13, (short) 10);
-        processImage.setInputRegister(14, (short) 1);
+        //processImage.setInputRegister(10, (short) 10000);
+        //processImage.setInputRegister(11, (short) 1000);
+        //processImage.setInputRegister(12, (short) 100);
+        //processImage.setInputRegister(13, (short) 10);
+        //processImage.setInputRegister(14, (short) 1);
+        processImage.setNumeric(RegisterRange.INPUT_REGISTER, 1, DataType.FOUR_BYTE_FLOAT, new Float(
+                6.3)); // pH值
+        
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 1, DataType.FOUR_BYTE_FLOAT, new Float(
+                100)); // 加水量（kg）
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 3, DataType.FOUR_BYTE_FLOAT, new Float(
+                100)); // 加干料量（kg）
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 5, DataType.FOUR_BYTE_FLOAT, new Float(
+                100)); // 加菌液量（kg）
+        
+        processImage.setHoldingRegister(7, (short) 0); //任务第1罐做量（桶）
+        processImage.setHoldingRegister(8, (short) 0); //任务第2罐做量（桶）
+        processImage.setHoldingRegister(9, (short) 0); //任务第3罐做量（桶）
+        processImage.setHoldingRegister(10, (short) 0); //任务第4罐做量（桶）
+        processImage.setHoldingRegister(11, (short) 0); //任务第5罐做量（桶）
+        processImage.setHoldingRegister(12, (short) 0); //任务第6罐做量（桶）
+        
+        processImage.setHoldingRegister(13, (short) 0); //系统命令（0停机1运行2清洗）
+        
+        processImage.setHoldingRegister(14, (short) 0); //数据更新标志（1更新0清除）
+        
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 15, DataType.FOUR_BYTE_FLOAT, new Float(
+                100)); // 截止6:00或18:00累计流量值
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 17, DataType.FOUR_BYTE_FLOAT, new Float(
+                33)); // 吃完1罐累计流量值
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 19, DataType.FOUR_BYTE_FLOAT, new Float(
+                44)); // 吃完2罐累计流量值
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 21, DataType.FOUR_BYTE_FLOAT, new Float(
+                55)); // 吃完3罐累计流量值
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 23, DataType.FOUR_BYTE_FLOAT, new Float(
+                66)); // 吃完4罐累计流量值
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 25, DataType.FOUR_BYTE_FLOAT, new Float(
+                77)); // 吃完5罐累计流量值
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 27, DataType.FOUR_BYTE_FLOAT, new Float(
+                88)); // 吃完6罐累计流量值
+        
+        processImage.setHoldingRegister(29, (short) 0); //首次做料发酵时间12小时倒计时
+        processImage.setHoldingRegister(30, (short) 0); //预备或正在进料的发酵罐号
+        processImage.setHoldingRegister(31, (short) 0); //正在出料的发酵罐号
+        
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 32, DataType.FOUR_BYTE_FLOAT, new Long(
+                101)); // 阀门1动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 34, DataType.FOUR_BYTE_FLOAT, new Long(
+                102)); // 阀门2动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 36, DataType.FOUR_BYTE_FLOAT, new Long(
+                103)); // 阀门3动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 38, DataType.FOUR_BYTE_FLOAT, new Long(
+                104)); // 阀门4动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 40, DataType.FOUR_BYTE_FLOAT, new Long(
+                105)); // 阀门5动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 42, DataType.FOUR_BYTE_FLOAT, new Long(
+                106)); // 阀门6动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 44, DataType.FOUR_BYTE_FLOAT, new Long(
+                107)); // 阀门7动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 46, DataType.FOUR_BYTE_FLOAT, new Long(
+                108)); // 阀门8动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 48, DataType.FOUR_BYTE_FLOAT, new Long(
+                109)); // 阀门9动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 50, DataType.FOUR_BYTE_FLOAT, new Long(
+                110)); // 阀门10动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 52, DataType.FOUR_BYTE_FLOAT, new Long(
+                111)); // 阀门11动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 54, DataType.FOUR_BYTE_FLOAT, new Long(
+                112)); // 阀门12动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 56, DataType.FOUR_BYTE_FLOAT, new Long(
+                113)); // 阀门13动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 58, DataType.FOUR_BYTE_FLOAT, new Long(
+                114)); // 阀门14动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 60, DataType.FOUR_BYTE_FLOAT, new Long(
+                115)); // 阀门15动作次数累计
+        
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 62, DataType.FOUR_BYTE_FLOAT, new Long(
+                1000)); // 阀门15动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 64, DataType.FOUR_BYTE_FLOAT, new Long(
+                1001)); // 阀门15动作次数累计
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 66, DataType.FOUR_BYTE_FLOAT, new Long(
+                1002)); // 阀门15动作次数累计
+        
+        
+        
 
-        processImage.setBit(RegisterRange.HOLDING_REGISTER, 15, 0, true);
+        /*processImage.setBit(RegisterRange.HOLDING_REGISTER, 15, 0, true);
         processImage.setBit(RegisterRange.HOLDING_REGISTER, 15, 3, true);
         processImage.setBit(RegisterRange.HOLDING_REGISTER, 15, 7, true);
         processImage.setBit(RegisterRange.HOLDING_REGISTER, 15, 8, true);
@@ -162,12 +250,13 @@ public class Simulator {
         processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 50, DataType.EIGHT_BYTE_INT_UNSIGNED, 0);
 
         processImage.setString(RegisterRange.INPUT_REGISTER, 100, DataType.CHAR, 15, "Software de la Serotonin");
-
+        */
         processImage.setExceptionStatus((byte) 151);
 
         // Add an image listener.
         processImage.addListener(new BasicProcessImageListener(this.notificationManager));
 
+        
         return processImage;
     }
 }
