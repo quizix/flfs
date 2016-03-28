@@ -19,10 +19,11 @@ import com.serotonin.modbus4j.msg.ModbusRequest;
 import com.serotonin.modbus4j.msg.ModbusResponse;
 import com.serotonin.modbus4j.msg.ReadDiscreteInputsRequest;
 import com.serotonin.modbus4j.msg.ReadDiscreteInputsResponse;
+import com.serotonin.modbus4j.msg.ReadHoldingRegistersRequest;
+import com.serotonin.modbus4j.msg.ReadHoldingRegistersResponse;
 import com.serotonin.modbus4j.msg.ReadInputRegistersRequest;
 import com.serotonin.modbus4j.msg.ReadInputRegistersResponse;
 import com.serotonin.modbus4j.msg.WriteRegistersRequest;
-import java.util.Calendar;
 
 /**
  * @author pronics3
@@ -113,29 +114,46 @@ public class PlcProxyImpl implements PlcProxy {
     }
 
     @Override
-    public void setProductionParam(float mixingWater, float mixingFeed, float bacteria, float[] fermentBarrelWeight) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setProductionParam(float mixingWater, float mixingFeed, float bacteria, short[] fermentBarrelWeight) {
+        ModbusMaster master = getTcpMaster(this.primaryIp);
+
+        try {
+            master.init();
+            short[] data = floatsAndShortsToShorts(new float[]{mixingWater, mixingFeed, bacteria}, fermentBarrelWeight);
+            ModbusRequest req = new WriteRegistersRequest(SLAVE_ID, PlcConsts.PRODUCTION_PARAM, data);
+            ModbusResponse res = master.send(req);
+
+            if (res.isException()) {
+                sendNotification("Plc发生异常:" + res.getExceptionMessage());
+            } else {
+                sendNotification("发送指令成功");
+            }
+        } catch (ModbusInitException | ModbusTransportException ex) {
+            sendNotification("Modbus发生异常:" + ex.getMessage());
+        }
     }
 
     @Override
-    public void setTimeCalibration() {
+    public boolean getEmergenyStopStatus() {
         ModbusMaster master = getTcpMaster(this.primaryIp);
-        Calendar c = Calendar.getInstance();
         try {
             master.init();
-            ModbusRequest req;
-            req = new WriteRegistersRequest(1, 101,
-                    new short[]{(short) c.get(Calendar.HOUR),
-                        (short) c.get(Calendar.MINUTE), (short) c.get(Calendar.SECOND)});
-            ModbusResponse res = master.send(req);
-
-            if (res.getExceptionCode() != 0) {
+            ModbusRequest req = new ReadDiscreteInputsRequest(SLAVE_ID, PlcConsts.FERMENT_BARREL_STATUS, 7);
+            ReadDiscreteInputsResponse res = (ReadDiscreteInputsResponse) master.send(req);
+            if (res.isException()) {
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
+
+            } else {
+                boolean[] data = res.getBooleanData();
+                if ((data != null) && data.length > 0) {
+                    return data[0];
+                }
             }
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             sendNotification("Modbus发生异常:" + ex.getMessage());
         }
+        return false;
     }
 
     @Override
@@ -160,8 +178,8 @@ public class PlcProxyImpl implements PlcProxy {
         ModbusMaster master = getTcpMaster(this.primaryIp);
         try {
             master.init();
-            ModbusRequest req = new ReadInputRegistersRequest(SLAVE_ID, PlcConsts.PRODUCTION_UPDATE_FLAG, 1);
-            ReadInputRegistersResponse res = (ReadInputRegistersResponse) master.send(req);
+            ModbusRequest req = new ReadHoldingRegistersRequest(SLAVE_ID, PlcConsts.PRODUCTION_UPDATE_FLAG, 1);
+            ReadHoldingRegistersResponse res = (ReadHoldingRegistersResponse) master.send(req);
             if (res.isException()) {
                 sendNotification("Plc发生异常:" + res.getExceptionMessage());
             }
@@ -224,8 +242,22 @@ public class PlcProxyImpl implements PlcProxy {
     }
 
     @Override
-    public float[] getPhValue() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public float getPhValue() {
+        ModbusMaster master = getTcpMaster(this.primaryIp);
+        try {
+            master.init();
+            ModbusRequest req = new ReadInputRegistersRequest(SLAVE_ID, PlcConsts.PH_VALUE, 2);
+            ReadInputRegistersResponse res = (ReadInputRegistersResponse) master.send(req);
+            if (res.isException()) {
+                sendNotification("Plc发生异常:" + res.getExceptionMessage());
+            }
+            short[] data = res.getShortData();
+            return shortsToFloat(data);
+
+        } catch (ModbusInitException | ModbusTransportException ex) {
+            sendNotification("Modbus发生异常:" + ex.getMessage());
+        }
+        return Float.MIN_VALUE;
     }
 
     @Override
@@ -255,7 +287,21 @@ public class PlcProxyImpl implements PlcProxy {
      */
     @Override
     public float[] getValveActionCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ModbusMaster master = getTcpMaster(this.primaryIp);
+        try {
+            master.init();
+            ModbusRequest req = new ReadHoldingRegistersRequest(SLAVE_ID, PlcConsts.VALVE_ACTION_COUNT, 2 * 15);
+            ReadHoldingRegistersResponse res = (ReadHoldingRegistersResponse) master.send(req);
+            if (res.isException()) {
+                sendNotification("Plc发生异常:" + res.getExceptionMessage());
+            }
+            short[] data = res.getShortData();
+            return shortsToFloats(data);
+
+        } catch (ModbusInitException | ModbusTransportException ex) {
+            sendNotification("Modbus发生异常:" + ex.getMessage());
+        }
+        return null;
     }
 
     /**
@@ -341,4 +387,157 @@ public class PlcProxyImpl implements PlcProxy {
         }
         return -1;
     }
+
+    private float shortsToFloat(short[] data) {
+        return shortsToFloat(data, 0);
+    }
+
+    private float shortsToFloat(short[] data, int offset) {
+        if (data == null || data.length < offset + 2) {
+            throw new IllegalArgumentException("invalid argument");
+        }
+        float f = Float.intBitsToFloat((((data[offset] >> 8) & 0xff) << 24) | ((data[offset] & 0xff) << 16)
+                | (((data[offset + 1] >> 8) & 0xff) << 8) | (data[offset + 1] & 0xff));
+
+        return f;
+    }
+
+    private float[] shortsToFloats(short[] data) {
+        if (data == null || data.length < 2) {
+            throw new IllegalArgumentException("from must not be null or from.length must greater than 2");
+        }
+        int count = data.length / 2;
+        float[] value = new float[count];
+        for (int i = 0; i < count; i++) {
+            value[i] = shortsToFloat(data, i * 2);
+        }
+        return value;
+    }
+
+    private short[] floatToShorts(float data) {
+        int x = Float.floatToIntBits(data);
+        short[] result = new short[2];
+        result[0] = (short) ((x >> 16) & 0xffff);
+        result[1] = (short) (x & 0xffff);
+        return result;
+    }
+
+    private short[] floatsToShorts(float[] data) {
+        int length = data.length;
+
+        short[] result = new short[length * 2];
+        for (int i = 0; i < length; i++) {
+            int x = Float.floatToIntBits(data[i]);
+
+            result[i * 2] = (short) ((x >> 16) & 0xffff);
+            result[i * 2 + 1] = (short) (x & 0xffff);
+        }
+        return result;
+    }
+
+    private short[] floatsAndShortsToShorts(float[] floats, short[] shorts) {
+
+        short[] result = new short[floats.length * 2 + shorts.length];
+        int offset = 0;
+        for (int i = 0; i < floats.length; i++) {
+            int x = Float.floatToIntBits(floats[i]);
+            result[offset] = (short) ((x >> 16) & 0xffff);
+            result[offset + 1] = (short) (x & 0xffff);
+            offset += 2;
+        }
+
+        for (int i = 0; i < shorts.length; i++) {
+            result[offset++] = shorts[i];
+        }
+        return result;
+    }
+
+    @Override
+    public boolean getCoil(int offset) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setCoil(int offset, boolean value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean getDiscreteInput(int offset) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public short getRegisterShort(int offset, int registerType) {
+        if (registerType == 0) {
+            //input register
+            return 0;
+        } else {
+            //holding register
+            ModbusMaster master = getTcpMaster(this.primaryIp);
+            try {
+                master.init();
+                ModbusRequest req = new ReadHoldingRegistersRequest(SLAVE_ID, offset, 1);
+                ReadHoldingRegistersResponse res = (ReadHoldingRegistersResponse) master.send(req);
+                if (res.isException()) {
+                    sendNotification("Plc发生异常:" + res.getExceptionMessage());
+                }
+                short[] data = res.getShortData();
+                for(int i=0;i<data.length;i++){
+                    System.out.println(data[i]);
+                }
+                return data[0];
+
+            } catch (ModbusInitException | ModbusTransportException ex) {
+                sendNotification("Modbus发生异常:" + ex.getMessage());
+            }
+            return -1;
+        }
+    }
+
+    @Override
+    public float getRegisterFloat(int offset, int registerType) {
+        if (registerType == 0) {
+            //input register
+            return 0;
+        } else {
+            //holding register
+            ModbusMaster master = getTcpMaster(this.primaryIp);
+            try {
+                master.init();
+                ModbusRequest req = new ReadHoldingRegistersRequest(SLAVE_ID, offset, 2);
+                ReadHoldingRegistersResponse res = (ReadHoldingRegistersResponse) master.send(req);
+                if (res.isException()) {
+                    sendNotification("Plc发生异常:" + res.getExceptionMessage());
+                }
+                short[] data = res.getShortData();
+                return shortsToFloat(data);
+
+            } catch (ModbusInitException | ModbusTransportException ex) {
+                sendNotification("Modbus发生异常:" + ex.getMessage());
+            }
+            return Float.MIN_VALUE;
+        }
+    }
+
+    @Override
+    public int getRegisterInt(int offset, int registerType) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setRegister(int offset, int value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setRegister(int offset, short value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setRegister(int offset, float value) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

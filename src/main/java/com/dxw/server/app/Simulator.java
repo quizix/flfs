@@ -191,11 +191,11 @@ public class Simulator {
                 115)); // 阀门15动作次数累计
         
         processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 62, DataType.FOUR_BYTE_FLOAT, new Long(
-                1000)); // 阀门15动作次数累计
+                1000)); // 泵1工作时间累计
         processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 64, DataType.FOUR_BYTE_FLOAT, new Long(
-                1001)); // 阀门15动作次数累计
+                1001)); // 泵2工作时间累计
         processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 66, DataType.FOUR_BYTE_FLOAT, new Long(
-                1002)); // 阀门15动作次数累计
+                1002)); // 泵3工作时间累计
         
         
         

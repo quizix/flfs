@@ -11,16 +11,9 @@ import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
-import com.serotonin.modbus4j.ModbusFactory;
-import com.serotonin.modbus4j.ModbusMaster;
-import com.serotonin.modbus4j.exception.ModbusInitException;
-import com.serotonin.modbus4j.exception.ModbusTransportException;
-import com.serotonin.modbus4j.ip.IpParameters;
-import com.serotonin.modbus4j.msg.ModbusRequest;
-import com.serotonin.modbus4j.msg.ModbusResponse;
-import com.serotonin.modbus4j.msg.WriteRegistersRequest;
+import com.dxw.flfs.communication.PlcProxy;
+import com.dxw.flfs.communication.PlcProxyImpl;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -36,6 +29,8 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
 
         init();
+        
+        
     }
     NotificationManager notificationManager;
     private void init() {
@@ -61,12 +56,16 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         javax.swing.JSplitPane jSplitPane1 = new javax.swing.JSplitPane();
         javax.swing.JPanel panelUpper = new javax.swing.JPanel();
-        javax.swing.JButton btnStop = new javax.swing.JButton();
-        javax.swing.JButton btnStart = new javax.swing.JButton();
-        javax.swing.JButton btnClean = new javax.swing.JButton();
-        javax.swing.JButton btnCalibrate = new javax.swing.JButton();
+        javax.swing.JTabbedPane jTabbedPane1 = new javax.swing.JTabbedPane();
+        javax.swing.JPanel jPanel2 = new javax.swing.JPanel();
+        javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
+        javax.swing.JPanel jPanel3 = new javax.swing.JPanel();
+        javax.swing.JPanel jPanel4 = new javax.swing.JPanel();
+        javax.swing.JPanel jPanel5 = new javax.swing.JPanel();
+        com.dxw.server.ui.HoldingRegisterPanel holdingRegisterPanel1 = new com.dxw.server.ui.HoldingRegisterPanel();
         javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         txtMessage = new javax.swing.JTextArea();
@@ -75,39 +74,41 @@ public class MainFrame extends javax.swing.JFrame {
         setTitle("PLC模拟器");
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
+        jSplitPane1.setDividerLocation(200);
         jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setResizeWeight(0.4);
 
-        btnStop.setText("停机");
-        btnStop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStopActionPerformed(evt);
-            }
-        });
-        panelUpper.add(btnStop);
+        panelUpper.setLayout(new java.awt.BorderLayout());
 
-        btnStart.setText("启动");
-        btnStart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnStartActionPerformed(evt);
-            }
-        });
-        panelUpper.add(btnStart);
+        jLabel1.setText("jLabel1");
 
-        btnClean.setText("清洗");
-        btnClean.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCleanActionPerformed(evt);
-            }
-        });
-        panelUpper.add(btnClean);
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(657, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(143, Short.MAX_VALUE))
+        );
 
-        btnCalibrate.setText("时间校准");
-        btnCalibrate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCalibrateActionPerformed(evt);
-            }
-        });
-        panelUpper.add(btnCalibrate);
+        jTabbedPane1.addTab("Coil", jPanel2);
+        jTabbedPane1.addTab("Discrete Input", jPanel3);
+        jTabbedPane1.addTab("Input Register", jPanel4);
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
+        jPanel5.add(holdingRegisterPanel1, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Holding Register", jPanel5);
+
+        panelUpper.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         jSplitPane1.setTopComponent(panelUpper);
 
@@ -126,68 +127,8 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
-        // TODO add your handling code here:
-         sendSysCommand((short) 0);
-    }//GEN-LAST:event_btnStopActionPerformed
-
-    private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        // TODO add your handling code here:
-        sendSysCommand((short) 1);
-    }//GEN-LAST:event_btnStartActionPerformed
-
-    private void btnCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanActionPerformed
-        // TODO add your handling code here:
-        sendSysCommand((short) 2);
-    }//GEN-LAST:event_btnCleanActionPerformed
-
-    private void btnCalibrateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalibrateActionPerformed
-        ModbusMaster master = getTcpMaster("127.0.0.1");
-        Calendar c = Calendar.getInstance();
-        try {
-            master.init();
-            ModbusRequest req;
-            req = new WriteRegistersRequest(2, 101,
-                    new short[]{(short)c.get(Calendar.HOUR), 
-                        (short)c.get(Calendar.MINUTE),(short)c.get(Calendar.SECOND)});
-            ModbusResponse res = master.send(req);
-            
-           if (res.getExceptionCode() != 0) {
-                System.out.println("Plc发生异常:" + res.getExceptionMessage());
-                
-            }
-
-        } catch (ModbusInitException | ModbusTransportException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }//GEN-LAST:event_btnCalibrateActionPerformed
-    private ModbusMaster getTcpMaster(String ip) {
-        ModbusFactory factory = new ModbusFactory();
-        IpParameters primaryParams = new IpParameters();
-        primaryParams.setHost(ip);
-        primaryParams.setPort(502);
-
-        return factory.createTcpMaster(primaryParams, false);
-    }
-
-    private void sendSysCommand(short code) {
-        ModbusMaster master = getTcpMaster("127.0.0.1");
-
-        try {
-            master.init();
-            ModbusRequest req = new WriteRegistersRequest(2, 100,
-                    new short[]{code});
-            ModbusResponse res = master.send(req);
-
-        } catch (ModbusInitException | ModbusTransportException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
-    
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.ButtonGroup buttonGroup1;
     javax.swing.JTextArea txtMessage;
     // End of variables declaration//GEN-END:variables
 }

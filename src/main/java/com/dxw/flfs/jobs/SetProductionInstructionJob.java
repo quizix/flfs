@@ -22,7 +22,7 @@ public class SetProductionInstructionJob extends AbstractJob {
         
         notify("开始下达做料信息");
         PlcProxy proxy = PlcProxyImpl.getInstance();
-        proxy.setProductionParam(0, 0, 0, new float[]{1,2,3});
+        proxy.setProductionParam(0, 0, 0, new short[]{1,2,3});
         //proxy.setTimeCalibration();
     }
     

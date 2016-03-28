@@ -9,7 +9,7 @@ package com.dxw.flfs.communication;
  *
  * @author pronics3
  */
-public interface PlcProxy {
+public interface PlcProxy extends PlcBase {
 
     /**
      * 发送运行命令
@@ -27,6 +27,11 @@ public interface PlcProxy {
     void clean();
 
     /**
+     * 获取紧急停止状态
+     * @return 
+     */
+    boolean getEmergenyStopStatus();
+    /**
      * 发送做料参数，单位kg 一天两次，上午6:00及下午6:00
      *
      * @param mixingWater 加水量
@@ -35,12 +40,12 @@ public interface PlcProxy {
      * @param fermentBarrelWeight 发酵罐每罐做量
      */
     void setProductionParam(float mixingWater, float mixingFeed, float bacteria,
-            float[] fermentBarrelWeight);
+            short[] fermentBarrelWeight);
 
     /**
      * 时间校准 一天两次，上午6:00及下午6:00
      */
-    void setTimeCalibration();
+    //void setTimeCalibration();
 
     /**
      * 设置更新标志
@@ -87,7 +92,7 @@ public interface PlcProxy {
      *
      * @return
      */
-    float[] getPhValue();
+    float getPhValue();
 
     /**
      * 获取料塔低位和空位预警信号
@@ -100,7 +105,7 @@ public interface PlcProxy {
     boolean[] getMaterialTowerStatus();
 
     /**
-     * 获取27个夹管阀累计动作次数
+     * 获取15个阀门累计动作次数
      *
      * @return
      */
