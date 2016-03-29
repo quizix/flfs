@@ -60,18 +60,20 @@ public class MainFrame extends javax.swing.JFrame {
         javax.swing.JSplitPane jSplitPane1 = new javax.swing.JSplitPane();
         javax.swing.JPanel panelUpper = new javax.swing.JPanel();
         javax.swing.JTabbedPane jTabbedPane1 = new javax.swing.JTabbedPane();
-        javax.swing.JPanel jPanel2 = new javax.swing.JPanel();
-        javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-        javax.swing.JPanel jPanel3 = new javax.swing.JPanel();
-        javax.swing.JPanel jPanel4 = new javax.swing.JPanel();
-        javax.swing.JPanel jPanel5 = new javax.swing.JPanel();
+        javax.swing.JPanel panelCoil = new javax.swing.JPanel();
+        com.dxw.server.ui.CoilPanel coilPanel1 = new com.dxw.server.ui.CoilPanel();
+        javax.swing.JPanel panelDiscreteInput = new javax.swing.JPanel();
+        com.dxw.server.ui.DesceteInputPanel desceteInputPanel1 = new com.dxw.server.ui.DesceteInputPanel();
+        javax.swing.JPanel panelHoldingRegister = new javax.swing.JPanel();
         com.dxw.server.ui.HoldingRegisterPanel holdingRegisterPanel1 = new com.dxw.server.ui.HoldingRegisterPanel();
+        javax.swing.JPanel panelInputRegister = new javax.swing.JPanel();
+        com.dxw.server.ui.InputRegisterPanel inputRegisterPanel1 = new com.dxw.server.ui.InputRegisterPanel();
         javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         txtMessage = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("PLC模拟器");
+        setTitle("Modbus模拟器");
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         jSplitPane1.setDividerLocation(200);
@@ -80,41 +82,33 @@ public class MainFrame extends javax.swing.JFrame {
 
         panelUpper.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText("jLabel1");
+        panelCoil.setLayout(new java.awt.BorderLayout());
+        panelCoil.add(coilPanel1, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(657, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(143, Short.MAX_VALUE))
-        );
+        jTabbedPane1.addTab("Coil", panelCoil);
 
-        jTabbedPane1.addTab("Coil", jPanel2);
-        jTabbedPane1.addTab("Discrete Input", jPanel3);
-        jTabbedPane1.addTab("Input Register", jPanel4);
+        panelDiscreteInput.add(desceteInputPanel1);
 
-        jPanel5.setLayout(new java.awt.BorderLayout());
-        jPanel5.add(holdingRegisterPanel1, java.awt.BorderLayout.CENTER);
+        jTabbedPane1.addTab("Discrete Input", panelDiscreteInput);
 
-        jTabbedPane1.addTab("Holding Register", jPanel5);
+        panelHoldingRegister.setLayout(new java.awt.BorderLayout());
+        panelHoldingRegister.add(holdingRegisterPanel1, java.awt.BorderLayout.CENTER);
 
-        panelUpper.add(jTabbedPane1, java.awt.BorderLayout.CENTER);
+        jTabbedPane1.addTab("Holding Register", panelHoldingRegister);
+
+        panelInputRegister.add(inputRegisterPanel1);
+
+        jTabbedPane1.addTab("Input Register", panelInputRegister);
+
+        panelUpper.add(jTabbedPane1, java.awt.BorderLayout.PAGE_START);
 
         jSplitPane1.setTopComponent(panelUpper);
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
+        txtMessage.setBackground(new java.awt.Color(51, 51, 51));
         txtMessage.setColumns(20);
+        txtMessage.setForeground(new java.awt.Color(255, 255, 255));
         txtMessage.setRows(5);
         jScrollPane1.setViewportView(txtMessage);
 

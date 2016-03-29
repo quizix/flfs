@@ -16,6 +16,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -97,11 +103,11 @@ public class PlcProxyTest {
      }
      
      @Test
-     public void testGetValveActionAcount(){
-         System.out.println("Valve action count:");
-         float[] fs = plcProxy.getValveActionCount();
+     public void testGetValveAndPumpCondition(){
+         System.out.println("Valve and pump condition:");
+         int[] value = plcProxy.getValveAndPumpCondition();
          
-         for(float f: fs){
+         for(int f: value){
              System.out.println(f);
          }
      }

@@ -86,11 +86,11 @@ public class Simulator {
         processImage.setInvalidAddressValue(Short.MIN_VALUE);
 
         //coil register
-        processImage.setCoil(10, true);
-        processImage.setCoil(11, false);
-        processImage.setCoil(12, true);
-        processImage.setCoil(13, true);
-        processImage.setCoil(14, false);
+        processImage.setCoil(1, true);
+        processImage.setCoil(2, false);
+        processImage.setCoil(3, true);
+        processImage.setCoil(4, true);
+        processImage.setCoil(5, false);
 
         //discrete input
         processImage.setInput(1, false);    //紧停开关
@@ -125,9 +125,9 @@ public class Simulator {
         processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 1, DataType.FOUR_BYTE_FLOAT, new Float(
                 100)); // 加水量（kg）
         processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 3, DataType.FOUR_BYTE_FLOAT, new Float(
-                100)); // 加干料量（kg）
+                101)); // 加干料量（kg）
         processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 5, DataType.FOUR_BYTE_FLOAT, new Float(
-                100)); // 加菌液量（kg）
+                102)); // 加菌液量（kg）
         
         processImage.setHoldingRegister(7, (short) 0); //任务第1罐做量（桶）
         processImage.setHoldingRegister(8, (short) 0); //任务第2罐做量（桶）
@@ -159,42 +159,42 @@ public class Simulator {
         processImage.setHoldingRegister(30, (short) 0); //预备或正在进料的发酵罐号
         processImage.setHoldingRegister(31, (short) 0); //正在出料的发酵罐号
         
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 32, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 32, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 101)); // 阀门1动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 34, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 34, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 102)); // 阀门2动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 36, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 36, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 103)); // 阀门3动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 38, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 38, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 104)); // 阀门4动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 40, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 40, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 105)); // 阀门5动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 42, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 42, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 106)); // 阀门6动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 44, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 44, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 107)); // 阀门7动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 46, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 46, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 108)); // 阀门8动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 48, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 48, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 109)); // 阀门9动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 50, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 50, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 110)); // 阀门10动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 52, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 52, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 111)); // 阀门11动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 54, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 54, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 112)); // 阀门12动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 56, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 56, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 113)); // 阀门13动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 58, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 58, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 114)); // 阀门14动作次数累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 60, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 60, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 115)); // 阀门15动作次数累计
         
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 62, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 62, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 1000)); // 泵1工作时间累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 64, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 64, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 1001)); // 泵2工作时间累计
-        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 66, DataType.FOUR_BYTE_FLOAT, new Long(
+        processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 66, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 1002)); // 泵3工作时间累计
         
         

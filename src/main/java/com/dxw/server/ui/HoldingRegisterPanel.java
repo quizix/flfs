@@ -23,6 +23,10 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
         this.buttonGroup1.add(this.radioReadFloat);
         this.buttonGroup1.add(this.radioReadInt);
         this.buttonGroup1.add(this.radioReadShort);
+        
+        this.buttonGroup2.add(this.radioWriteFloat);
+        this.buttonGroup2.add(this.radioWriteInt);
+        this.buttonGroup2.add(this.radioWriteShort);
     }
 
     /**
@@ -35,6 +39,7 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel6 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -43,9 +48,19 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
         radioReadShort = new javax.swing.JRadioButton();
         radioReadInt = new javax.swing.JRadioButton();
         radioReadFloat = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
+        btnRead = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
         txtReadResult = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        txtReadOffset1 = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        btnWrite = new javax.swing.JButton();
+        txtValue = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        radioWriteShort = new javax.swing.JRadioButton();
+        radioWriteInt = new javax.swing.JRadioButton();
+        radioWriteFloat = new javax.swing.JRadioButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -61,10 +76,10 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
 
         radioReadFloat.setText("float");
 
-        jButton1.setText("Read");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnRead.setText("Read");
+        btnRead.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnReadActionPerformed(evt);
             }
         });
 
@@ -87,10 +102,12 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
                             .addComponent(radioReadInt)
                             .addComponent(radioReadShort))
                         .addGap(28, 28, 28)
-                        .addComponent(jButton1)
-                        .addGap(26, 26, 26)
-                        .addComponent(txtReadResult, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(158, Short.MAX_VALUE))
+                        .addComponent(btnRead)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel6)
+                        .addGap(4, 4, 4)
+                        .addComponent(txtReadResult, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,7 +123,8 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(radioReadInt))
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
+                        .addComponent(btnRead)
+                        .addComponent(jLabel6)
                         .addComponent(txtReadResult, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radioReadFloat)
@@ -114,14 +132,82 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
         );
 
         jTabbedPane2.addTab("Read", jPanel6);
+
+        jLabel4.setText("Offset");
+        jLabel4.setToolTipText("");
+
+        jLabel5.setText("Type");
+
+        btnWrite.setText("Write");
+        btnWrite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWriteActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Value");
+
+        radioWriteShort.setSelected(true);
+        radioWriteShort.setText("short");
+
+        radioWriteInt.setText("int");
+
+        radioWriteFloat.setText("float");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtValue, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+                    .addComponent(txtReadOffset1))
+                .addGap(29, 29, 29)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(radioWriteFloat)
+                    .addComponent(radioWriteInt)
+                    .addComponent(radioWriteShort))
+                .addGap(28, 28, 28)
+                .addComponent(btnWrite)
+                .addContainerGap(335, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(radioWriteShort)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(radioWriteInt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(radioWriteFloat))
+                    .addComponent(btnWrite)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtReadOffset1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(15, 15, 15)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))))
+                .addGap(43, 43, 43))
+        );
+
         jTabbedPane2.addTab("Write", jPanel7);
 
-        add(jTabbedPane2, java.awt.BorderLayout.CENTER);
+        add(jTabbedPane2, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
+    private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
         PlcProxy proxy = PlcProxyImpl.getInstance();
 
         int offset = Integer.parseInt(this.txtReadOffset.getText());
@@ -131,28 +217,60 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
             this.txtReadResult.setText(String.format("%d", s));
 
         } else if (this.radioReadInt.isSelected()) {
-            
+            int x = proxy.getRegisterInt(offset, 1);
+            this.txtReadResult.setText(String.format("%d", x));
         }
         else if (this.radioReadFloat.isSelected()) {
             float v = proxy.getRegisterFloat(offset, 1);
             this.txtReadResult.setText(String.format("%f", v));
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnReadActionPerformed
+
+    private void btnWriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWriteActionPerformed
+        PlcProxy proxy = PlcProxyImpl.getInstance();
+
+        int offset = Integer.parseInt(this.txtReadOffset.getText());
+        
+        if (this.radioReadShort.isSelected()) {
+            short value = Short.parseShort(this.txtValue.getText());
+            proxy.setRegister(offset, value);
+            
+
+        } else if (this.radioReadInt.isSelected()) {
+            int value = Integer.parseInt(this.txtValue.getText());
+            proxy.setRegister(offset, value);
+        }
+        else if (this.radioReadFloat.isSelected()) {
+            float value = Float.parseFloat(this.txtValue.getText());
+            proxy.setRegister(offset, value);
+        }
+    }//GEN-LAST:event_btnWriteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRead;
+    private javax.swing.JButton btnWrite;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JTabbedPane jTabbedPane2;
     javax.swing.JRadioButton radioReadFloat;
     javax.swing.JRadioButton radioReadInt;
     javax.swing.JRadioButton radioReadShort;
+    javax.swing.JRadioButton radioWriteFloat;
+    javax.swing.JRadioButton radioWriteInt;
+    javax.swing.JRadioButton radioWriteShort;
     javax.swing.JTextField txtReadOffset;
-    javax.swing.JTextField txtReadResult;
+    javax.swing.JTextField txtReadOffset1;
+    private javax.swing.JTextField txtReadResult;
+    javax.swing.JTextField txtValue;
     // End of variables declaration//GEN-END:variables
 }

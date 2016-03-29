@@ -105,25 +105,11 @@ public interface PlcProxy extends PlcBase {
     boolean[] getMaterialTowerStatus();
 
     /**
-     * 获取15个阀门累计动作次数
+     * 获取15个阀门累计动作次数和泵工作时间
      *
      * @return
      */
-    float[] getValveActionCount();
-
-    /**
-     * 获取水泵工作时间
-     *
-     * @return
-     */
-    float getWaterPumpWorkingTime();
-
-    /**
-     * 获取转子泵工作时间
-     *
-     * @return
-     */
-    float getRotorPumpWorkingTime();
+    int[] getValveAndPumpCondition();
 
     /**
      * 发送栏位状态
@@ -132,12 +118,7 @@ public interface PlcProxy extends PlcBase {
      */
     void setStyStatus(short[] status);
 
-    /**
-     * 获取隔膜泵工作时间
-     *
-     * @return
-     */
-    float getDiaphragmPumpWorkingTime();
+    
 
     /**
      * 设置更新标志
