@@ -5,8 +5,11 @@
  */
 package com.dxw.server.ui;
 
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyImpl;
+import com.dxw.flfs.communication.PlcConfig;
+import com.dxw.flfs.communication.PlcException;
+import com.dxw.flfs.communication.PlcFactory;
+import com.dxw.flfs.communication.RegisterType;
+import com.dxw.flfs.communication.Plc;
 
 /**
  *
@@ -19,11 +22,11 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
      */
     public HoldingRegisterPanel() {
         initComponents();
-        
+
         this.buttonGroup1.add(this.radioReadFloat);
         this.buttonGroup1.add(this.radioReadInt);
         this.buttonGroup1.add(this.radioReadShort);
-        
+
         this.buttonGroup2.add(this.radioWriteFloat);
         this.buttonGroup2.add(this.radioWriteInt);
         this.buttonGroup2.add(this.radioWriteShort);
@@ -208,42 +211,46 @@ public class HoldingRegisterPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
-        PlcProxy proxy = PlcProxyImpl.getInstance();
+        Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
 
         int offset = Integer.parseInt(this.txtReadOffset.getText());
 
-        if (this.radioReadShort.isSelected()) {
-            short s = proxy.getRegisterShort(offset, 1);
-            this.txtReadResult.setText(String.format("%d", s));
+        try {
+            if (this.radioReadShort.isSelected()) {
 
-        } else if (this.radioReadInt.isSelected()) {
-            int x = proxy.getRegisterInt(offset, 1);
-            this.txtReadResult.setText(String.format("%d", x));
-        }
-        else if (this.radioReadFloat.isSelected()) {
-            float v = proxy.getRegisterFloat(offset, 1);
-            this.txtReadResult.setText(String.format("%f", v));
+                short s = plc.getRegisterShort(offset, RegisterType.HoldingRegister);
+                this.txtReadResult.setText(String.format("%d", s));
+
+            } else if (this.radioReadInt.isSelected()) {
+                int x = plc.getRegisterInt(offset, RegisterType.HoldingRegister);
+                this.txtReadResult.setText(String.format("%d", x));
+            } else if (this.radioReadFloat.isSelected()) {
+                float v = plc.getRegisterFloat(offset, RegisterType.HoldingRegister);
+                this.txtReadResult.setText(String.format("%f", v));
+            }
+        } catch (PlcException ex) {
+            this.txtReadResult.setText(ex.getMessage());
         }
 
     }//GEN-LAST:event_btnReadActionPerformed
 
     private void btnWriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWriteActionPerformed
-        PlcProxy proxy = PlcProxyImpl.getInstance();
+        Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
 
         int offset = Integer.parseInt(this.txtReadOffset.getText());
-        
-        if (this.radioReadShort.isSelected()) {
-            short value = Short.parseShort(this.txtValue.getText());
-            proxy.setRegister(offset, value);
-            
-
-        } else if (this.radioReadInt.isSelected()) {
-            int value = Integer.parseInt(this.txtValue.getText());
-            proxy.setRegister(offset, value);
-        }
-        else if (this.radioReadFloat.isSelected()) {
-            float value = Float.parseFloat(this.txtValue.getText());
-            proxy.setRegister(offset, value);
+        try {
+            if (this.radioReadShort.isSelected()) {
+                short value = Short.parseShort(this.txtValue.getText());
+                plc.setRegister(offset, value);
+            } else if (this.radioReadInt.isSelected()) {
+                int value = Integer.parseInt(this.txtValue.getText());
+                plc.setRegister(offset, value);
+            } else if (this.radioReadFloat.isSelected()) {
+                float value = Float.parseFloat(this.txtValue.getText());
+                plc.setRegister(offset, value);
+            }
+        } catch (PlcException ex) {
+            this.txtReadResult.setText(ex.getMessage());
         }
     }//GEN-LAST:event_btnWriteActionPerformed
 

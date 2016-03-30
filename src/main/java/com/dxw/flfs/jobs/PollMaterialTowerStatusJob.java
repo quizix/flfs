@@ -5,10 +5,10 @@
  */
 package com.dxw.flfs.jobs;
 
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyImpl;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import com.dxw.flfs.communication.PlcProxy;
+import com.dxw.flfs.communication.PlcProxyFactory;
 
 /**
  * 轮询料塔状态
@@ -19,7 +19,7 @@ public class PollMaterialTowerStatusJob extends AbstractJob{
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         notify("开始轮询料塔状态");
-        PlcProxy proxy = PlcProxyImpl.getInstance();
+        PlcProxy proxy = PlcProxyFactory.getPrimaryPlcProxy();
         
         proxy.getMaterialTowerStatus();
     }

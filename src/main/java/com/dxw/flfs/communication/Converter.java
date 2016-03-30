@@ -93,8 +93,21 @@ public class Converter {
         }
         return result;
     }
+    
+    public static short[] intsToShorts(int[] data) {
+        int length = data.length;
 
-    public static short[] floatsAndShortsToShorts(float[] floats, short[] shorts) {
+        short[] result = new short[length * 2];
+        for (int i = 0; i < length; i++) {
+            int x = data[i];
+
+            result[i * 2] = (short) ((x >> 16) & 0xffff);
+            result[i * 2 + 1] = (short) (x & 0xffff);
+        }
+        return result;
+    }
+    
+    /*public static short[] floatsAndShortsToShorts(float[] floats, short[] shorts) {
 
         short[] result = new short[floats.length * 2 + shorts.length];
         int offset = 0;
@@ -109,5 +122,5 @@ public class Converter {
             result[offset++] = shorts[i];
         }
         return result;
-    }
+    }*/
 }

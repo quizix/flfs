@@ -9,7 +9,7 @@ package com.dxw.flfs.communication;
  *
  * @author pronics3
  */
-public interface PlcProxy extends PlcBase {
+public interface PlcProxy {
 
     /**
      * 发送运行命令
@@ -73,19 +73,6 @@ public interface PlcProxy extends PlcBase {
      */
     boolean[] getFermentBarrelStatus();
 
-    /**
-     * 获取当天泵出的料的体积
-     *
-     * @return
-     */
-    float getPumpedVolumn();
-
-    /**
-     * 每吃完一罐时的流量计累计值
-     *
-     * @return
-     */
-    float[] getPumpedVolumns();
 
     /**
      * 获取发酵桶当前PH值
@@ -116,7 +103,7 @@ public interface PlcProxy extends PlcBase {
      *
      * @param status
      */
-    void setStyStatus(short[] status);
+    void setStyStatus(boolean[] status);
 
     
 
@@ -130,4 +117,24 @@ public interface PlcProxy extends PlcBase {
      * @return 
      */
     short getStyStatusUpdateFlag();
+    
+    /**
+     * 获取流量数据
+     * @return 
+     */
+    float[] getFlowValues();
+    
+    /**
+     * 获取发酵罐工作参数
+     * 预备或正在进料的发酵罐号
+     * 正在出料的发酵罐号
+     * @return 
+     */
+    short[] getFermentBarrelWorkingParam();
+    
+    /**
+     * 首次做料发酵时间12小时倒计时
+     * @return 
+     */
+    short getFermentCountDown();
 }

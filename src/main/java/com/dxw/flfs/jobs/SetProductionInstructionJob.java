@@ -5,10 +5,10 @@
  */
 package com.dxw.flfs.jobs;
 
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyImpl;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import com.dxw.flfs.communication.PlcProxy;
+import com.dxw.flfs.communication.PlcProxyFactory;
 
 /**
  * 发送当日做料任务和时间校准作业
@@ -21,9 +21,9 @@ public class SetProductionInstructionJob extends AbstractJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         
         notify("开始下达做料信息");
-        PlcProxy proxy = PlcProxyImpl.getInstance();
+        PlcProxy proxy = PlcProxyFactory.getPrimaryPlcProxy();
         proxy.setProductionParam(0, 0, 0, new short[]{1,2,3});
-        //proxy.setTimeCalibration();
+        
     }
     
 }

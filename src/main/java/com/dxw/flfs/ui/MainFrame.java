@@ -6,10 +6,10 @@
 package com.dxw.flfs.ui;
 
 import com.dxw.common.models.Shed;
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyImpl;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
+import com.dxw.flfs.communication.PlcProxy;
+import com.dxw.flfs.communication.PlcProxyFactory;
 
 /**
  *
@@ -129,24 +129,24 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartActionPerformed
-        PlcProxy plcProxy = PlcProxyImpl.getInstance();
+        PlcProxy plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
         plcProxy.start();
 
     }//GEN-LAST:event_btnStartActionPerformed
 
     private void btnStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStopActionPerformed
-        PlcProxy plcProxy = PlcProxyImpl.getInstance();
+        PlcProxy plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
         plcProxy.halt();
     }//GEN-LAST:event_btnStopActionPerformed
 
     private void btnCleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCleanActionPerformed
-        PlcProxy plcProxy = PlcProxyImpl.getInstance();
+        PlcProxy plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
         plcProxy.clean();
     }//GEN-LAST:event_btnCleanActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+
         try (FlfsDao dao = new FlfsDaoImpl()) {
 
             Shed shed = dao.getShedByCode("2222");
@@ -156,8 +156,7 @@ public class MainFrame extends javax.swing.JFrame {
             });
 
             System.out.println(shed.getName());
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed

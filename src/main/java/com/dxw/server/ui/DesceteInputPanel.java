@@ -5,8 +5,10 @@
  */
 package com.dxw.server.ui;
 
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyImpl;
+import com.dxw.flfs.communication.PlcConfig;
+import com.dxw.flfs.communication.PlcException;
+import com.dxw.flfs.communication.PlcFactory;
+import com.dxw.flfs.communication.Plc;
 
 /**
  *
@@ -82,13 +84,19 @@ public class DesceteInputPanel extends javax.swing.JPanel {
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
         // TODO add your handling code here:
 
-        PlcProxy proxy = PlcProxyImpl.getInstance();
+        Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
 
         int offset = Integer.parseInt(this.txtReadOffset.getText());
 
-        boolean result = proxy.getDiscreteInput(offset);
+        boolean result;
+        try {
+            result = plc.getDiscreteInput(offset);
+            this.txtReadResult.setText( Boolean.toString(result));
+        } catch (PlcException ex) {
+            this.txtReadResult.setText( ex.getMessage());
+        }
         
-        this.txtReadResult.setText( Boolean.toString(result));
+        
 
     }//GEN-LAST:event_btnReadActionPerformed
 

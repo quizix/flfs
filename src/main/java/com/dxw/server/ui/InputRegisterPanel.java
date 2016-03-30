@@ -5,8 +5,11 @@
  */
 package com.dxw.server.ui;
 
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyImpl;
+import com.dxw.flfs.communication.PlcConfig;
+import com.dxw.flfs.communication.PlcFactory;
+import com.dxw.flfs.communication.Plc;
+import com.dxw.flfs.communication.PlcException;
+import com.dxw.flfs.communication.RegisterType;
 
 /**
  *
@@ -115,23 +118,27 @@ public class InputRegisterPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
-        PlcProxy proxy = PlcProxyImpl.getInstance();
+        Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
 
         int offset = Integer.parseInt(this.txtReadOffset.getText());
 
+        try{
         if (this.radioReadShort.isSelected()) {
-            short s = proxy.getRegisterShort(offset, 0);
+            
+            short s = plc.getRegisterShort(offset, RegisterType.InputRegister);
             this.txtReadResult.setText(String.format("%d", s));
 
         } else if (this.radioReadInt.isSelected()) {
-            int s = proxy.getRegisterInt(offset, 0);
+            int s = plc.getRegisterInt(offset, RegisterType.InputRegister);
             this.txtReadResult.setText(String.format("%d", s));
         }
         else if (this.radioReadFloat.isSelected()) {
-            float v = proxy.getRegisterFloat(offset, 0);
+            float v = plc.getRegisterFloat(offset, RegisterType.InputRegister);
             this.txtReadResult.setText(String.format("%f", v));
+        }
+        }
+        catch(PlcException ex){
+            this.txtReadResult.setText(ex.getMessage());
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed

@@ -5,8 +5,10 @@
  */
 package com.dxw.server.ui;
 
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyImpl;
+import com.dxw.flfs.communication.PlcConfig;
+import com.dxw.flfs.communication.PlcException;
+import com.dxw.flfs.communication.PlcFactory;
+import com.dxw.flfs.communication.Plc;
 
 /**
  *
@@ -19,7 +21,7 @@ public class CoilPanel extends javax.swing.JPanel {
      */
     public CoilPanel() {
         initComponents();
-        
+
         this.buttonGroup1.add(this.radioTrue);
         this.buttonGroup1.add(this.radioFalse);
     }
@@ -153,21 +155,28 @@ public class CoilPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReadActionPerformed
-        PlcProxy proxy = PlcProxyImpl.getInstance();
+        Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
         int offset = Integer.parseInt(this.txtReadOffset.getText());
-        
-        boolean result = proxy.getCoil(offset);
-        this.txtReadResult.setText(Boolean.toString(result));
-        
 
+        boolean result;
+        try {
+            result = plc.getCoil(offset);
+            this.txtReadResult.setText(Boolean.toString(result));
+        } catch (PlcException ex) {
+            this.txtReadResult.setText(ex.getMessage());
+        }
     }//GEN-LAST:event_btnReadActionPerformed
 
     private void btnWriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWriteActionPerformed
-        PlcProxy proxy = PlcProxyImpl.getInstance();
+        Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
         int offset = Integer.parseInt(this.txtReadOffset.getText());
-        
+
         boolean result = (this.radioTrue.isSelected());
-        proxy.setCoil(offset, result);
+        try {
+            plc.setCoil(offset, result);
+        } catch (PlcException ex) {
+            this.txtReadResult.setText(ex.getMessage());
+        }
     }//GEN-LAST:event_btnWriteActionPerformed
 
 

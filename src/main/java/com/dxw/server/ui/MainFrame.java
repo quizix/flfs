@@ -11,8 +11,6 @@ import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyImpl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

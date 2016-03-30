@@ -9,8 +9,8 @@ package com.dxw.flfs.communication;
  *
  * @author pronics3
  */
-public class CommunicationException extends Exception {
-    public CommunicationException(String message){
-        super(message);
+public class PlcException extends Exception {
+    public PlcException(String message, Throwable cause){
+        super(message, cause);
     }
 }

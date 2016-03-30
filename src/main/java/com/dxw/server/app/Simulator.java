@@ -156,8 +156,8 @@ public class Simulator {
                 88)); // 吃完6罐累计流量值
         
         processImage.setHoldingRegister(29, (short) 0); //首次做料发酵时间12小时倒计时
-        processImage.setHoldingRegister(30, (short) 0); //预备或正在进料的发酵罐号
-        processImage.setHoldingRegister(31, (short) 0); //正在出料的发酵罐号
+        processImage.setHoldingRegister(30, (short) 1); //预备或正在进料的发酵罐号
+        processImage.setHoldingRegister(31, (short) 2); //正在出料的发酵罐号
         
         processImage.setNumeric(RegisterRange.HOLDING_REGISTER, 32, DataType.FOUR_BYTE_INT_UNSIGNED, new Integer(
                 101)); // 阀门1动作次数累计
