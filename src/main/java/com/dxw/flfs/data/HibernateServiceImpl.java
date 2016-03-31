@@ -30,9 +30,6 @@ public class HibernateServiceImpl implements HibernateService {
         try {
             sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         } catch (Exception e) {
-            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
-            // so destroy it manually.
-            e.printStackTrace();
             StandardServiceRegistryBuilder.destroy(registry);
         }
     }
@@ -42,7 +39,6 @@ public class HibernateServiceImpl implements HibernateService {
         if (sessionFactory != null) {
             return sessionFactory.openSession();
         }
-        
         return null;
     }
 

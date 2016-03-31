@@ -5,14 +5,14 @@
  */
 package com.dxw.common.models;
 
-import java.util.Collection;
+import java.util.Set;
 
 /**
  * 猪舍
  *
  * @author Administrator
  */
-public class Shed extends DbModel{
+public class Shed extends DbModel {
 
     /**
      * 名字
@@ -29,11 +29,10 @@ public class Shed extends DbModel{
      */
     private String address;
 
-    
     /**
      * 栏位
      */
-    private Collection<Sty> sties;
+    private Set<Sty> sties;
 
     public String getName() {
         return name;
@@ -59,13 +58,16 @@ public class Shed extends DbModel{
         this.address = address;
     }
 
-    public Collection<Sty> getSties() {
+    public Set<Sty> getSties() {
         return sties;
     }
 
-    public void setSties(Collection<Sty> sties) {
+    public void setSties(Set<Sty> sties) {
         this.sties = sties;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

@@ -27,7 +27,6 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import static org.quartz.CronScheduleBuilder.cronSchedule;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -36,6 +35,7 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import org.quartz.Trigger;
 import static org.quartz.TriggerBuilder.newTrigger;
 import org.quartz.impl.StdSchedulerFactory;
+import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
 
 /**
@@ -71,38 +71,8 @@ public class FlfsApp {
         hibernateService.init();
         registry.register(hibernateService);
         
-        addShed(hibernateService);
-        
     }
 
-    private void addShed(HibernateService hibernateService) throws HibernateException {
-        try (Session session = hibernateService.getSession()) {
-            Shed shed = new Shed();
-            shed.setAddress("江西");
-            shed.setCode("1111");
-            shed.setName("aaaa");
-            shed.setCreateTime( new Date());
-            shed.setModifyTime(new Date());
-            
-            Sty sty = new Sty();
-            sty.setCode("111222");
-            sty.setCreateTime( new Date());
-            sty.setModifyTime( new Date());
-            
-            sty.setName("栏位1");
-            sty.setPigCount(100);
-            sty.setNo(1);
-            sty.setShed(shed);
-            
-            Collection<Sty> sties = new ArrayList<>();
-            sties.add(sty);
-            shed.setSties(sties);
-            
-                  
-            shed.setSties(sties);
-            session.save(shed);
-        }
-    }
     
     /**
      * 初始化系统Job

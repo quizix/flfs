@@ -3,16 +3,16 @@
 "-//Hibernate/Hibernate Mapping DTD//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping">
 <hibernate-mapping>
-    <class name="com.dxw.common.models.Ph" table="flfs_ph">
+    <class name="com.dxw.common.models.InStyPlan" table="flfs_in_sty_plan">
         <id name="id" column="id">
             <generator class="native" />
         </id>
-        <property name="createTime" column="createTime" />
-        <property name="modifyTime" column="modifyTime" />
+        <property name="createTime" column="createTime" not-null="true"/>
+        <property name="modifyTime" column="modifyTime" not-null="true" />
         
-        <property name="value" column="value" />
-        <many-to-one name="shed" column="shedId" 
-                             class="com.dxw.common.models.Shed" not-null="true">
+        <property name="plannedDate" column="plannedDate" not-null="true" />
+        <many-to-one name="sty" column="styId" 
+                             class="com.dxw.common.models.Sty" not-null="true">
         </many-to-one>
     </class>
 </hibernate-mapping>

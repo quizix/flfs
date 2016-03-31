@@ -7,9 +7,7 @@ package com.dxw.flfs.data;
 
 import com.dxw.common.models.Shed;
 import com.dxw.common.models.Sty;
-import com.dxw.common.services.ServiceRegistry;
-import com.dxw.common.services.ServiceRegistryImpl;
-import com.dxw.common.services.Services;
+import com.dxw.common.models.User;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -22,18 +20,8 @@ public class FlfsDaoImpl implements FlfsDao {
 
     Session session;
 
-    public FlfsDaoImpl() {
-        this.session = getSession();
-    }
-
-    private Session getSession() {
-        ServiceRegistry registry = ServiceRegistryImpl.getInstance();
-        HibernateService service = (HibernateService) registry.lookupService(Services.HIBERNATE_SERVICE);
-
-        if (service != null) {
-            return service.getSession();
-        }
-        return null;
+    public FlfsDaoImpl(HibernateService hibernateService) {
+        this.session = hibernateService.getSession();
     }
 
     @Override
@@ -45,16 +33,20 @@ public class FlfsDaoImpl implements FlfsDao {
             return (Shed) list.get(0);
         }
         return null;
-
     }
 
     @Override
     public List getSheds() {
-
         Query query = session.createQuery("from Shed");
         List list = query.list();
         return list;
+    }
 
+    @Override
+    public List getUsers() {
+        Query query = session.createQuery("from User");
+        List list = query.list();
+        return list;
     }
 
     @Override
@@ -67,6 +59,44 @@ public class FlfsDaoImpl implements FlfsDao {
             return (Sty) list.get(0);
         }
         return null;
+    }
+
+    @Override
+    public User getUserByName(String name) {
+        String sql = String.format("from User u where u.name='%s'", name);
+        Query query = session.createQuery(sql);
+
+        List result = query.list();
+        if (result != null && result.size() > 0) {
+            return (User) result.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public long getTotalPigInShed(String code) {
+        String sql = String.format("select sum(s.pigNumber) from Sty s where s.shed.code='%s'", code);
+        Query query = session.createQuery(sql);
+        long number = (long) query.uniqueResult();
+        return number;
+    }
+
+    @Override
+    public List getStiesByShed(String code) {
+        String sql = String.format("from Sty s where s.shed.code='%s' order by s.no", code);
+        Query query = session.createQuery(sql);
+
+        return query.list();
+    }
+
+    @Override
+    public <T> void update(T t) {
+        session.save(t);
+    }
+
+    @Override
+    public <T> void delete(T t) {
+        session.delete(t);
     }
 
     @Override

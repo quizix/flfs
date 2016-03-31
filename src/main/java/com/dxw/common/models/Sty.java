@@ -39,8 +39,7 @@ public class Sty extends DbModel{
     /**
      * 猪的数量，并由此推断栏位状态
      */
-    private int pigCount;
-
+    private int pigNumber;
 
     public Shed getShed() {
         return shed;
@@ -66,11 +65,11 @@ public class Sty extends DbModel{
         this.code = code;
     }
 
-    public int getPigCount() {
-        return pigCount;
+    public int getPigNumber() {
+        return pigNumber;
     }
 
-    public void setPigCount(int pigCount) {
-        this.pigCount = pigCount;
+    public void setPigNumber(int pigNumber) {
+        this.pigNumber = pigNumber;
     }
 }

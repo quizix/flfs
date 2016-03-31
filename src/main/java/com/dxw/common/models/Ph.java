@@ -12,6 +12,10 @@ public class Ph extends DbModel {
      * 猪舍
      */
     private Shed shed;
+    /**
+     * ph值
+     */
+    private float value;
 
     public Shed getShed() {
         return shed;
@@ -28,10 +32,9 @@ public class Ph extends DbModel {
     public void setValue(float value) {
         this.value = value;
     }
-    
-    /**
-     * ph值
-     */
-    private float value;
-	
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }

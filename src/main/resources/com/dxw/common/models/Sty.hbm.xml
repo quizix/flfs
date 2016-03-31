@@ -13,7 +13,7 @@
         <property name="no" column="no" />
         <property name="name" column="name" />
                 
-        <property name="pigCount" column="pigCount" />
+        <property name="pigNumber" column="pigNumber" />
         <many-to-one name="shed" column="shedId" 
                              class="com.dxw.common.models.Shed" not-null="true">
         </many-to-one>

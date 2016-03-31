@@ -13,17 +13,17 @@ public class DbModel {
     /**
      * 内部id
      */
-    private int id;
+    protected int id;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    protected Date createTime;
 
     /**
      * 修改时间
      */
-    private Date modifyTime;
+    protected Date modifyTime;
 
     public int getId() {
         return id;
@@ -48,4 +48,5 @@ public class DbModel {
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
+   
 }

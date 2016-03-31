@@ -44,7 +44,6 @@ public class MainFrame extends javax.swing.JFrame {
         javax.swing.JButton btnStop = new javax.swing.JButton();
         javax.swing.JToolBar.Separator jSeparator3 = new javax.swing.JToolBar.Separator();
         javax.swing.JButton btnClean = new javax.swing.JButton();
-        javax.swing.JButton jButton1 = new javax.swing.JButton();
         javax.swing.JMenuBar jMenuBar1 = new javax.swing.JMenuBar();
         javax.swing.JMenu jMenu1 = new javax.swing.JMenu();
         javax.swing.JMenu jMenu2 = new javax.swing.JMenu();
@@ -97,14 +96,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         jPanel1.add(jToolBar1);
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton1);
-
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
         jMenuBar1.setFont(new java.awt.Font("微软雅黑", 0, 12)); // NOI18N
@@ -143,23 +134,6 @@ public class MainFrame extends javax.swing.JFrame {
         PlcProxy plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
         plcProxy.clean();
     }//GEN-LAST:event_btnCleanActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
-        try (FlfsDao dao = new FlfsDaoImpl()) {
-
-            Shed shed = dao.getShedByCode("2222");
-
-            shed.getSties().stream().forEach((sty) -> {
-                System.out.println(sty.getCode());
-            });
-
-            System.out.println(shed.getName());
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void init() {
     }

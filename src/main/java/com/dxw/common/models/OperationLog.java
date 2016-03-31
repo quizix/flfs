@@ -52,4 +52,8 @@ public class OperationLog extends DbModel {
         this.resource = resource;
     }
 
+    @Override
+    public String toString() {
+        return "";
+    }
 }

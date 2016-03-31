@@ -7,9 +7,10 @@ package com.dxw.common.models;
 
 /**
  * 生产指令
+ *
  * @author Administrator
  */
-public class ProductionInstruction extends DbModel{
+public class ProductionInstruction extends DbModel {
 
     /**
      * 所属的猪舍
@@ -20,47 +21,47 @@ public class ProductionInstruction extends DbModel{
      * 搅拌桶一桶所需水量
      */
     private float water;
-    
+
     /**
      * 搅拌桶一桶所需干料量
      */
     private float dry;
-    
+
     /**
      * 搅拌桶一桶所需菌量
      */
     private float bacteria;
-    
+
     /**
      * 发酵桶做料量1
      */
     private float barrel1;
-    
+
     /**
      * 发酵桶做料量2
      */
     private float barrel2;
-    
+
     /**
      * 发酵桶做料量3
      */
     private float barrel3;
-    
+
     /**
      * 发酵桶做料量4
      */
     private float barrel4;
-    
+
     /**
      * 发酵桶做料量5
      */
     private float barrel5;
-    
+
     /**
      * 发酵桶做料量6
      */
     private float barrel6;
-    
+
     public Shed getShed() {
         return shed;
     }
@@ -140,7 +141,10 @@ public class ProductionInstruction extends DbModel{
     public void setBarrel6(float barrel6) {
         this.barrel6 = barrel6;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "";
+    }
+
 }

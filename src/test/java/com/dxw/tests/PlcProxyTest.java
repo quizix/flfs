@@ -26,20 +26,20 @@ public class PlcProxyTest {
     public PlcProxyTest() {
     }
 
+    static PlcProxy plcProxy;
     @BeforeClass
     public static void setUpClass() {
+        plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
     }
 
     @AfterClass
     public static void tearDownClass() {
     }
 
-    PlcProxy plcProxy;
-    NotificationManager notificationManager;
 
     @Before
     public void setUp() throws ServiceException {
-        plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
+        
         System.out.println("------------------------------");
     }
 

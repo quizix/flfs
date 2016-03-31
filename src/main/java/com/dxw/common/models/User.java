@@ -36,5 +36,9 @@ public class User extends DbModel {
         this.password = password;
     }
     
+    @Override 
+    public String toString(){
+        return "";
+    }
    
 }
