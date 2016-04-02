@@ -6,10 +6,13 @@
 package com.dxw.server.app;
 
 import com.dxw.common.ms.NotificationManagerImpl;
-import com.dxw.server.ui.MainFrame;
 import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
+import com.dxw.server.ui.MainPanel;
+
+import javax.swing.*;
+
 
 /**
  *
@@ -17,7 +20,7 @@ import com.dxw.common.services.ServiceRegistryImpl;
  */
 public class PlcServerApp {
 
-    PlcServerApp() throws ServiceException {
+    private PlcServerApp() throws ServiceException {
         init();
     }
 
@@ -45,14 +48,19 @@ public class PlcServerApp {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PlcServerApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new MainFrame().setVisible(true);
+            JFrame frame = new JFrame("Modbus模拟器");
+            frame.setContentPane(new MainPanel().getRoot());
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800,600);
+            frame.setVisible(true);
         });
+
     }
 
     public static void main(String args[]) {

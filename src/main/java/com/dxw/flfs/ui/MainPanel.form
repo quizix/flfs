@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.dxw.flfs.ui.MainPanel">
+  <grid id="27dc6" binding="root" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <nested-form id="ebb2a" form-file="com/dxw/flfs/ui/ContentPanel.form">
+        <constraints border-constraint="Center"/>
+      </nested-form>
+      <toolbar id="d1023">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="ccf35" class="javax.swing.JButton" binding="btnStart">
+            <constraints/>
+            <properties>
+              <hideActionText value="false"/>
+              <icon value="images/Start-icon.png"/>
+              <text value="Start"/>
+            </properties>
+          </component>
+          <component id="a83cd" class="javax.swing.JButton" binding="btnStop">
+            <constraints/>
+            <properties>
+              <icon value="images/Stop-red-icon.png"/>
+              <text value="Stop"/>
+            </properties>
+          </component>
+          <component id="22214" class="javax.swing.JButton" binding="btnClean">
+            <constraints/>
+            <properties>
+              <icon value="images/Clear-icon.png"/>
+              <text value="Clean"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+    </children>
+  </grid>
+</form>

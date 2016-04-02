@@ -5,8 +5,6 @@
  */
 package com.dxw.flfs.app;
 
-import com.dxw.common.models.Shed;
-import com.dxw.common.models.Sty;
 import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.ms.NotificationManagerImpl;
 import com.dxw.common.services.ServiceException;
@@ -19,24 +17,16 @@ import com.dxw.flfs.jobs.PollMaterialTowerStatusJob;
 import com.dxw.flfs.jobs.PollMixingBarrelStatusJob;
 import com.dxw.flfs.jobs.SetProductionInstructionJob;
 import com.dxw.flfs.ui.MainFrame;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerFactory;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import org.quartz.Trigger;
-import static org.quartz.TriggerBuilder.newTrigger;
-import org.quartz.impl.StdSchedulerFactory;
+
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
 
 /**
  * Fermented Liquiding Feeding System
@@ -47,7 +37,7 @@ public class FlfsApp {
     
     private NotificationManager notificationManager;
     
-    public FlfsApp() 
+    private FlfsApp()
             throws ServiceException, SchedulerException{
         
     }
@@ -165,17 +155,15 @@ public class FlfsApp {
             }
         } catch (ClassNotFoundException | InstantiationException 
                 | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FlfsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
         
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            MainFrame frame = new MainFrame();
-            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            frame.setVisible(true);
-            
+            new MainFrame();
+
             try {
                 initJobs();
             } catch (SchedulerException ex) {
