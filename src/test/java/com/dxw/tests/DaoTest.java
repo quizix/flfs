@@ -114,5 +114,11 @@ public class DaoTest {
             InStyPlan planQuery = dao.getPlan(sty, new Date(current.getYear(), current.getMonth(), current.getDate()));
             System.out.println(planQuery.getValue());
         }
+
+        try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
+            Date current = new Date();
+            long number = dao.getTotalPigPlanInShed("12345678" , new Date(current.getYear(), current.getMonth(), current.getDate()));
+            System.out.println(number);
+        }
     }
 }

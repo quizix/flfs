@@ -25,12 +25,16 @@ public interface FlfsDao extends AutoCloseable {
     List getStiesByShed(String code);
     
     long getTotalPigInShed(String code);
-    
+
+    long getTotalPigPlanInShed(String code, Date date);
+
     User getUserByName(String name);
-    
+
     List getUsers();
     
     InStyPlan getPlan(Sty sty, Date date);
+
+    List getProductionInstructions(String code, Date start, Date end);
 
     /////////////////////////////////////
     ////add/update 

@@ -29,7 +29,9 @@ public class FlfsDaoImpl implements FlfsDao {
 
     @Override
     public Shed getShedByCode(String code) {
-        Query query = session.createQuery(String.format("from Shed where code='%s'", code));
+        Query query =
+                session.createQuery("from Shed where code=:code")
+                    .setParameter("code",code);
 
         List list = query.list();
         if (list.size() > 0) {
@@ -52,9 +54,9 @@ public class FlfsDaoImpl implements FlfsDao {
 
     @Override
     public InStyPlan getPlan(Sty sty, Date date) {
-        String sql = String.format("from InStyPlan s where s.sty.id=%d and s.date='%s'",
-                sty.getId(), date.toLocaleString());
-        Query query = session.createQuery(sql);
+        Query query = session.createQuery("from InStyPlan s where s.sty=:sty and s.date=:date")
+                .setParameter("sty", sty)
+                .setParameter("date", date);
 
         List list = query.list();
 
@@ -64,9 +66,20 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public Sty getStyByCode(String code) {
+    public List getProductionInstructions(String code, Date start, Date end) {
+        Query query = session.createQuery("from ProductionInstruction pi where pi.shed.code=:code and pi.date >=:start and pi.date<=:end")
+                .setParameter("start", start)
+                .setParameter("end", end)
+                .setParameter("code", code);
 
-        Query query = session.createQuery(String.format("from Sty where code='%s'", code));
+        return query.list();
+
+    }
+
+    @Override
+    public Sty getStyByCode(String code) {
+        Query query = session.createQuery("from Sty where code=:code")
+                .setParameter("code", code);
 
         List list = query.list();
         if (list.size() > 0) {
@@ -77,8 +90,8 @@ public class FlfsDaoImpl implements FlfsDao {
 
     @Override
     public User getUserByName(String name) {
-        String sql = String.format("from User u where u.name='%s'", name);
-        Query query = session.createQuery(sql);
+        Query query = session.createQuery("from User u where u.name=:name")
+                .setParameter("name", name);
 
         List result = query.list();
         if (result != null && result.size() > 0) {
@@ -88,16 +101,24 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
+    public long getTotalPigPlanInShed(String code, Date date) {
+        Query query = session.createQuery("select sum(s.value) from InStyPlan s where s.date=:date and s.sty.shed.code=:code")
+                .setParameter("date", date)
+                .setParameter("code", code);
+        return (long) query.uniqueResult();
+    }
+
+    @Override
     public long getTotalPigInShed(String code) {
-        String sql = String.format("select sum(s.pigNumber) from Sty s where s.shed.code='%s'", code);
-        Query query = session.createQuery(sql);
+        Query query = session.createQuery("select sum(s.pigNumber) from Sty s where s.shed.code=:code")
+                .setParameter("code", code);
         return (long) query.uniqueResult();
     }
 
     @Override
     public List getStiesByShed(String code) {
-        String sql = String.format("from Sty s where s.shed.code='%s' order by s.no", code);
-        Query query = session.createQuery(sql);
+        Query query = session.createQuery("from Sty s where s.shed.code=:code order by s.no")
+                .setParameter("code", code);
 
         return query.list();
     }

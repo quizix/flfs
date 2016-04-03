@@ -13,7 +13,6 @@
         <property name="module" column="module"/>
         <property name="resource" column="resource"/>
 
-
         <many-to-one name="shed" column="shedId"
                      class="com.dxw.common.models.Shed" not-null="true">
         </many-to-one>
