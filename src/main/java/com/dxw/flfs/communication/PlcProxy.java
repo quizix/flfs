@@ -40,7 +40,7 @@ public interface PlcProxy {
      * @param fermentBarrelWeight 发酵罐每罐做量
      */
     void setProductionParam(float mixingWater, float mixingFeed, float bacteria,
-            short[] fermentBarrelWeight);
+                            short[] fermentBarrelWeight);
 
     /**
      * 时间校准 一天两次，上午6:00及下午6:00

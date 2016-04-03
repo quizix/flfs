@@ -155,7 +155,7 @@ public class FlfsApp {
             }
         } catch (ClassNotFoundException | InstantiationException 
                 | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FlfsApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(FlfsApp.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

@@ -22,7 +22,7 @@ public class MainFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
 
-        JMenuBar bar = new javax.swing.JMenuBar();
+        JMenuBar bar = new JMenuBar();
         this.setJMenuBar(bar);
 
         JMenu menu = new JMenu();

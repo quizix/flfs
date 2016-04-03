@@ -60,6 +60,11 @@ class PlcImpl implements Plc {
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
         }
+        finally {
+            if( master != null){
+                master.destroy();
+            }
+        }
     }
 
     @Override
@@ -81,6 +86,11 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
+        }
+        finally {
+            if( master != null){
+                master.destroy();
+            }
         }
     }
 
@@ -106,6 +116,11 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
+        }
+        finally {
+            if( master != null){
+                master.destroy();
+            }
         }
 
     }
@@ -140,6 +155,11 @@ class PlcImpl implements Plc {
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
         }
+        finally {
+            if( master != null){
+                master.destroy();
+            }
+        }
     }
 
     @Override
@@ -170,6 +190,11 @@ class PlcImpl implements Plc {
             return Converter.shortsToInts(data);
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
+        }
+        finally {
+            if( master != null){
+                master.destroy();
+            }
         }
 
     }
@@ -204,6 +229,11 @@ class PlcImpl implements Plc {
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
         }
+        finally {
+            if( master != null){
+                master.destroy();
+            }
+        }
 
     }
 
@@ -237,6 +267,11 @@ class PlcImpl implements Plc {
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
         }
+        finally {
+            if( master != null){
+                master.destroy();
+            }
+        }
     }
 
     @Override
@@ -255,6 +290,11 @@ class PlcImpl implements Plc {
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
         }
+        finally {
+            if( master != null){
+                master.destroy();
+            }
+        }
     }
 
     @Override
@@ -272,6 +312,11 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
+        }
+        finally {
+            if( master != null){
+                master.destroy();
+            }
         }
     }
 
