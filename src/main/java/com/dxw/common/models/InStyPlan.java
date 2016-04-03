@@ -17,7 +17,7 @@ public class InStyPlan extends DbModel {
     /**
      * 计划入栏日期
      */
-    private Date plannedDate;
+    private Date date;
     /**
      * 计划栏位
      */
@@ -26,14 +26,14 @@ public class InStyPlan extends DbModel {
     /**
      * 计划入栏数量
      */
-    private int plannedNumber;
+    private int value;
 
-    public Date getPlannedDate() {
-        return plannedDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setPlannedDate(Date plannedDate) {
-        this.plannedDate = plannedDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Sty getSty() {
@@ -44,12 +44,12 @@ public class InStyPlan extends DbModel {
         this.sty = sty;
     }
 
-    public int getPlannedNumber() {
-        return plannedNumber;
+    public int getValue() {
+        return value;
     }
 
-    public void setPlannedNumber(int plannedNumber) {
-        this.plannedNumber = plannedNumber;
+    public void setValue(int value) {
+        this.value = value;
     }
 
     @Override

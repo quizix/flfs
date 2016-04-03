@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-"-//Hibernate/Hibernate Mapping DTD//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="com.dxw.common.models.OperationLog" table="flfs_operation_log">
         <id name="id" column="id">
-            <generator class="native" />
+            <generator class="native"/>
         </id>
-        <property name="createTime" column="createTime" />
-        <property name="modifyTime" column="modifyTime" />
-        
-        <property name="module" column="module" />
-        <property name="resource" column="resource" />
-                
-		
-        <many-to-one name="shed" column="shedId" 
-                             class="com.dxw.common.models.Shed" not-null="true">
+        <property name="createTime" column="createTime"/>
+        <property name="modifyTime" column="modifyTime"/>
+
+        <property name="module" column="module"/>
+        <property name="resource" column="resource"/>
+
+
+        <many-to-one name="shed" column="shedId"
+                     class="com.dxw.common.models.Shed" not-null="true">
         </many-to-one>
-        <many-to-one name="user" column="userId" 
-                             class="com.dxw.common.models.User" not-null="true">
+        <many-to-one name="user" column="userId"
+                     class="com.dxw.common.models.User" not-null="true">
         </many-to-one>
     </class>
 </hibernate-mapping>

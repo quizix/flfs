@@ -5,12 +5,15 @@
  */
 package com.dxw.flfs.data;
 
+import com.dxw.common.models.InStyPlan;
 import com.dxw.common.models.Shed;
 import com.dxw.common.models.Sty;
 import com.dxw.common.models.User;
-import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -38,15 +41,26 @@ public class FlfsDaoImpl implements FlfsDao {
     @Override
     public List getSheds() {
         Query query = session.createQuery("from Shed");
-        List list = query.list();
-        return list;
+        return query.list();
     }
 
     @Override
     public List getUsers() {
         Query query = session.createQuery("from User");
+        return query.list();
+    }
+
+    @Override
+    public InStyPlan getPlan(Sty sty, Date date) {
+        String sql = String.format("from InStyPlan s where s.sty.id=%d and s.date='%s'",
+                sty.getId(), date.toLocaleString());
+        Query query = session.createQuery(sql);
+
         List list = query.list();
-        return list;
+
+        if( list.size() >0)
+            return (InStyPlan) list.get(0);
+        return null;
     }
 
     @Override
@@ -77,8 +91,7 @@ public class FlfsDaoImpl implements FlfsDao {
     public long getTotalPigInShed(String code) {
         String sql = String.format("select sum(s.pigNumber) from Sty s where s.shed.code='%s'", code);
         Query query = session.createQuery(sql);
-        long number = (long) query.uniqueResult();
-        return number;
+        return (long) query.uniqueResult();
     }
 
     @Override
@@ -91,6 +104,7 @@ public class FlfsDaoImpl implements FlfsDao {
 
     @Override
     public <T> void update(T t) {
+        System.out.println(session);
         session.save(t);
     }
 

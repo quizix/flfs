@@ -5,34 +5,37 @@
  */
 package com.dxw.flfs.data;
 
+import com.dxw.common.models.InStyPlan;
 import com.dxw.common.models.Shed;
 import com.dxw.common.models.Sty;
 import com.dxw.common.models.User;
+
+import java.util.Date;
 import java.util.List;
 
 public interface FlfsDao extends AutoCloseable {
     ///////////////////////////////////
     ////reads
-    public Shed getShedByCode(String code);
+    Shed getShedByCode(String code);
 
-    public Sty getStyByCode(String code);
+    Sty getStyByCode(String code);
 
-    public List getSheds();
+    List getSheds();
     
-    public List getStiesByShed(String code);
+    List getStiesByShed(String code);
     
-    public long getTotalPigInShed(String code);
+    long getTotalPigInShed(String code);
     
-    public User getUserByName(String name);
+    User getUserByName(String name);
     
-    public List getUsers();
+    List getUsers();
     
-    //public InStyPlan getPlan(Shed shed, Date date);
+    InStyPlan getPlan(Sty sty, Date date);
 
     /////////////////////////////////////
     ////add/update 
-    public <T> void update(T t);
+    <T> void update(T t);
     
-    public <T> void delete(T t);
+    <T> void delete(T t);
 
 }

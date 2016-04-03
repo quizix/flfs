@@ -5,6 +5,7 @@
  */
 package com.dxw.tests;
 
+import com.dxw.common.models.InStyPlan;
 import com.dxw.common.models.Shed;
 import com.dxw.common.models.Sty;
 import com.dxw.common.services.ServiceException;
@@ -12,16 +13,14 @@ import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.data.HibernateServiceImpl;
+import org.junit.*;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.junit.After;
-import org.junit.AfterClass;
+
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  *
@@ -29,7 +28,7 @@ import org.junit.Test;
  */
 public class DaoTest {
 
-    static HibernateService hibernateService;
+    private static HibernateService hibernateService;
 
     @BeforeClass
     public static void setUpClass() throws ServiceException {
@@ -94,6 +93,26 @@ public class DaoTest {
                 Sty s = (Sty)o;
                 System.out.println(s.getName());
             });
+        }
+
+        try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
+
+            Sty sty = dao.getStyByCode("0");
+
+            InStyPlan plan = new InStyPlan();
+            plan.setSty(sty);
+
+            plan.setCreateTime( new Date());
+            plan.setModifyTime( new Date());
+            Date current = new Date();
+
+            plan.setDate( new Date(current.getYear(), current.getMonth(), current.getDate()));
+            plan.setValue(1000);
+
+            dao.update(plan);
+
+            InStyPlan planQuery = dao.getPlan(sty, new Date(current.getYear(), current.getMonth(), current.getDate()));
+            System.out.println(planQuery.getValue());
         }
     }
 }
