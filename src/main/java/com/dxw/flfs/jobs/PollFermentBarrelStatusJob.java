@@ -24,6 +24,8 @@ public class PollFermentBarrelStatusJob extends AbstractJob{
         PlcProxy proxy = PlcProxyFactory.getPrimaryPlcProxy();
         
         boolean[] status = proxy.getFermentBarrelStatus();
+
+        System.out.println(Thread.currentThread().getId());
     }
     
 }

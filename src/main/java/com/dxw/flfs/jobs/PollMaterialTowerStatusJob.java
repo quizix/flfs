@@ -22,6 +22,7 @@ public class PollMaterialTowerStatusJob extends AbstractJob{
         PlcProxy proxy = PlcProxyFactory.getPrimaryPlcProxy();
         
         proxy.getMaterialTowerStatus();
+
     }
     
 }

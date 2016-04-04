@@ -14,11 +14,11 @@ public class ScheduleResult {
     /**
      * 加水量
      */
-    private float mixingWater;
+    private float water;
     /**
      * 干料量
      */
-    private float mixingFeed;
+    private float dry;
     /**
      * 菌液量
      */
@@ -26,22 +26,22 @@ public class ScheduleResult {
     /**
      * 发酵罐每罐做量
      */
-    private float[] fermentBarrelWeight;
+    private short[] barrels;
 
-    public float getMixingWater() {
-        return mixingWater;
+    public float getWater() {
+        return water;
     }
 
-    public void setMixingWater(float mixingWater) {
-        this.mixingWater = mixingWater;
+    public void setWater(float water) {
+        this.water = water;
     }
 
-    public float getMixingFeed() {
-        return mixingFeed;
+    public float getDry() {
+        return dry;
     }
 
-    public void setMixingFeed(float mixingFeed) {
-        this.mixingFeed = mixingFeed;
+    public void setDry(float dry) {
+        this.dry = dry;
     }
 
     public float getBacteria() {
@@ -52,12 +52,13 @@ public class ScheduleResult {
         this.bacteria = bacteria;
     }
 
-    public float[] getFermentBarrelWeight() {
-        return fermentBarrelWeight;
+    public short[] getBarrels() {
+        return barrels;
     }
 
-    public void setFermentBarrelWeight(float[] fermentBarrelWeight) {
-        this.fermentBarrelWeight = fermentBarrelWeight;
+    public void setBarrels(short[] barrels) {
+        this.barrels = barrels;
     }
+
 
 }
