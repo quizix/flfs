@@ -6,12 +6,11 @@
 package com.dxw.common.ms;
 
 /**
- *
  * @author pronics3
  */
 public class Notification {
     private int id;
-    
+
     private Object content;
 
     public int getId() {
@@ -29,7 +28,7 @@ public class Notification {
     public void setContent(Object content) {
         this.content = content;
     }
-    
+
     /**
      * 什么时候
      */
@@ -42,6 +41,16 @@ public class Notification {
     public void setWhen(long when) {
         this.when = when;
     }
-    
-    
+
+    private int flag;
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
+
 }

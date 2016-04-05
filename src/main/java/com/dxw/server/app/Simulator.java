@@ -97,8 +97,8 @@ public class Simulator {
         processImage.setInput(2, false);    //料位低警报
         processImage.setInput(3, true);    //料位空警报
         processImage.setInput(4, false);    //发酵罐1#空
-        processImage.setInput(5, true);     //发酵罐2#空
-        processImage.setInput(6, true);     //发酵罐3#空
+        processImage.setInput(5, false);     //发酵罐2#空
+        processImage.setInput(6, false);     //发酵罐3#空
         processImage.setInput(7, true);     //发酵罐4#空
         processImage.setInput(8, true);     //发酵罐5#空
         processImage.setInput(9, true);     //发酵罐6#空

@@ -20,6 +20,9 @@ import com.dxw.flfs.ui.MainFrame;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import javax.swing.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,47 +34,50 @@ import static org.quartz.TriggerBuilder.newTrigger;
 /**
  * Fermented Liquiding Feeding System
  * 发酵液态料饲喂系统
+ *
  * @author pronics3
  */
 public class FlfsApp {
-    
+
     private NotificationManager notificationManager;
-    
+
     private FlfsApp()
-            throws ServiceException, SchedulerException{
-        
+            throws ServiceException, SchedulerException {
+
     }
-    
-    private void init() throws ServiceException, SchedulerException{
+
+    private void init() throws ServiceException, SchedulerException {
         initServices();
-        
+
     }
 
     /**
      * 初始化系统服务
-     * @throws ServiceException 
+     *
+     * @throws ServiceException
      */
     private void initServices() throws ServiceException {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
         notificationManager = new NotificationManagerImpl();
         notificationManager.init();
         registry.register(notificationManager);
-        
+
         HibernateService hibernateService = new HibernateServiceImpl();
         hibernateService.init();
         registry.register(hibernateService);
-        
+
     }
 
-    
+
     /**
      * 初始化系统Job
-     * @throws SchedulerException 
+     *
+     * @throws SchedulerException
      */
     private void initJobs() throws SchedulerException {
         SchedulerFactory f = new StdSchedulerFactory();
         Scheduler s = f.getScheduler();
-        
+
         scheduleFermentBarrelPollJob(s);
         scheduleMaterialTowerPollJob(s);
         scheduleMixingBarrelPollJob(s);
@@ -95,7 +101,7 @@ public class FlfsApp {
                 .build();
         s.scheduleJob(job, trigger);
     }
-    
+
     private void scheduleMaterialTowerPollJob(Scheduler s) throws SchedulerException {
         JobDetail job = newJob(PollMaterialTowerStatusJob.class)
                 .withIdentity("materialTowerStatusPollJob", "flfsGroup")
@@ -111,6 +117,7 @@ public class FlfsApp {
                 .build();
         s.scheduleJob(job, trigger);
     }
+
     private void scheduleMixingBarrelPollJob(Scheduler s) throws SchedulerException {
         JobDetail job = newJob(PollMixingBarrelStatusJob.class)
                 .withIdentity("mixingBarrelStatusPollJob", "flfsGroup")
@@ -126,7 +133,7 @@ public class FlfsApp {
                 .build();
         s.scheduleJob(job, trigger);
     }
-    
+
     private void scheduleProductionInstructionJob(Scheduler s) throws SchedulerException {
         JobDetail job = newJob(SetProductionInstructionJob.class)
                 .withIdentity("productionInstructionJob", "flfsGroup")
@@ -140,8 +147,11 @@ public class FlfsApp {
                 .build();
         s.scheduleJob(job, trigger);
     }
-    
-    private void start() throws SchedulerException{
+
+    private void start() throws SchedulerException {
+        System.setProperty("awt.useSystemAAFontSettings", "on");
+        System.setProperty("swing.aatext", "true");
+
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -153,38 +163,74 @@ public class FlfsApp {
                     break;
                 }
             }
-        } catch (ClassNotFoundException | InstantiationException 
+        } catch (ClassNotFoundException | InstantiationException
                 | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             Logger.getLogger(FlfsApp.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new MainFrame();
 
-            try {
-                initJobs();
-            } catch (SchedulerException ex) {
-                Logger.getLogger(FlfsApp.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
+            JFrame frame = new MainFrame();
+            frame.addWindowListener(new WindowListener() {
+                @Override
+                public void windowOpened(WindowEvent e) {
+                    try {
+                        initJobs();
+                    } catch (SchedulerException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void windowClosing(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowClosed(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowIconified(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowDeiconified(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowActivated(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowDeactivated(WindowEvent e) {
+
+                }
+            });
         });
     }
-    
-    private void destory(){
-        
+
+    private void destory() {
+
     }
-   /**
+
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        try{
+        try {
             FlfsApp app = new FlfsApp();
             app.init();
             app.start();
-        }
-        catch(ServiceException | SchedulerException ex){
+        } catch (ServiceException | SchedulerException ex) {
             System.out.println(ex.getMessage());
         }
     }

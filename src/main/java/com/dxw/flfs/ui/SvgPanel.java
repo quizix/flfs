@@ -10,6 +10,7 @@ import org.apache.batik.swing.svg.SVGDocumentLoaderEvent;
 
 import javax.swing.*;
 import java.io.File;
+import java.net.URL;
 
 /**
  * Created by Administrator on 2016/4/2.
@@ -70,7 +71,8 @@ public class SvgPanel {
             }
         });
         try {
-            File f = new File("f:\\flfs.svg");
+            URL url = this.getClass().getResource("/svg/flfs.svg");
+            File f = new File(url.toURI());
             canvas.setURI(f.toURI().toString());
 
         } catch (Exception ex) {

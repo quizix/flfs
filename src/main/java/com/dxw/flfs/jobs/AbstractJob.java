@@ -26,10 +26,20 @@ public abstract class AbstractJob implements Job {
     
     protected void notify(String message){
         if(notificationManager != null){
-            Notification notification = new Notification();
-            notification.setContent(message);
-            notification.setWhen( System.currentTimeMillis());
-            notificationManager.notify("Job", notification);
+            Notification n = new Notification();
+            n.setContent(message);
+            n.setWhen( System.currentTimeMillis());
+            notificationManager.notify("JOB", n);
+        }
+    }
+
+    protected void notifyData(int flag, Object data){
+        if(notificationManager != null){
+            Notification n = new Notification();
+            n.setFlag(flag);
+            n.setContent(data);
+            n.setWhen( System.currentTimeMillis());
+            notificationManager.notify("DATA", n);
         }
     }
 

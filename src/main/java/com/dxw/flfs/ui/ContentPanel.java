@@ -6,5 +6,5 @@ import javax.swing.*;
  * Created by Administrator on 2016/4/2.
  */
 public class ContentPanel {
-    private JPanel panel1;
+    private JPanel root;
 }

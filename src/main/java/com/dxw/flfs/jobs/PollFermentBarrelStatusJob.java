@@ -5,6 +5,7 @@
  */
 package com.dxw.flfs.jobs;
 
+import com.dxw.common.ms.NotificationFlags;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import com.dxw.flfs.communication.PlcProxy;
@@ -25,7 +26,10 @@ public class PollFermentBarrelStatusJob extends AbstractJob{
         
         boolean[] status = proxy.getFermentBarrelStatus();
 
-        System.out.println(Thread.currentThread().getId());
+
+        if( status != null){
+            notifyData(NotificationFlags.FERMENT_BARREL_STATUS, status);
+        }
     }
     
 }
