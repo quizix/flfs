@@ -64,7 +64,7 @@ public interface PlcProxy {
      *
      * @return
      */
-    short getMixingBarrelStatus();
+    boolean getMixingBarrelStatus();
 
     /**
      * 获取7个发酵罐的状态 
@@ -130,7 +130,7 @@ public interface PlcProxy {
      * 正在出料的发酵罐号
      * @return 
      */
-    short[] getFermentBarrelWorkingParam();
+    short[] getFermentBarrelAction();
     
     /**
      * 首次做料发酵时间12小时倒计时

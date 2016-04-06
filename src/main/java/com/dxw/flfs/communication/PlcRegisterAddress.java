@@ -35,7 +35,12 @@ public class PlcRegisterAddress {
     final static int FERMENT_COUNT_DOWN = 29;
     final static int FERMENT_BARREL_WORKING_PARAM = 30;
     final static int VALVE_ACTION_COUNT = 32;
-    final static int MIXING_BARREL_STATUS = 68;
+
+    /*
+        coil register
+     */
+
+    final static int MIXING_BARREL_STATUS = 11;
     /*
         input register addresses
     */

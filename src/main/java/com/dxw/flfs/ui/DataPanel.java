@@ -20,6 +20,7 @@ public class DataPanel {
     private JLabel lblPh;
     private JLabel lblMaterialTowerLow;
     private JLabel lblMaterialTowerEmpty;
+    private JLabel lblMixingBarrelStatus;
     private ImageIcon iconAlert;
     private AbstractTableModel dataModel;
 
@@ -48,27 +49,44 @@ public class DataPanel {
 
                     switch (notification.getFlag()) {
                         case NotificationFlags.FERMENT_BARREL_STATUS: {
-                            boolean[] data = (boolean[])notification.getContent();
-                            for(int i=0;i<data.length;i++){
-                                fermentData[i][1] = (data[i])?"满":"空";
-                                dataModel.fireTableCellUpdated(i,1);
+                            boolean[] data = (boolean[]) notification.getContent();
+                            for (int i = 0; i < Math.min(data.length, fermentData.length); i++) {
+                                fermentData[i][1] = (data[i]) ? "满" : "空";
+                                dataModel.fireTableCellUpdated(i, 1);
                             }
                             dataModel.fireTableDataChanged();
                         }
                         break;
-                        case NotificationFlags.MATERIAL_TOWER_STATUS:{
-                            boolean[] data = (boolean[])notification.getContent();
+                        case NotificationFlags.MATERIAL_TOWER_STATUS: {
+                            boolean[] data = (boolean[]) notification.getContent();
 
-                            if( data[0]){
-                                lblMaterialTowerLow.setIcon( iconAlert);
+                            if (data[0]) {
+                                lblMaterialTowerLow.setIcon(iconAlert);
                                 lblMaterialTowerLow.setText("");
-                            }
-                            else{
-                                lblMaterialTowerLow.setIcon( null);
+                            } else {
+                                lblMaterialTowerLow.setIcon(null);
                                 lblMaterialTowerLow.setText("正常");
                             }
                         }
-                            break;
+                        break;
+                        case NotificationFlags.FERMENT_BARREL_ACTION: {
+                            short[] data = (short[]) notification.getContent();
+
+                            lblFermentBarrelIn.setText(Short.toString(data[0]));
+                            lblFermentBarrelOut.setText(Short.toString(data[1]));
+                        }
+                        break;
+                        case NotificationFlags.MIXING_BARREL_STATUS: {
+                            boolean status = (boolean) notification.getContent();
+
+                            lblMixingBarrelStatus.setText(status ? "运行" : "空闲");
+                        }
+                        case NotificationFlags.FERMENT_BARREL_PH_VALUE: {
+                            float value = (float)notification.getContent();
+
+                            lblPh.setText(Float.toString(value));
+                        }
+                        break;
                         default:
                             break;
                     }

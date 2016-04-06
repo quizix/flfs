@@ -12,17 +12,15 @@ import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.data.HibernateServiceImpl;
-import com.dxw.flfs.jobs.PollFermentBarrelStatusJob;
-import com.dxw.flfs.jobs.PollMaterialTowerStatusJob;
-import com.dxw.flfs.jobs.PollMixingBarrelStatusJob;
-import com.dxw.flfs.jobs.SetProductionInstructionJob;
+import com.dxw.flfs.jobs.*;
 import com.dxw.flfs.ui.MainFrame;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,6 +79,7 @@ public class FlfsApp {
         scheduleFermentBarrelPollJob(s);
         scheduleMaterialTowerPollJob(s);
         scheduleMixingBarrelPollJob(s);
+        scheduleFermentStatusPollJob(s);
         scheduleProductionInstructionJob(s);
 
         s.start();
@@ -128,11 +127,30 @@ public class FlfsApp {
                 .startNow()
                 .withSchedule(
                         simpleSchedule()
-                                .withIntervalInMinutes(10)
+                                .withIntervalInMinutes(1)
                                 .repeatForever())
                 .build();
         s.scheduleJob(job, trigger);
     }
+
+    private void scheduleFermentStatusPollJob(Scheduler s) throws SchedulerException {
+        JobDetail job = newJob(PollFermentStatusJob.class)
+                .withIdentity("fermentStatusPollJob", "flfsGroup")
+                .build();
+
+        //每半个小时读取一次数据
+        Trigger trigger = newTrigger()
+                .withIdentity("fermentStatusPollTrigger", "flfsGroup")
+                .startNow()
+                .withSchedule(
+                        simpleSchedule()
+                                .withIntervalInMinutes(30)
+                                .repeatForever())
+                .build();
+        s.scheduleJob(job, trigger);
+    }
+
+
 
     private void scheduleProductionInstructionJob(Scheduler s) throws SchedulerException {
         JobDetail job = newJob(SetProductionInstructionJob.class)
@@ -152,13 +170,50 @@ public class FlfsApp {
         System.setProperty("awt.useSystemAAFontSettings", "on");
         System.setProperty("swing.aatext", "true");
 
+        //<editor-fold defaultstate="collapsed" desc=" Set ui font ">
+        Font font = new Font("微软雅黑", Font.PLAIN,12);
+        UIManager.put("Button.font",font);
+        UIManager.put("ToggleButton.font",font);
+        UIManager.put("RadioButton.font",font);
+        UIManager.put("CheckBox.font",font);
+        UIManager.put("ColorChooser.font",font);
+        UIManager.put("ToggleButton.font",font);
+        UIManager.put("ComboBox.font",font);
+        UIManager.put("ComboBoxItem.font",font);
+        UIManager.put("InternalFrame.titleFont",font);
+        UIManager.put("Label.font",font);
+        UIManager.put("List.font",font);
+        UIManager.put("MenuBar.font",font);
+        UIManager.put("Menu.font",font);
+        UIManager.put("MenuItem.font",font);
+        UIManager.put("RadioButtonMenuItem.font",font);
+        UIManager.put("CheckBoxMenuItem.font",font);
+        UIManager.put("PopupMenu.font",font);
+        UIManager.put("OptionPane.font",font);
+        UIManager.put("Panel.font",font);
+        UIManager.put("ProgressBar.font",font);
+        UIManager.put("ScrollPane.font",font);
+        UIManager.put("Viewport",font);
+        UIManager.put("TabbedPane.font",font);
+        UIManager.put("TableHeader.font",font);
+        UIManager.put("TextField.font",font);
+        UIManager.put("PasswordFiled.font",font);
+        UIManager.put("TextArea.font",font);
+        UIManager.put("TextPane.font",font);
+        UIManager.put("EditorPane.font",font);
+        UIManager.put("TitledBorder.font",font);
+        UIManager.put("ToolBar.font",font);
+        UIManager.put("ToolTip.font",font);
+        UIManager.put("Tree.font",font);
+        //</editor-fold>
+
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Metal".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -168,14 +223,12 @@ public class FlfsApp {
             Logger.getLogger(FlfsApp.class.getName()).log(Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
+
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-
-
             JFrame frame = new MainFrame();
-            frame.addWindowListener(new WindowListener() {
+            frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowOpened(WindowEvent e) {
                     try {
@@ -183,36 +236,6 @@ public class FlfsApp {
                     } catch (SchedulerException e1) {
                         e1.printStackTrace();
                     }
-                }
-
-                @Override
-                public void windowClosing(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowClosed(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowIconified(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowDeiconified(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowActivated(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowDeactivated(WindowEvent e) {
-
                 }
             });
         });

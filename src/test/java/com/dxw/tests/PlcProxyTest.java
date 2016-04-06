@@ -5,17 +5,13 @@
  */
 package com.dxw.tests;
 
-import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.services.ServiceException;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import com.dxw.flfs.communication.PlcProxy;
 import com.dxw.flfs.communication.PlcProxyFactory;
+import org.junit.*;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  *
@@ -131,9 +127,9 @@ public class PlcProxyTest {
     }
     
     @Test
-    public void testGetFermentBarrelWorkingParam(){
+    public void testGetFermentBarrelAction(){
         System.out.println("get ferment barrel working param:");
-        short[] value = plcProxy.getFermentBarrelWorkingParam();
+        short[] value = plcProxy.getFermentBarrelAction();
 
         for (short f : value) {
             System.out.println(f);
@@ -144,6 +140,13 @@ public class PlcProxyTest {
     public void testGetFermentCountDown(){
         System.out.println("get ferment count down:");
         short s = plcProxy.getFermentCountDown();
+        System.out.println(s);
+    }
+
+    @Test
+    public void testGetMixingBarrelStatus(){
+        System.out.println("get mixing barrel status:");
+        boolean s = plcProxy.getMixingBarrelStatus();
         System.out.println(s);
     }
     

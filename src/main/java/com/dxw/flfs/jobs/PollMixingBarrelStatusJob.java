@@ -5,6 +5,7 @@
  */
 package com.dxw.flfs.jobs;
 
+import com.dxw.common.ms.NotificationFlags;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import com.dxw.flfs.communication.PlcProxy;
@@ -18,9 +19,12 @@ public class PollMixingBarrelStatusJob extends AbstractJob{
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+
         notify("开始轮询搅拌桶状态");
         PlcProxy proxy = PlcProxyFactory.getPrimaryPlcProxy();
-        short status = proxy.getMixingBarrelStatus();
+        boolean status = proxy.getMixingBarrelStatus();
+
+        notifyData(NotificationFlags.MIXING_BARREL_STATUS, status);
     }
     
 }

@@ -92,6 +92,8 @@ public class Simulator {
         processImage.setCoil(4, true);
         processImage.setCoil(5, false);
 
+        processImage.setCoil(11, false);    //搅拌桶状态
+
         //discrete input
         processImage.setInput(1, false);    //紧停开关
         processImage.setInput(2, false);    //料位低警报

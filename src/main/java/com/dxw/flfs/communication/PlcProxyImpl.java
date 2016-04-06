@@ -70,7 +70,7 @@ class PlcProxyImpl implements PlcProxy {
     @Override
     public boolean getEmergenyStopStatus() {
         try {
-            return plc.getDiscreteInput(PlcRegisterAddress.FERMENT_BARREL_STATUS);
+            return plc.getDiscreteInput(PlcRegisterAddress.EMERGENCY_STOP_STATUS);
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
@@ -201,7 +201,7 @@ class PlcProxyImpl implements PlcProxy {
     
 
     @Override
-    public short[] getFermentBarrelWorkingParam() {
+    public short[] getFermentBarrelAction() {
         try {
             return plc.getRegistersShort(PlcRegisterAddress.FERMENT_BARREL_WORKING_PARAM, RegisterType.HoldingRegister, 2);
         } catch (PlcException ex) {
@@ -209,6 +209,17 @@ class PlcProxyImpl implements PlcProxy {
         }
         return null;
         
+    }
+
+    @Override
+    public boolean getMixingBarrelStatus() {
+        try{
+            return plc.getCoil(PlcRegisterAddress.MIXING_BARREL_STATUS);
+        }
+        catch (PlcException ex){
+            sendNotification(ex.getMessage());
+        }
+        return false;
     }
 
     NotificationManager notificationManager;
@@ -221,8 +232,5 @@ class PlcProxyImpl implements PlcProxy {
         }
     }
 
-    @Override
-    public short getMixingBarrelStatus() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 }
