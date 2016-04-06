@@ -5,15 +5,20 @@
  */
 package com.dxw.flfs.app;
 
+import com.dxw.common.models.Shed;
+import com.dxw.common.models.Sty;
 import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.ms.NotificationManagerImpl;
 import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
+import com.dxw.flfs.data.FlfsDao;
+import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.data.HibernateServiceImpl;
 import com.dxw.flfs.jobs.*;
 import com.dxw.flfs.ui.MainFrame;
+import com.dxw.flfs.ui.wizards.SelectShedDialog;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -21,6 +26,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -63,6 +71,33 @@ public class FlfsApp {
         HibernateService hibernateService = new HibernateServiceImpl();
         hibernateService.init();
         registry.register(hibernateService);
+
+        try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
+
+            Shed shed = new Shed();
+            shed.setCreateTime(new Date());
+            shed.setModifyTime(new Date());
+            shed.setAddress("江西鄱阳");
+            shed.setCode("12345678");
+            shed.setName("猪舍1");
+            dao.update(shed);
+
+            Set<Sty> sties = new HashSet<>();
+            for (int i = 0; i < 24; i++) {
+                Sty sty = new Sty();
+                sty.setCreateTime(new Date());
+                sty.setModifyTime(new Date());
+                sty.setCode(Integer.toString(i));
+                sty.setName("Sty" + i);
+                sty.setPigNumber(100 + i);
+                sty.setShed(shed);
+                sty.setNo(i);
+                dao.update(sty);
+            }
+            shed.setSties(sties);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -224,10 +259,19 @@ public class FlfsApp {
         }
         //</editor-fold>
 
+        SelectShedDialog dialog = new SelectShedDialog();
+        dialog.pack();
+
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+
+        if( !dialog.getDialogResult())
+            System.exit(0);
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             JFrame frame = new MainFrame();
+
             frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowOpened(WindowEvent e) {

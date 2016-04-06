@@ -68,6 +68,6 @@ public class Shed extends DbModel {
 
     @Override
     public String toString() {
-        return "";
+        return this.name;
     }
 }

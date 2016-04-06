@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
     private void initComponents() {
 
         this.setTitle("发酵式液态饲料饲喂系统——[稻香湾科技]");
-        this.setMinimumSize(new Dimension(600,400));
+        this.setMinimumSize(new Dimension(800,600));
         this.setContentPane(new MainPanel().getRoot());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
