@@ -29,6 +29,12 @@ public class Shed extends DbModel {
      */
     private String address;
 
+
+    /**
+     * 猪舍是否属于激活状态
+     */
+    private boolean active;
+
     /**
      * 栏位
      */
@@ -64,6 +70,14 @@ public class Shed extends DbModel {
 
     public void setSties(Set<Sty> sties) {
         this.sties = sties;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     @Override

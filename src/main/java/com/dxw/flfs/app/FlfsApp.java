@@ -26,8 +26,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,6 +47,11 @@ import static org.quartz.TriggerBuilder.newTrigger;
  * @author pronics3
  */
 public class FlfsApp {
+    public static String getAppId() {
+        return appId;
+    }
+
+    private static String appId;
 
     private NotificationManager notificationManager;
 
@@ -53,10 +61,29 @@ public class FlfsApp {
     }
 
     private void init() throws ServiceException, SchedulerException {
+        appId = loadAppId();
+        if( appId == null ){
+            JOptionPane.showMessageDialog(null, "无法获取程序appId！", "消息提示", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
+
         initServices();
+
 
     }
 
+
+    private String loadAppId() {
+        Properties prop = new Properties();
+        InputStream in = this.getClass().getResourceAsStream("/flfs.conf");
+        try {
+            prop.load(in);
+            return prop.getProperty("appId");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * 初始化系统服务
      *
@@ -301,4 +328,6 @@ public class FlfsApp {
             System.out.println(ex.getMessage());
         }
     }
+
+
 }
