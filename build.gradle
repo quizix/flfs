@@ -15,6 +15,11 @@ repositories {
     }
 }
 
+jar{
+    manifest {
+        attributes 'Main-Class': 'com.dxw.flfs.app.FlfsApp'
+    }
+}
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.11','org.apache.commons:commons-lang3:3.4','com.infiniteautomation:modbus4j:3.0.1',
             'org.quartz-scheduler:quartz:2.2.2','org.apache.xmlgraphics:xmlgraphics-commons:2.1', 'org.apache.xmlgraphics:batik-svg-dom:1.8',

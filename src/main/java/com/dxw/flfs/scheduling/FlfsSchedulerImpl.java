@@ -17,14 +17,16 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      * 饲料密度
      */
     private final float FEED_DENSITY = 1.0f;
+
+    /**
+     * 存栏阶段每天增长的百分比
+     */
     private final float INCREASING_PERCENT = 0.03f;
     private int day = 0;
 
     @Override
     public ScheduleResult schedule6AM() {
-
         float total = calcCurrentProduction();
-
         return Distributer.distribute(total);
     }
 
