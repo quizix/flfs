@@ -5,6 +5,7 @@
  */
 package com.dxw.common.models;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -12,22 +13,69 @@ import java.util.Date;
  *
  * @author pronics3
  */
-public class InStyPlan extends DbModel {
+@Entity
+@Table(name="flfs_in_sty_plan")
+public class InStyPlan{
+    /**
+     * 内部id
+     */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    protected Long id;
+
+    /**
+     * 创建时间
+     */
+    @Column(name="createTime")
+    protected Date createTime;
+
+    /**
+     * 修改时间
+     */
+    @Column(name="modifyTime")
+    protected Date modifyTime;
 
     /**
      * 计划入栏日期
      */
+    @Column(name="date")
     private Date date;
     /**
      * 计划栏位
      */
+    @ManyToOne(cascade = { CascadeType.ALL })
+    @JoinColumn(name="styId")
     private Sty sty;
 
     /**
      * 计划入栏数量
      */
+    @Column(name="value")
     private int value;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
     public Date getDate() {
         return date;
     }

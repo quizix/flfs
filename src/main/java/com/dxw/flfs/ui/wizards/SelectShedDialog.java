@@ -65,7 +65,7 @@ public class SelectShedDialog extends JDialog {
         comboBox1 = new JComboBox();
         HibernateService s = (HibernateService) ServiceRegistryImpl.getInstance().lookupService(Services.HIBERNATE_SERVICE);
         try (FlfsDao dao = new FlfsDaoImpl(s)) {
-            List sheds = dao.getSheds();
+            List sheds = dao.findAllSheds();
             for(Object o: sheds){
                 Shed shed = (Shed)o;
                 comboBox1.addItem(shed.toString());

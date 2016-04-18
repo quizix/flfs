@@ -5,16 +5,42 @@
  */
 package com.dxw.common.models;
 
+import javax.persistence.*;
+import java.util.Date;
+import java.util.jar.Attributes;
+
 /**
  * 生产指令
  *
  * @author Administrator
  */
-public class ProductionInstruction extends DbModel {
+@Entity
+@Table(name="flfs_production_instruction")
+public class ProductionInstruction{
+    /**
+     * 内部id
+     */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    protected Long id;
+
+    /**
+     * 创建时间
+     */
+    @Column(name="createTime")
+    protected Date createTime;
+
+    /**
+     * 修改时间
+     */
+    @Column(name="modifyTime")
+    protected Date modifyTime;
 
     /**
      * 所属的猪舍
      */
+    @ManyToOne
+    @JoinColumn(name="shedId")
     private Shed shed;
 
     /**

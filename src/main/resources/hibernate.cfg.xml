@@ -25,13 +25,17 @@
     <property name="show_sql">true</property>
     <property name="format_sql">true</property>
     <property name="hbm2ddl.auto">create</property>
-    
-    <mapping resource="com/dxw/common/models/Shed.hbm.xml"/>
-    <mapping resource="com/dxw/common/models/Sty.hbm.xml"/>
-    <mapping resource="com/dxw/common/models/User.hbm.xml"/>
-    <mapping resource="com/dxw/common/models/Ph.hbm.xml"/>
-    <mapping resource="com/dxw/common/models/OperationLog.hbm.xml"/>
-    <mapping resource="com/dxw/common/models/ProductionInstruction.hbm.xml"/>
-    <mapping resource="com/dxw/common/models/InStyPlan.hbm.xml"/>
+
+    <mapping class="com.dxw.common.models.Batch" />
+    <mapping class="com.dxw.common.models.InStyPlan" />
+    <mapping class="com.dxw.common.models.OperationLog" />
+    <mapping class="com.dxw.common.models.Ph" />
+    <mapping class="com.dxw.common.models.ProductionInstruction" />
+    <mapping class="com.dxw.common.models.Shed" />
+    <mapping class="com.dxw.common.models.Sty" />
+    <mapping class="com.dxw.common.models.SysConfig" />
+    <mapping class="com.dxw.common.models.User" />
+    <mapping class="com.dxw.common.models.WorkingCondition" />
+
   </session-factory>
 </hibernate-configuration>

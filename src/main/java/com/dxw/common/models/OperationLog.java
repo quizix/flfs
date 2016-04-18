@@ -5,21 +5,71 @@
  */
 package com.dxw.common.models;
 
+import javax.persistence.*;
+import java.util.Date;
+
 /**
  * 用户操作日志 记录用户何时对系统
  *
  * @author Administrator
  */
-public class OperationLog extends DbModel {
+@Entity
+@Table(name="flfs_operation_log")
+public class OperationLog{
+    /**
+     * 内部id
+     */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    protected Long id;
 
+    /**
+     * 创建时间
+     */
+    @Column(name="createTime")
+    protected Date createTime;
+
+    /**
+     * 修改时间
+     */
+    @Column(name="modifyTime")
+    protected Date modifyTime;
+
+    @ManyToOne(targetEntity = User.class)
     private User user;
 
+    @ManyToOne(targetEntity = Shed.class)
     private Shed shed;
 
+    @Column(name="module")
     private String module;
 
+    @Column(name="resource")
     private String resource;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
     public User getUser() {
         return user;
     }

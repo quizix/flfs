@@ -1,7 +1,6 @@
 package com.dxw.flfs.app;
 
-import com.dxw.common.models.Shed;
-import com.dxw.common.models.Sty;
+import com.dxw.common.models.*;
 import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.ms.NotificationManagerImpl;
 import com.dxw.common.services.ServiceException;
@@ -15,6 +14,7 @@ import com.dxw.flfs.jobs.*;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import java.awt.print.Book;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,6 +45,7 @@ public class AppInitializer {
         registry.register(hibernateService);
 
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
+            dao.begin();
 
             Shed shed = new Shed();
             shed.setCreateTime(new Date());
@@ -53,6 +54,19 @@ public class AppInitializer {
             shed.setCode("12345678");
             shed.setName("猪舍1");
             dao.update(shed);
+
+            Batch batch = new Batch();
+            batch.setCode("1");
+            batch.setInStockNumber(100);
+            batch.setInStockDate(new Date());
+            batch.setInStockDuration(10);
+            batch.setCreateTime(new Date());
+            batch.setModifyTime(new Date());
+
+            dao.update(batch);
+
+            Set<Batch> batches = new HashSet<>();
+            batches.add(batch);
 
             Set<Sty> sties = new HashSet<>();
             for (int i = 0; i < 24; i++) {
@@ -63,10 +77,20 @@ public class AppInitializer {
                 sty.setName("Sty" + i);
                 sty.setPigNumber(100 + i);
                 sty.setShed(shed);
+                sties.add(sty);
                 sty.setNo(i);
+
                 dao.update(sty);
             }
-            shed.setSties(sties);
+            //shed.setSties(sties);
+
+            batch.setSties(sties);
+
+            dao.update(batch);
+
+
+            dao.commit();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

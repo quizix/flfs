@@ -5,10 +5,7 @@
  */
 package com.dxw.flfs.data;
 
-import com.dxw.common.models.InStyPlan;
-import com.dxw.common.models.Shed;
-import com.dxw.common.models.Sty;
-import com.dxw.common.models.User;
+import com.dxw.common.models.*;
 
 import java.util.Date;
 import java.util.List;
@@ -16,30 +13,36 @@ import java.util.List;
 public interface FlfsDao extends AutoCloseable {
     ///////////////////////////////////
     ////reads
-    Shed getShedByCode(String code);
+    Shed findShedByCode(String code);
 
-    Sty getStyByCode(String code);
+    Sty findStyByCode(String code);
 
-    List getSheds();
+    Batch findBatchByCode(String code);
+
+    List findAllSheds();
     
-    List getStiesByShed(String code);
+    List findStiesByShed(String code);
     
-    long getTotalPigInShed(String code);
+    long findTotalPigInShed(String code);
 
-    long getTotalPigPlanInShed(String code, Date date);
+    long findTotalPigPlanInShed(String code, Date date);
 
-    User getUserByName(String name);
+    User findUserByName(String name);
 
-    List getUsers();
+    List findAllUsers();
     
-    InStyPlan getPlan(Sty sty, Date date);
+    InStyPlan findPlan(Sty sty, Date date);
 
-    List getProductionInstructions(String code, Date start, Date end);
+    List findProductionInstructions(String code, Date start, Date end);
 
     /////////////////////////////////////
     ////add/update 
     <T> void update(T t);
     
     <T> void delete(T t);
+
+    void begin();
+
+    void commit();
 
 }

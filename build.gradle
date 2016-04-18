@@ -1,15 +1,12 @@
 group 'com.dxw'
-version '1.0-SNAPSHOT'
+version '0.9'
 
 apply plugin: 'java'
 
-sourceCompatibility = 1.8
+sourceCompatibility=1.8
 
 repositories {
     mavenCentral()
-}
-
-repositories {
     maven{
         url "http://mangoautomation.net:9902/maven-repo/"
     }

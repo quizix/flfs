@@ -3,25 +3,13 @@ package com.dxw.flfs.scheduling;
 import com.dxw.flfs.communication.PlcProxy;
 import com.dxw.flfs.communication.PlcProxyFactory;
 
+import static com.dxw.flfs.scheduling.SchedulerConfig.MIXING_BARREL_CAPACITY;
+
 /**
  * Created by zhang on 2016/4/3.
  */
 public class FlfsSchedulerImpl implements FlfsScheduler {
 
-    /**
-     * 搅拌桶的容量
-     */
-    private final static int MIXING_BARREL_CAPACITY = 300;
-
-    /**
-     * 饲料密度
-     */
-    private final float FEED_DENSITY = 1.0f;
-
-    /**
-     * 存栏阶段每天增长的百分比
-     */
-    private final float INCREASING_PERCENT = 0.03f;
     private int day = 0;
 
     @Override
@@ -43,7 +31,7 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      *
      * @return
      */
-    private boolean isInStage1() {
+    private boolean isInInitStage() {
         if (day < 10)
             return false;
         else
@@ -89,7 +77,7 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      * @return
      */
     private float calcLastConsumed() {
-        return getLastPumpedVolume() * FEED_DENSITY;
+        return getLastPumpedVolume() * SchedulerConfig.FEED_DENSITY;
     }
 
     /**
@@ -134,12 +122,12 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      * @return
      */
     private float calcEstimatedAverageConsumption() {
-        if (isInStage1()) {
+        if (isInInitStage()) {
             //在入栏阶段，先采用理论值
             return 1;
         } else {
             float c = getLastAverageConsumption();
-            return c * (1 + INCREASING_PERCENT);
+            return c * (1 + SchedulerConfig.DAILY_INCREASING_PERCENT);
         }
     }
 

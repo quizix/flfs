@@ -5,10 +5,7 @@
  */
 package com.dxw.flfs.data;
 
-import com.dxw.common.models.InStyPlan;
-import com.dxw.common.models.Shed;
-import com.dxw.common.models.Sty;
-import com.dxw.common.models.User;
+import com.dxw.common.models.*;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -28,7 +25,7 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public Shed getShedByCode(String code) {
+    public Shed findShedByCode(String code) {
         Query query =
                 session.createQuery("from Shed where code=:code")
                     .setParameter("code",code);
@@ -41,19 +38,19 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public List getSheds() {
+    public List findAllSheds() {
         Query query = session.createQuery("from Shed");
         return query.list();
     }
 
     @Override
-    public List getUsers() {
+    public List findAllUsers() {
         Query query = session.createQuery("from User");
         return query.list();
     }
 
     @Override
-    public InStyPlan getPlan(Sty sty, Date date) {
+    public InStyPlan findPlan(Sty sty, Date date) {
         Query query = session.createQuery("from InStyPlan s where s.sty=:sty and s.date=:date")
                 .setParameter("sty", sty)
                 .setParameter("date", date);
@@ -66,7 +63,7 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public List getProductionInstructions(String code, Date start, Date end) {
+    public List findProductionInstructions(String code, Date start, Date end) {
         Query query = session.createQuery("from ProductionInstruction pi where pi.shed.code=:code and pi.date >=:start and pi.date<=:end")
                 .setParameter("start", start)
                 .setParameter("end", end)
@@ -77,7 +74,7 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public Sty getStyByCode(String code) {
+    public Sty findStyByCode(String code) {
         Query query = session.createQuery("from Sty where code=:code")
                 .setParameter("code", code);
 
@@ -89,7 +86,12 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public User getUserByName(String name) {
+    public Batch findBatchByCode(String code) {
+        return null;
+    }
+
+    @Override
+    public User findUserByName(String name) {
         Query query = session.createQuery("from User u where u.name=:name")
                 .setParameter("name", name);
 
@@ -101,7 +103,7 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public long getTotalPigPlanInShed(String code, Date date) {
+    public long findTotalPigPlanInShed(String code, Date date) {
         Query query = session.createQuery("select sum(s.value) from InStyPlan s where s.date=:date and s.sty.shed.code=:code")
                 .setParameter("date", date)
                 .setParameter("code", code);
@@ -109,14 +111,14 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public long getTotalPigInShed(String code) {
+    public long findTotalPigInShed(String code) {
         Query query = session.createQuery("select sum(s.pigNumber) from Sty s where s.shed.code=:code")
                 .setParameter("code", code);
         return (long) query.uniqueResult();
     }
 
     @Override
-    public List getStiesByShed(String code) {
+    public List findStiesByShed(String code) {
         Query query = session.createQuery("from Sty s where s.shed.code=:code order by s.no")
                 .setParameter("code", code);
 
@@ -125,13 +127,24 @@ public class FlfsDaoImpl implements FlfsDao {
 
     @Override
     public <T> void update(T t) {
-        System.out.println(session);
         session.save(t);
     }
 
     @Override
     public <T> void delete(T t) {
         session.delete(t);
+    }
+
+    @Override
+    public void begin() {
+        if (session != null) {
+            session.beginTransaction();
+        }
+    }
+
+    @Override
+    public void commit() {
+        session.getTransaction().commit();
     }
 
     @Override

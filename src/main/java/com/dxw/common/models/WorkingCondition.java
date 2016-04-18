@@ -5,12 +5,36 @@
  */
 package com.dxw.common.models;
 
+import javax.persistence.*;
+import java.util.Date;
+
 /**
  * 工况信息
  * 包括15个阀门和3个泵的累计时间
  * @author zhang
  */
-public class WorkingCondition extends DbModel{
+@Entity
+@Table(name="flfs_working_condition")
+public class WorkingCondition{
+    /**
+     * 内部id
+     */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    protected Long id;
+
+    /**
+     * 创建时间
+     */
+    @Column(name="createTime")
+    protected Date createTime;
+
+    /**
+     * 修改时间
+     */
+    @Column(name="modifyTime")
+    protected Date modifyTime;
+
     private int value1;
     private int value2;
     private int value3;

@@ -1,31 +1,90 @@
 package com.dxw.common.models;
 
+import javax.persistence.*;
+import java.util.Date;
+import java.util.Set;
+
 /**
  * 栏位
  *
  * @author pronics3
  *
  */
-public class Sty extends DbModel{
+@Entity
+@Table(name="flfs_sty")
+public class Sty{
+    /**
+     * 内部id
+     */
+    @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    protected Long id;
+
+    /**
+     * 创建时间
+     */
+    @Column(name="createTime")
+    protected Date createTime;
+
+    /**
+     * 修改时间
+     */
+    @Column(name="modifyTime")
+    protected Date modifyTime;
     /**
      * 猪舍
      */
+    @ManyToOne
+    @JoinColumn(name="styId")
     private Shed shed;
 
     /**
      * 名字
      */
+    @Column(name="name")
     private String name;
 
     /**
      * 编码
      */
+    @Column(name="code")
     private String code;
     
     /**
      * 编号
      */
+    @Column(name="no")
     private int no;
+
+    /**
+     * 猪的数量，并由此推断栏位状态
+     */
+    @Column(name="pigNumber")
+    private int pigNumber;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(Date modifyTime) {
+        this.modifyTime = modifyTime;
+    }
 
     public int getNo() {
         return no;
@@ -34,12 +93,6 @@ public class Sty extends DbModel{
     public void setNo(int no) {
         this.no = no;
     }
-    
-
-    /**
-     * 猪的数量，并由此推断栏位状态
-     */
-    private int pigNumber;
 
     public Shed getShed() {
         return shed;

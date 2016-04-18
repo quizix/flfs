@@ -5,6 +5,7 @@
  */
 package com.dxw.tests;
 
+import com.dxw.common.models.Batch;
 import com.dxw.common.models.InStyPlan;
 import com.dxw.common.models.Shed;
 import com.dxw.common.models.Sty;
@@ -54,12 +55,16 @@ public class DaoTest {
     public void first() throws Exception {
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
 
+            dao.begin();
+
             Shed shed = new Shed();
             shed.setCreateTime(new Date());
             shed.setModifyTime(new Date());
             shed.setAddress("江西鄱阳");
             shed.setCode("12345678");
             shed.setName("猪舍1");
+            shed.setActive(true);
+
             dao.update(shed);
             
             Set<Sty> sties = new HashSet<>();
@@ -72,22 +77,39 @@ public class DaoTest {
                 sty.setPigNumber(100 + i);
                 sty.setShed(shed);
                 sty.setNo(i);
-                dao.update(sty);
+                sties.add(sty);
+                //dao.update(sty);
+
             }
-            shed.setSties(sties);
+
+            Batch batch = new Batch();
+
+            batch.setCreateTime(new Date());
+            batch.setCode("1111");
+            batch.setModifyTime(new Date());
+            batch.setInStockDuration(100);
+            batch.setInStockDate(new Date());
+            batch.setInStockNumber(100);
+            batch.setSties(sties);
+
+            dao.update(batch);
+            dao.commit();
+
+
+            //shed.setSties(sties);
         }
 
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
-            System.out.println(dao.getTotalPigInShed("12345678"));
+            System.out.println(dao.findTotalPigInShed("12345678"));
         }
         
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
-            Shed shed = dao.getShedByCode("12345678");
+            Shed shed = dao.findShedByCode("12345678");
             assertTrue(shed.getName().equals("猪舍1"));
         }
         
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
-            List sties = dao.getStiesByShed("12345678");
+            List sties = dao.findStiesByShed("12345678");
             
             sties.stream().forEach((o) -> {
                 Sty s = (Sty)o;
@@ -97,7 +119,7 @@ public class DaoTest {
 
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
 
-            Sty sty = dao.getStyByCode("0");
+            Sty sty = dao.findStyByCode("0");
 
             InStyPlan plan = new InStyPlan();
             plan.setSty(sty);
@@ -111,13 +133,13 @@ public class DaoTest {
 
             dao.update(plan);
 
-            InStyPlan planQuery = dao.getPlan(sty, new Date(current.getYear(), current.getMonth(), current.getDate()));
+            InStyPlan planQuery = dao.findPlan(sty, new Date(current.getYear(), current.getMonth(), current.getDate()));
             System.out.println(planQuery.getValue());
         }
 
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
             Date current = new Date();
-            long number = dao.getTotalPigPlanInShed("12345678" , new Date(current.getYear(), current.getMonth(), current.getDate()));
+            long number = dao.findTotalPigPlanInShed("12345678" , new Date(current.getYear(), current.getMonth(), current.getDate()));
             System.out.println(number);
         }
     }
