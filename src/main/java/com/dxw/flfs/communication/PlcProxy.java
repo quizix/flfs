@@ -173,4 +173,6 @@ public interface PlcProxy extends PlcProxyEventSource{
      */
     Integer getPumpCondition();
     //endregion
+
+    PlcProxyModel getModel();
 }

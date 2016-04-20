@@ -30,7 +30,7 @@ public class PlcProxyModel {
         return emergencySwitch;
     }
 
-    public void setEmergencySwitch(Boolean emergencySwitch) {
+    void setEmergencySwitch(Boolean emergencySwitch) {
         this.emergencySwitch = emergencySwitch;
 
         lastUpdateTime = new Date().getTime();
@@ -41,7 +41,7 @@ public class PlcProxyModel {
         return systemStatus;
     }
 
-    public void setSystemStatus(Short systemStatus) {
+    void setSystemStatus(Short systemStatus) {
         this.systemStatus = systemStatus;
         lastUpdateTime = new Date().getTime();
         fireModelChange(PlcModelField.SYSTEM_STATUS);
@@ -55,7 +55,7 @@ public class PlcProxyModel {
         return materialTowerEmptyAlarm;
     }
 
-    public void setMaterialTowerAlarm(Boolean materialTowerLowAlarm,Boolean materialTowerEmptyAlram) {
+    void setMaterialTowerAlarm(Boolean materialTowerLowAlarm,Boolean materialTowerEmptyAlram) {
         this.materialTowerLowAlarm = materialTowerLowAlarm;
         this.materialTowerEmptyAlarm = materialTowerEmptyAlram;
         lastUpdateTime = new Date().getTime();
@@ -67,7 +67,7 @@ public class PlcProxyModel {
         return mixingBarrelStatus;
     }
 
-    public void setMixingBarrelStatus(Short mixingBarrelStatus) {
+    void setMixingBarrelStatus(Short mixingBarrelStatus) {
         this.mixingBarrelStatus = mixingBarrelStatus;
         lastUpdateTime = new Date().getTime();
         fireModelChange(PlcModelField.MIXING_BARREL_STATUS);
@@ -77,7 +77,7 @@ public class PlcProxyModel {
         return fermentBarrelStatus;
     }
 
-    public void setFermentBarrelStatus(boolean[] fermentBarrelStatus) {
+    void setFermentBarrelStatus(boolean[] fermentBarrelStatus) {
         this.fermentBarrelStatus = fermentBarrelStatus;
         lastUpdateTime = new Date().getTime();
         fireModelChange(PlcModelField.FERMENT_BARREL_STATUS);
@@ -87,7 +87,7 @@ public class PlcProxyModel {
         return ph;
     }
 
-    public void setPh(Float ph) {
+    void setPh(Float ph) {
         this.ph = ph;
         lastUpdateTime = new Date().getTime();
         fireModelChange(PlcModelField.PH_VALUE);
@@ -97,7 +97,7 @@ public class PlcProxyModel {
         return fermentCountDown;
     }
 
-    public void setFermentCountDown(Short fermentCountDown) {
+    void setFermentCountDown(Short fermentCountDown) {
         this.fermentCountDown = fermentCountDown;
         lastUpdateTime = new Date().getTime();
         fireModelChange(PlcModelField.FERMENT_COUNT_DOWN);
@@ -110,7 +110,7 @@ public class PlcProxyModel {
         return fermentBarrelOutNo;
     }
 
-    public void setFermentBarrelInNo(Short fermentBarrelInNo,Short fermentBarrelOutNo) {
+    void setFermentBarrelInNo(Short fermentBarrelInNo,Short fermentBarrelOutNo) {
         this.fermentBarrelInNo = fermentBarrelInNo;
         this.fermentBarrelOutNo = fermentBarrelOutNo;
         lastUpdateTime = new Date().getTime();
@@ -122,7 +122,7 @@ public class PlcProxyModel {
         return accumulateFlowAm;
     }
 
-    public void setAccumulateFlowAm(Short accumulateFlowAm) {
+    void setAccumulateFlowAm(Short accumulateFlowAm) {
         this.accumulateFlowAm = accumulateFlowAm;
         lastUpdateTime = new Date().getTime();
         fireModelChange(PlcModelField.ACCUMULATE_FLOW_AM);
@@ -132,7 +132,7 @@ public class PlcProxyModel {
         return accumulateFlowPm;
     }
 
-    public void setAccumulateFlowPm(Short accumulateFlowPm) {
+    void setAccumulateFlowPm(Short accumulateFlowPm) {
         this.accumulateFlowPm = accumulateFlowPm;
         lastUpdateTime = new Date().getTime();
         fireModelChange(PlcModelField.ACCUMULATE_FLOW_PM);
@@ -142,7 +142,7 @@ public class PlcProxyModel {
         return accumulateFlows;
     }
 
-    public void setAccumulateFlows(short[] accumulateFlows) {
+    void setAccumulateFlows(short[] accumulateFlows) {
         this.accumulateFlows = accumulateFlows;
         lastUpdateTime = new Date().getTime();
         fireModelChange(PlcModelField.ACCUMULATE_FLOWS);
@@ -164,7 +164,7 @@ public class PlcProxyModel {
         return productionAmountsAm;
     }
 
-    public void setProductionInstructionAm(Float waterAm, Float dryAm, Float bacteriaAm, short[] productionAmountsAm) {
+    void setProductionInstructionAm(Float waterAm, Float dryAm, Float bacteriaAm, short[] productionAmountsAm) {
         this.waterAm = waterAm;
         this.dryAm = dryAm;
         this.bacteriaAm = bacteriaAm;
@@ -173,7 +173,7 @@ public class PlcProxyModel {
         fireModelChange(PlcModelField.PRODUCTION_INSTRUCTION_AM);
     }
 
-    public void setProductionInstructionPm(Float waterPm, Float dryPm, Float bacteriaPm, short[] productionAmountsPm) {
+    void setProductionInstructionPm(Float waterPm, Float dryPm, Float bacteriaPm, short[] productionAmountsPm) {
         this.waterPm = waterPm;
         this.dryPm = dryPm;
         this.bacteriaPm = bacteriaPm;

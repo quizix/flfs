@@ -5,6 +5,8 @@
  */
 package com.dxw.flfs.scheduling;
 
+import java.util.Arrays;
+
 /**
  * 排产结果
  *
@@ -28,37 +30,34 @@ public class ScheduleResult {
      */
     private short[] barrels;
 
-    public float getWater() {
-        return water;
+    ScheduleResult(float dry, float water, float bacteria, short[] barrels){
+        this.water = water;
+        this.dry = dry;
+        this.bacteria = bacteria;
+        this.barrels = barrels;
     }
 
-    public void setWater(float water) {
-        this.water = water;
+    public float getWater() {
+        return water;
     }
 
     public float getDry() {
         return dry;
     }
 
-    public void setDry(float dry) {
-        this.dry = dry;
-    }
-
     public float getBacteria() {
         return bacteria;
-    }
-
-    public void setBacteria(float bacteria) {
-        this.bacteria = bacteria;
     }
 
     public short[] getBarrels() {
         return barrels;
     }
 
-    public void setBarrels(short[] barrels) {
-        this.barrels = barrels;
+    @Override
+    public String toString(){
+        String s = "dry:"+dry + " water:"+water + " bacteria: "+bacteria
+                + " each barrels: " + Arrays.toString(barrels);
+        return s;
     }
-
 
 }

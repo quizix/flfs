@@ -323,6 +323,11 @@ class PlcProxyImpl implements PlcProxy {
         }
         return null;
     }
+
+    @Override
+    public PlcProxyModel getModel() {
+        return this.model;
+    }
     //endregion
 
     //endregion
