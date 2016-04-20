@@ -5,8 +5,13 @@ import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
+import com.dxw.flfs.communication.Plc;
+import com.dxw.flfs.communication.PlcConfig;
+import com.dxw.flfs.communication.PlcFactory;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,11 +25,15 @@ public class MainPanel {
 
     private JPanel root;
     private JTextArea txtMessage;
+    private JRadioButton primaryRadioButton1;
+    private JRadioButton secondlyRadioButton;
 
     NotificationManager notificationManager;
 
     public MainPanel(){
         init();
+        primaryRadioButton1.addActionListener(e -> PlcConfig.ACTIVE = PlcConfig.PRIMARY);
+        secondlyRadioButton.addActionListener(e -> PlcConfig.ACTIVE = PlcConfig.SECONDARY);
     }
     private void init() {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();

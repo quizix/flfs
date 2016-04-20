@@ -7,8 +7,8 @@ import java.util.Date;
  * Created by zhang on 2016/4/6.
  */
 @Entity
-@Table(name="flfs_sys_config")
-public class SysConfig{
+@Table(name="flfs_app_config")
+public class AppConfig {
     /**
      * 内部id
      */
@@ -46,6 +46,7 @@ public class SysConfig{
     @Column(name="batchCode")
     private String batchCode;
 
+
     public Long getId() {
         return id;
     }
@@ -68,5 +69,29 @@ public class SysConfig{
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getBatchCode() {
+        return batchCode;
+    }
+
+    public void setBatchCode(String batchCode) {
+        this.batchCode = batchCode;
     }
 }

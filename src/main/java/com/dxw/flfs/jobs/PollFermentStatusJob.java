@@ -13,7 +13,7 @@ import org.quartz.JobExecutionException;
 public class PollFermentStatusJob extends AbstractJob {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        PlcProxy proxy = PlcProxyFactory.getPrimaryPlcProxy();
+        PlcProxy proxy = PlcProxyFactory.getPlcProxy();
 
         float value = proxy.getPhValue();
 

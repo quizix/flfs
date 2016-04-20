@@ -22,7 +22,7 @@ public class DiscreteInputPanel {
 
     public DiscreteInputPanel() {
         btnRead.addActionListener(e -> {
-            Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
+            Plc plc = PlcFactory.getPlc(PlcConfig.ACTIVE);
             int offset = Integer.parseInt(this.txtReadOffset.getText());
 
             boolean result;

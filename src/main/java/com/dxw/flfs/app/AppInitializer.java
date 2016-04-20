@@ -14,7 +14,6 @@ import com.dxw.flfs.jobs.*;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
-import java.awt.print.Book;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,6 +43,7 @@ public class AppInitializer {
         hibernateService.init();
         registry.register(hibernateService);
 
+        //prepare the data.
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
             dao.begin();
 
@@ -75,19 +75,25 @@ public class AppInitializer {
                 sty.setModifyTime(new Date());
                 sty.setCode(Integer.toString(i));
                 sty.setName("Sty" + i);
-                sty.setPigNumber(100 + i);
+                sty.setLastNumber(80 + i);
+                sty.setCurrentNumber(100 + i);
                 sty.setShed(shed);
                 sties.add(sty);
                 sty.setNo(i);
 
                 dao.update(sty);
             }
-            //shed.setSties(sties);
 
             batch.setSties(sties);
 
             dao.update(batch);
 
+            AppConfig config = new AppConfig();
+            config.setCreateTime(new Date());
+            config.setModifyTime(new Date());
+            config.setBatchCode("1");
+            config.setHost("192.168.1.10");
+            dao.update(config);
 
             dao.commit();
 

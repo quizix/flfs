@@ -14,10 +14,10 @@ public interface FlfsScheduler {
      * 每天上午6点进行排产，计算做料参数
      * @return 排产结果
      */
-    ScheduleResult schedule6AM();
+    ScheduleResult schedule6AM() throws SchedulerException;
     /**
      * 每天下午6点进行排产，计算做料参数
      * @return 排产结果
      */
-    ScheduleResult schedule6PM();
+    ScheduleResult schedule6PM() throws SchedulerException;
 }

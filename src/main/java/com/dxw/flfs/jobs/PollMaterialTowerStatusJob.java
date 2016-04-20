@@ -20,7 +20,7 @@ public class PollMaterialTowerStatusJob extends AbstractJob{
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         notify("开始轮询料塔状态");
-        PlcProxy proxy = PlcProxyFactory.getPrimaryPlcProxy();
+        PlcProxy proxy = PlcProxyFactory.getPlcProxy();
 
         boolean[] status = proxy.getMaterialTowerStatus();
 

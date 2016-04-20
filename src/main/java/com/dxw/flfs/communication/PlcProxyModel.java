@@ -1,0 +1,245 @@
+package com.dxw.flfs.communication;
+
+import java.util.Date;
+
+/**
+ * 表示PLC的状态
+ * Created by zhang on 2016-04-19.
+ */
+public class PlcProxyModel {
+
+    PlcProxy proxy;
+    public PlcProxyModel(PlcProxy proxy){
+        this.proxy = proxy;
+    }
+
+    private void fireModelChange(PlcModelChangedEvent event){
+        proxy.fireModelChanged(event);
+    }
+
+    private void fireModelChange(long field){
+        PlcModelChangedEvent event
+                 = new PlcModelChangedEvent(new Date().getTime(), field, this);
+        proxy.fireModelChanged(event);
+    }
+
+    private static final int FERMENT_BARREL_COUNT = 7;
+
+
+    public Boolean getEmergencySwitch() {
+        return emergencySwitch;
+    }
+
+    public void setEmergencySwitch(Boolean emergencySwitch) {
+        this.emergencySwitch = emergencySwitch;
+
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.EMERGENCY_SWITCH);
+    }
+
+    public Short getSystemStatus() {
+        return systemStatus;
+    }
+
+    public void setSystemStatus(Short systemStatus) {
+        this.systemStatus = systemStatus;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.SYSTEM_STATUS);
+    }
+
+    public Boolean getMaterialTowerLowAlarm() {
+        return materialTowerLowAlarm;
+    }
+
+    public Boolean getMaterialTowerEmptyAlarm() {
+        return materialTowerEmptyAlarm;
+    }
+
+    public void setMaterialTowerAlarm(Boolean materialTowerLowAlarm,Boolean materialTowerEmptyAlram) {
+        this.materialTowerLowAlarm = materialTowerLowAlarm;
+        this.materialTowerEmptyAlarm = materialTowerEmptyAlram;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.MATERIAL_TOWER_ALARM);
+    }
+
+
+    public Short getMixingBarrelStatus() {
+        return mixingBarrelStatus;
+    }
+
+    public void setMixingBarrelStatus(Short mixingBarrelStatus) {
+        this.mixingBarrelStatus = mixingBarrelStatus;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.MIXING_BARREL_STATUS);
+    }
+
+    public boolean[] getFermentBarrelStatus() {
+        return fermentBarrelStatus;
+    }
+
+    public void setFermentBarrelStatus(boolean[] fermentBarrelStatus) {
+        this.fermentBarrelStatus = fermentBarrelStatus;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.FERMENT_BARREL_STATUS);
+    }
+
+    public Float getPh() {
+        return ph;
+    }
+
+    public void setPh(Float ph) {
+        this.ph = ph;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.PH_VALUE);
+    }
+
+    public Short getFermentCountDown() {
+        return fermentCountDown;
+    }
+
+    public void setFermentCountDown(Short fermentCountDown) {
+        this.fermentCountDown = fermentCountDown;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.FERMENT_COUNT_DOWN);
+    }
+
+    public Short getFermentBarrelInNo() {
+        return fermentBarrelInNo;
+    }
+    public Short getFermentBarrelOutNo() {
+        return fermentBarrelOutNo;
+    }
+
+    public void setFermentBarrelInNo(Short fermentBarrelInNo,Short fermentBarrelOutNo) {
+        this.fermentBarrelInNo = fermentBarrelInNo;
+        this.fermentBarrelOutNo = fermentBarrelOutNo;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.FERMENT_BARREL_IN_OUT);
+    }
+
+
+    public Short getAccumulateFlowAm() {
+        return accumulateFlowAm;
+    }
+
+    public void setAccumulateFlowAm(Short accumulateFlowAm) {
+        this.accumulateFlowAm = accumulateFlowAm;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.ACCUMULATE_FLOW_AM);
+    }
+
+    public Short getAccumulateFlowPm() {
+        return accumulateFlowPm;
+    }
+
+    public void setAccumulateFlowPm(Short accumulateFlowPm) {
+        this.accumulateFlowPm = accumulateFlowPm;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.ACCUMULATE_FLOW_PM);
+    }
+
+    public short[] getAccumulateFlows() {
+        return accumulateFlows;
+    }
+
+    public void setAccumulateFlows(short[] accumulateFlows) {
+        this.accumulateFlows = accumulateFlows;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.ACCUMULATE_FLOWS);
+    }
+
+    public Float getWaterAm() {
+        return waterAm;
+    }
+
+    public Float getDryAm() {
+        return dryAm;
+    }
+
+    public Float getBacteriaAm() {
+        return bacteriaAm;
+    }
+
+    public short[] getProductionAmountsAm() {
+        return productionAmountsAm;
+    }
+
+    public void setProductionInstructionAm(Float waterAm, Float dryAm, Float bacteriaAm, short[] productionAmountsAm) {
+        this.waterAm = waterAm;
+        this.dryAm = dryAm;
+        this.bacteriaAm = bacteriaAm;
+        this.productionAmountsAm = productionAmountsAm;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.PRODUCTION_INSTRUCTION_AM);
+    }
+
+    public void setProductionInstructionPm(Float waterPm, Float dryPm, Float bacteriaPm, short[] productionAmountsPm) {
+        this.waterPm = waterPm;
+        this.dryPm = dryPm;
+        this.bacteriaPm = bacteriaPm;
+        this.productionAmountsPm = productionAmountsPm;
+        lastUpdateTime = new Date().getTime();
+        fireModelChange(PlcModelField.PRODUCTION_INSTRUCTION_PM);
+    }
+
+    public Float getWaterPm() {
+        return waterPm;
+    }
+
+
+    public Float getDryPm() {
+        return dryPm;
+    }
+
+
+    public Float getBacteriaPm() {
+        return bacteriaPm;
+    }
+
+
+    public short[] getProductionAmountsPm() {
+        return productionAmountsPm;
+    }
+
+
+    ////////////////////////////////////////
+    //Plc system
+    private Boolean emergencySwitch = null;
+    private Short systemStatus = null;
+
+    ////////////////////////////////////////
+    //material tower
+    private Boolean materialTowerLowAlarm = null;
+    private Boolean materialTowerEmptyAlarm = null;
+
+    ////////////////////////////////////////
+    //mixing barrel
+    private Short mixingBarrelStatus = null;
+
+    ////////////////////////////////////////
+    //ferment barrel
+    private boolean[] fermentBarrelStatus = new boolean[FERMENT_BARREL_COUNT];
+    private Float ph = null;
+    private Short fermentCountDown = null;
+    private Short fermentBarrelInNo = null;
+    private Short fermentBarrelOutNo = null;
+
+    private Short accumulateFlowAm = null;
+    private Short accumulateFlowPm = null;
+    private short[] accumulateFlows = new short[FERMENT_BARREL_COUNT];
+
+    //////////////////////////////////////////////
+    //production params
+    private Float waterAm = null;
+    private Float dryAm = null;
+    private Float bacteriaAm = null;
+    private short[] productionAmountsAm= new short[FERMENT_BARREL_COUNT];
+
+    private Float waterPm = null;
+    private Float dryPm = null;
+    private Float bacteriaPm = null;
+    private short[] productionAmountsPm= new short[FERMENT_BARREL_COUNT];
+
+    private Long lastUpdateTime = null;
+
+}

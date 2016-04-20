@@ -47,6 +47,8 @@ public class PlcConfig {
         this.slaveId = slaveId;
     }
 
-    public final static PlcConfig PRIMARY = new PlcConfig("127.0.0.1", ModbusUtils.TCP_PORT, 2);
+    public final static PlcConfig PRIMARY = new PlcConfig("127.0.0.1", ModbusUtils.TCP_PORT, 1);
     public final static PlcConfig SECONDARY = new PlcConfig("127.0.0.1", ModbusUtils.TCP_PORT, 2);
+
+    public static PlcConfig ACTIVE = PRIMARY;
 }

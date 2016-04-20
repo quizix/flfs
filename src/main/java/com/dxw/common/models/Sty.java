@@ -2,7 +2,6 @@ package com.dxw.common.models;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 /**
  * 栏位
@@ -56,11 +55,18 @@ public class Sty{
     @Column(name="no")
     private int no;
 
+
     /**
      * 猪的数量，并由此推断栏位状态
      */
-    @Column(name="pigNumber")
-    private int pigNumber;
+    @Column(name="currentNumber")
+    private int currentNumber;
+
+    /**
+     * 猪的数量，并由此推断栏位状态
+     */
+    @Column(name="lastNumber")
+    private int lastNumber;
 
     public Long getId() {
         return id;
@@ -118,11 +124,20 @@ public class Sty{
         this.code = code;
     }
 
-    public int getPigNumber() {
-        return pigNumber;
+    public int getCurrentNumber() {
+        return currentNumber;
     }
 
-    public void setPigNumber(int pigNumber) {
-        this.pigNumber = pigNumber;
+    public void setCurrentNumber(int currentNumber) {
+        this.currentNumber = currentNumber;
     }
+
+    public int getLastNumber() {
+        return lastNumber;
+    }
+
+    public void setLastNumber(int lastNumber) {
+        this.lastNumber = lastNumber;
+    }
+
 }

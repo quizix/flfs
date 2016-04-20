@@ -22,7 +22,7 @@ public class PollFermentBarrelStatusJob extends AbstractJob{
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
         //
-        PlcProxy proxy = PlcProxyFactory.getPrimaryPlcProxy();
+        PlcProxy proxy = PlcProxyFactory.getPlcProxy();
 
         notify("开始轮询发酵罐状态");
         boolean[] status = proxy.getFermentBarrelStatus();

@@ -24,7 +24,7 @@ public class HoldingRegisterPanel {
 
     public HoldingRegisterPanel() {
         btnRead.addActionListener(e -> {
-            Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
+            Plc plc = PlcFactory.getPlc(PlcConfig.ACTIVE);
             int offset = Integer.parseInt(this.txtReadOffset.getText());
             try {
                 if (this.radioShort.isSelected()) {
@@ -45,7 +45,7 @@ public class HoldingRegisterPanel {
         });
 
         btnWrite.addActionListener(e -> {
-            Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
+            Plc plc = PlcFactory.getPlc(PlcConfig.ACTIVE);
 
             int offset = Integer.parseInt(this.txtWriteOffset.getText());
             try {

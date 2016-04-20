@@ -7,5 +7,5 @@ import javax.swing.*;
  */
 public class ModbusPanel {
     private JTabbedPane tabbedPane1;
-    private JPanel panel1;
+    private JPanel root;
 }

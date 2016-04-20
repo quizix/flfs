@@ -74,7 +74,8 @@ public class DaoTest {
                 sty.setModifyTime(new Date());
                 sty.setCode(Integer.toString(i));
                 sty.setName("Sty" + i);
-                sty.setPigNumber(100 + i);
+                sty.setLastNumber(80 + i);
+                sty.setCurrentNumber(100 + i);
                 sty.setShed(shed);
                 sty.setNo(i);
                 sties.add(sty);
@@ -85,7 +86,7 @@ public class DaoTest {
             Batch batch = new Batch();
 
             batch.setCreateTime(new Date());
-            batch.setCode("1111");
+            batch.setCode("1");
             batch.setModifyTime(new Date());
             batch.setInStockDuration(100);
             batch.setInStockDate(new Date());
@@ -100,7 +101,7 @@ public class DaoTest {
         }
 
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
-            System.out.println(dao.findTotalPigInShed("12345678"));
+            System.out.println(dao.findCurrentPigsByBatch( dao.findBatchByCode("1")));
         }
         
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {

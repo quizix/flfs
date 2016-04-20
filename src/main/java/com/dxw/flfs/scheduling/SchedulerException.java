@@ -14,4 +14,8 @@ public class SchedulerException extends Exception {
     public SchedulerException(String message){
         super(message);
     }
+
+    public SchedulerException(Exception innerException){
+        super(innerException);
+    }
 }

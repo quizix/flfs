@@ -10,23 +10,17 @@ package com.dxw.flfs.communication;
  * @author Administrator
  */
 public class PlcProxyFactory {
-    
-    private static PlcProxy primaryProxy;
-    private static PlcProxy secondaryProxy;
-    public static PlcProxy getPrimaryPlcProxy(){
-        if(primaryProxy ==null){
-            Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
-            primaryProxy = new PlcProxyImpl(plc);
+
+    private static PlcProxy proxy;
+
+    public static PlcProxy getPlcProxy(){
+        if(proxy ==null){
+            Plc plcPrimary = PlcFactory.getPlc(PlcConfig.PRIMARY);
+            Plc plcSecondary = PlcFactory.getPlc(PlcConfig.SECONDARY);
+
+            proxy = new PlcProxyImpl(plcPrimary, plcSecondary);
         }
-        return primaryProxy;
+        return proxy;
     }
-    
-    
-    public static PlcProxy getSecondaryPlcProxy(){
-        if(secondaryProxy ==null){
-            Plc plc = PlcFactory.getPlc(PlcConfig.SECONDARY);
-            secondaryProxy = new PlcProxyImpl(plc);
-        }
-        return secondaryProxy;
-    }
+
 }

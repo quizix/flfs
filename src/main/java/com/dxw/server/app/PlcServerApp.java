@@ -54,7 +54,7 @@ public class PlcServerApp {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            JFrame frame = new JFrame("Modbus模拟器");
+            JFrame frame = new JFrame("Modbus 模拟器");
             frame.setContentPane(new MainPanel().getRoot());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(800,600);

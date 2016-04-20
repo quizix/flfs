@@ -33,7 +33,7 @@
     <mapping class="com.dxw.common.models.ProductionInstruction" />
     <mapping class="com.dxw.common.models.Shed" />
     <mapping class="com.dxw.common.models.Sty" />
-    <mapping class="com.dxw.common.models.SysConfig" />
+    <mapping class="com.dxw.common.models.AppConfig" />
     <mapping class="com.dxw.common.models.User" />
     <mapping class="com.dxw.common.models.WorkingCondition" />
 

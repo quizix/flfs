@@ -11,15 +11,15 @@ import javax.swing.*;
 public class MainPanel {
     public MainPanel() {
         btnStart.addActionListener(e -> {
-            PlcProxy plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
+            PlcProxy plcProxy = PlcProxyFactory.getPlcProxy();
             plcProxy.start();
         });
         btnStop.addActionListener(e -> {
-            PlcProxy plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
+            PlcProxy plcProxy = PlcProxyFactory.getPlcProxy();
             plcProxy.halt();
         });
         btnClean.addActionListener(e -> {
-            PlcProxy plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
+            PlcProxy plcProxy = PlcProxyFactory.getPlcProxy();
             plcProxy.clean();
         });
     }

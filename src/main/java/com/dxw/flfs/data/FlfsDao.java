@@ -19,11 +19,15 @@ public interface FlfsDao extends AutoCloseable {
 
     Batch findBatchByCode(String code);
 
+    AppConfig findAppConfig(String appId);
+
     List findAllSheds();
     
     List findStiesByShed(String code);
-    
-    long findTotalPigInShed(String code);
+
+    long findCurrentPigsByBatch(Batch batch);
+
+    long findLastPigsByBatch(Batch batch);
 
     long findTotalPigPlanInShed(String code, Date date);
 

@@ -13,7 +13,7 @@ import javax.swing.*;
 public class CoilPanel {
     public CoilPanel() {
         btnRead.addActionListener(e -> {
-            Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
+            Plc plc = PlcFactory.getPlc(PlcConfig.ACTIVE);
             int offset = Integer.parseInt(this.txtReadOffset.getText());
 
             boolean result;
@@ -26,7 +26,7 @@ public class CoilPanel {
 
         });
         btnWrite.addActionListener(e -> {
-            Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
+            Plc plc = PlcFactory.getPlc(PlcConfig.ACTIVE);
             int offset = Integer.parseInt(this.txtWriteOffset.getText());
 
             boolean result = (this.radioTrue.isSelected());

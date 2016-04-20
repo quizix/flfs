@@ -25,7 +25,7 @@ public class PlcProxyTest {
     static PlcProxy plcProxy;
     @BeforeClass
     public static void setUpClass() {
-        plcProxy = PlcProxyFactory.getPrimaryPlcProxy();
+        plcProxy = PlcProxyFactory.getPlcProxy();
     }
 
     @AfterClass
@@ -81,7 +81,7 @@ public class PlcProxyTest {
     @Test
     public void testEmergencyStopStatus() {
         System.out.println("emergency stop:");
-        boolean data = plcProxy.getEmergenyStopStatus();
+        boolean data = plcProxy.getEmergencyStopStatus();
         System.out.println(data);
     }
 
@@ -146,7 +146,7 @@ public class PlcProxyTest {
     @Test
     public void testGetMixingBarrelStatus(){
         System.out.println("get mixing barrel status:");
-        boolean s = plcProxy.getMixingBarrelStatus();
+        Short s = plcProxy.getMixingBarrelStatus();
         System.out.println(s);
     }
     

@@ -9,18 +9,172 @@ import com.dxw.common.ms.Notification;
 import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
+import com.dxw.common.utils.TimeUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author pronics3
  */
 class PlcProxyImpl implements PlcProxy {
-    Plc plc;
-    PlcProxyImpl(Plc plc) {
-        this.plc = plc;
+    Plc plcPrimary, plcSecondary;
+
+    PlcProxyImpl(Plc plcPrimary, Plc plcSecondary) {
+        this.plcPrimary = plcPrimary;
+        this.plcSecondary = plcSecondary;
         notificationManager = (NotificationManager)
                 ServiceRegistryImpl.getInstance().lookupService(Services.NOTIFICATION_MANAGER);
     }
+    //region event related.
+    List<PlcModelChangedListener> listeners = new ArrayList<>();
+    public void addModelChangedListener(PlcModelChangedListener l){
+        synchronized (listeners){
+            this.listeners.add(l);
+        }
+    }
 
+    public void removeModelChangedListener(PlcModelChangedListener l){
+        synchronized (listeners){
+            if( listeners.contains(l))
+                listeners.remove(l);
+        }
+    }
+
+    @Override
+    public void fireModelChanged(PlcModelChangedEvent event){
+        synchronized (listeners) {
+            listeners.stream().forEach(l -> {
+                l.onChanged(event);
+            });
+        }
+    }
+    //endregion
+
+    private PlcProxyModel model = new PlcProxyModel(this);
+
+    //region 做料PLC
+    //region Discrete input
+    @Override
+    public Boolean getEmergencyStopStatus() {
+        try {
+            boolean status = plcPrimary.getDiscreteInput(PlcRegisterAddress.EMERGENCY_STOP_STATUS);
+
+            model.setEmergencySwitch(status);
+
+            return status;
+        } catch (PlcException ex) {
+            sendNotification(ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public boolean[] getMaterialTowerStatus() {
+        try {
+            boolean[] result = plcPrimary.getDiscreteInputs(PlcRegisterAddress.MATERIAL_TOWER_STATUS, 2);
+
+            model.setMaterialTowerAlarm(result[0], result[1]);
+
+            return result;
+        } catch (PlcException ex) {
+            sendNotification(ex.getMessage());
+        }
+        return null;
+    }
+    @Override
+    public boolean[] getFermentBarrelStatus() {
+
+        try {
+            boolean[] status =  plcPrimary.getDiscreteInputs(PlcRegisterAddress.FERMENT_BARREL_STATUS, 7);
+
+            model.setFermentBarrelStatus(status);
+
+            return status;
+        } catch (PlcException ex) {
+            sendNotification(ex.getMessage());
+        }
+        return null;
+    }
+    //endregion
+
+    //region Holding registers
+    @Override
+    public Short getMixingBarrelStatus() {
+        try{
+            short result = plcPrimary.getRegisterShort(PlcRegisterAddress.MIXING_BARREL_STATUS, RegisterType.HoldingRegister );
+
+            model.setMixingBarrelStatus(result);
+
+            return result;
+        }
+        catch (PlcException ex){
+            sendNotification(ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Short getSystemStatus() {
+        try{
+            short result = plcPrimary.getRegisterShort(PlcRegisterAddress.SYSTEM_STATUS, RegisterType.HoldingRegister );
+
+            model.setSystemStatus(result);
+
+            return result;
+        }
+        catch (PlcException ex){
+            sendNotification(ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public Short getFermentCountDown() {
+        try {
+            short result = plcPrimary.getRegisterShort(PlcRegisterAddress.FERMENT_COUNT_DOWN, RegisterType.HoldingRegister);
+
+            model.setFermentCountDown(result);
+
+            return result;
+        } catch (PlcException ex) {
+            sendNotification(ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public short[] getFermentBarrelAction() {
+        try {
+            return plcPrimary.getRegistersShort(PlcRegisterAddress.FERMENT_BARREL_WORKING_PARAM, RegisterType.HoldingRegister, 2);
+        } catch (PlcException ex) {
+            sendNotification(ex.getMessage());
+        }
+        return null;
+
+    }
+
+    @Override
+    public void setProductionParam(float water, float dry, float bacteria, short[] fermentBarrelWeight) {
+
+        float[] data = new float[]{water, dry, bacteria};
+        try {
+            plcPrimary.setRegisters(PlcRegisterAddress.PRODUCTION_PARAM, data);
+            plcPrimary.setRegisters(PlcRegisterAddress.PRODUCTION_PARAM+6, fermentBarrelWeight);
+
+            //update plc proxy model
+            if(TimeUtil.isAmOrPm()){
+                model.setProductionInstructionAm(water, dry,bacteria,fermentBarrelWeight);
+            }
+            else{
+                model.setProductionInstructionPm(water, dry,bacteria,fermentBarrelWeight);
+            }
+
+            sendNotification("发送指令成功");
+        } catch (PlcException ex) {
+            sendNotification(ex.getMessage());
+        }
+    }
     @Override
     public void start() {
         sendSysCommand((short) 1);
@@ -35,7 +189,6 @@ class PlcProxyImpl implements PlcProxy {
     public void clean() {
         sendSysCommand((short) 2);
     }
-
     /**
      * 发送系统工作命令 包括0停机；1运行；2清洗
      *
@@ -43,145 +196,116 @@ class PlcProxyImpl implements PlcProxy {
      */
     private void sendSysCommand(short code) {
         try {
-            plc.setRegister(PlcRegisterAddress.SYS_COMMAND_ADDRESS, (short)code);
+            plcPrimary.setRegister(PlcRegisterAddress.SYS_COMMAND_ADDRESS, (short)code);
             sendNotification("发送指令成功");
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
     }
-
-    
-
-    @Override
-    public void setProductionParam(float mixingWater, float mixingFeed, float bacteria, short[] fermentBarrelWeight) {
-        
-        float[] data = new float[]{mixingWater, mixingFeed, bacteria};
-        try {
-            plc.setRegisters(PlcRegisterAddress.PRODUCTION_PARAM, data);
-            plc.setRegisters(PlcRegisterAddress.PRODUCTION_PARAM+6, fermentBarrelWeight);
-            sendNotification("发送指令成功");
-        } catch (PlcException ex) {
-            sendNotification(ex.getMessage());
-        }
-
-        
-    }
-
-    @Override
-    public boolean getEmergenyStopStatus() {
-        try {
-            return plc.getDiscreteInput(PlcRegisterAddress.EMERGENCY_STOP_STATUS);
-        } catch (PlcException ex) {
-            sendNotification(ex.getMessage());
-        }
-        return false;
-    }
-
     @Override
     public void setProductionUpdateFlag() {
         try {
-            plc.setRegister(PlcRegisterAddress.PRODUCTION_UPDATE_FLAG, (short)1);
+            plcPrimary.setRegister(PlcRegisterAddress.PRODUCTION_UPDATE_FLAG, (short)1);
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
     }
 
     @Override
-    public short getProductionUpdateFlag() {
+    public Short getProductionUpdateFlag() {
         try {
-            return plc.getRegisterShort(PlcRegisterAddress.PRODUCTION_UPDATE_FLAG, RegisterType.HoldingRegister);
+            return plcPrimary.getRegisterShort(PlcRegisterAddress.PRODUCTION_UPDATE_FLAG, RegisterType.HoldingRegister);
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
-        }
-        return -1;
-    }
-
-    
-    
-    @Override
-    public boolean[] getFermentBarrelStatus() {
-        
-        try {
-            return plc.getDiscreteInputs(PlcRegisterAddress.FERMENT_BARREL_STATUS, 7);
-        } catch (PlcException ex) {
-           sendNotification(ex.getMessage());
         }
         return null;
     }
 
     @Override
-    public float getPhValue() {
+    public Short getDataFeedbackFlag1() {
         try {
-            return plc.getRegisterFloat(PlcRegisterAddress.PH_VALUE, RegisterType.InputRegister);
+            return plcPrimary.getRegisterShort(PlcRegisterAddress.PLC_DATA_FEEDBACK_FLAG1, RegisterType.HoldingRegister);
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
-        return -1;
+        return null;
     }
-
     @Override
-    public boolean[] getMaterialTowerStatus() {
+    public float[] getFlowValues() {
         try {
-            return plc.getDiscreteInputs(PlcRegisterAddress.MATERIAL_TOWER_STATUS, 2);
+            return plcPrimary.getRegistersFloat(PlcRegisterAddress.FLOW_VALUES, RegisterType.HoldingRegister, 7);
         } catch (PlcException ex) {
-           sendNotification(ex.getMessage());
+            sendNotification(ex.getMessage());
         }
         return null;
     }
 
-    /**
-     * *
-     * 获取15个阀门的动作次数和
-     *
-     * @return
-     *
-     */
     @Override
     public int[] getValveAndPumpCondition() {
         try {
-            return plc.getRegistersInt(PlcRegisterAddress.VALVE_ACTION_COUNT, RegisterType.HoldingRegister, 15+3);
+            return plcPrimary.getRegistersInt(PlcRegisterAddress.VALVE_ACTION_COUNT, RegisterType.HoldingRegister, 15+3);
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
         return null;
     }
+    //endregion
 
+    //region Input registers
+    @Override
+    public float getPhValue() {
+        try {
+            float ph = plcPrimary.getRegisterFloat(PlcRegisterAddress.PH_VALUE, RegisterType.InputRegister);
+            model.setPh(ph);
+            return ph;
+        } catch (PlcException ex) {
+            sendNotification(ex.getMessage());
+        }
+        return -1;
+    }
+    //endregion
+    //endregion
+
+    //region 送料PLC
     @Override
     public void setStyStatus(boolean[] status) {
          /*
             设置栏位信息：24个栏位，转化为2个short
             */
         try {
-            plc.setCoils(PlcRegisterAddress.STY_STATUS_ADDRESS, status);
+            plcSecondary.setCoils(PlcRegisterAddress.STY_STATUS_ADDRESS, status);
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
     }
-
     @Override
     public void setStyStatusUpdateFlag() {
-        
+
         try {
-            plc.setRegister(PlcRegisterAddress.STY_STATUS_UPDATE_FLAG, (short)1);
+            plcSecondary.setRegister(PlcRegisterAddress.STY_STATUS_UPDATE_FLAG, (short)1);
         } catch (PlcException ex) {
-           sendNotification(ex.getMessage());
+            sendNotification(ex.getMessage());
         }
     }
 
     @Override
-    public short getStyStatusUpdateFlag() {
-       try {
-            return plc.getRegisterShort(PlcRegisterAddress.STY_STATUS_UPDATE_FLAG, RegisterType.HoldingRegister);
+    public Short getStyStatusUpdateFlag() {
+        try {
+            return plcSecondary.getRegisterShort(PlcRegisterAddress.STY_STATUS_UPDATE_FLAG, RegisterType.HoldingRegister);
         } catch (PlcException ex) {
-           sendNotification(ex.getMessage());
+            sendNotification(ex.getMessage());
         }
-       return -1;
+        return null;
     }
+    //region Secondary plc command
+
+
+
 
     @Override
-    public float[] getFlowValues() {
+    public Short getDataFeedbackFlag2() {
         try {
-            return plc.getRegistersFloat(PlcRegisterAddress.FLOW_VALUES, RegisterType.HoldingRegister, 7);
+            return plcSecondary.getRegisterShort(PlcRegisterAddress.PLC_DATA_FEEDBACK_FLAG2, RegisterType.HoldingRegister);
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
@@ -189,38 +313,21 @@ class PlcProxyImpl implements PlcProxy {
     }
 
     @Override
-    public short getFermentCountDown() {
+    public Integer getPumpCondition() {
         try {
-            return plc.getRegisterShort(PlcRegisterAddress.FERMENT_COUNT_DOWN, RegisterType.HoldingRegister);
-        } catch (PlcException ex) {
-            sendNotification(ex.getMessage());
-        }
-        return -1;
-    }
+            int result = plcSecondary.getRegisterInt(PlcRegisterAddress.PLC_DATA_FEEDBACK_FLAG2, RegisterType.HoldingRegister);
 
-    
-
-    @Override
-    public short[] getFermentBarrelAction() {
-        try {
-            return plc.getRegistersShort(PlcRegisterAddress.FERMENT_BARREL_WORKING_PARAM, RegisterType.HoldingRegister, 2);
+            return result;
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
         return null;
-        
     }
+    //endregion
 
-    @Override
-    public boolean getMixingBarrelStatus() {
-        try{
-            return plc.getCoil(PlcRegisterAddress.MIXING_BARREL_STATUS);
-        }
-        catch (PlcException ex){
-            sendNotification(ex.getMessage());
-        }
-        return false;
-    }
+    //endregion
+
+
 
     NotificationManager notificationManager;
     private void sendNotification(String message) {

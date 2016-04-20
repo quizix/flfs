@@ -18,7 +18,7 @@ public class InputRegisterPanel {
 
     public InputRegisterPanel() {
         btnRead.addActionListener(e -> {
-            Plc plc = PlcFactory.getPlc(PlcConfig.PRIMARY);
+            Plc plc = PlcFactory.getPlc(PlcConfig.ACTIVE);
 
             int offset = Integer.parseInt(this.txtReadOffset.getText());
 

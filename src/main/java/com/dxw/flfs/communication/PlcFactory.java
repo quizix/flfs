@@ -10,8 +10,6 @@ package com.dxw.flfs.communication;
  * @author Administrator
  */
 public class PlcFactory {
-    
-    
     public static Plc getPlc(PlcConfig config){
         return new PlcImpl(config);
     }

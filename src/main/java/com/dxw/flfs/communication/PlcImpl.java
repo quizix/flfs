@@ -31,11 +31,13 @@ import com.serotonin.modbus4j.msg.WriteRegistersResponse;
  */
 class PlcImpl implements Plc {
 
-    private final static int SLAVE_ID = 2;
+    private int slaveId;
     PlcConfig config;
 
     public PlcImpl(PlcConfig config) {
+
         this.config = config;
+        this.slaveId = config.getSlaveId();
     }
 
     @Override
@@ -49,7 +51,7 @@ class PlcImpl implements Plc {
         ModbusMaster master = getTcpMaster();
         try {
             master.init();
-            ModbusRequest req = new ReadCoilsRequest(SLAVE_ID, offset, count);
+            ModbusRequest req = new ReadCoilsRequest(slaveId, offset, count);
             ReadResponse res = (ReadCoilsResponse) master.send(req);
 
             if (res.isException()) {
@@ -77,7 +79,7 @@ class PlcImpl implements Plc {
         ModbusMaster master = getTcpMaster();
         try {
             master.init();
-            ModbusRequest req = new WriteCoilsRequest(SLAVE_ID, offset, value);
+            ModbusRequest req = new WriteCoilsRequest(slaveId, offset, value);
             WriteCoilsResponse res = (WriteCoilsResponse) master.send(req);
 
             if (res.isException()) {
@@ -105,7 +107,7 @@ class PlcImpl implements Plc {
         ModbusMaster master = getTcpMaster();
         try {
             master.init();
-            ModbusRequest req = new ReadDiscreteInputsRequest(SLAVE_ID, offset, count);
+            ModbusRequest req = new ReadDiscreteInputsRequest(slaveId, offset, count);
             ReadResponse res = (ReadDiscreteInputsResponse) master.send(req);
 
             if (res.isException()) {
@@ -139,10 +141,10 @@ class PlcImpl implements Plc {
             ModbusRequest req;
             ReadResponse res;
             if (type == RegisterType.InputRegister) {
-                req = new ReadInputRegistersRequest(SLAVE_ID, offset, count);
+                req = new ReadInputRegistersRequest(slaveId, offset, count);
                 res = (ReadInputRegistersResponse) master.send(req);
             } else {
-                req = new ReadHoldingRegistersRequest(SLAVE_ID, offset, count);
+                req = new ReadHoldingRegistersRequest(slaveId, offset, count);
                 res = (ReadHoldingRegistersResponse) master.send(req);
             }
 
@@ -176,10 +178,10 @@ class PlcImpl implements Plc {
             ModbusRequest req;
             ReadResponse res;
             if (type == RegisterType.InputRegister) {
-                req = new ReadInputRegistersRequest(SLAVE_ID, offset, count * 2);
+                req = new ReadInputRegistersRequest(slaveId, offset, count * 2);
                 res = (ReadInputRegistersResponse) master.send(req);
             } else {
-                req = new ReadHoldingRegistersRequest(SLAVE_ID, offset, count * 2);
+                req = new ReadHoldingRegistersRequest(slaveId, offset, count * 2);
                 res = (ReadHoldingRegistersResponse) master.send(req);
             }
 
@@ -213,10 +215,10 @@ class PlcImpl implements Plc {
             ModbusRequest req;
             ReadResponse res;
             if (type == RegisterType.InputRegister) {
-                req = new ReadInputRegistersRequest(SLAVE_ID, offset, count * 2);
+                req = new ReadInputRegistersRequest(slaveId, offset, count * 2);
                 res = (ReadInputRegistersResponse) master.send(req);
             } else {
-                req = new ReadHoldingRegistersRequest(SLAVE_ID, offset, count * 2);
+                req = new ReadHoldingRegistersRequest(slaveId, offset, count * 2);
                 res = (ReadHoldingRegistersResponse) master.send(req);
             }
 
@@ -257,7 +259,7 @@ class PlcImpl implements Plc {
         ModbusMaster master = getTcpMaster();
         try {
             master.init();
-            ModbusRequest req = new WriteRegistersRequest(SLAVE_ID, offset, value);
+            ModbusRequest req = new WriteRegistersRequest(slaveId, offset, value);
             WriteRegistersResponse res = (WriteRegistersResponse) master.send(req);
 
             if (res.isException()) {
@@ -280,7 +282,7 @@ class PlcImpl implements Plc {
         try {
             master.init();
             short[] data = Converter.intsToShorts(value);
-            ModbusRequest req = new WriteRegistersRequest(SLAVE_ID, offset, data);
+            ModbusRequest req = new WriteRegistersRequest(slaveId, offset, data);
             WriteRegistersResponse res = (WriteRegistersResponse) master.send(req);
 
             if (res.isException()) {
@@ -303,7 +305,7 @@ class PlcImpl implements Plc {
         try {
             master.init();
             short[] data = Converter.floatsToShorts(value);
-            ModbusRequest req = new WriteRegistersRequest(SLAVE_ID, offset, data);
+            ModbusRequest req = new WriteRegistersRequest(slaveId, offset, data);
             WriteRegistersResponse res = (WriteRegistersResponse) master.send(req);
 
             if (res.isException()) {

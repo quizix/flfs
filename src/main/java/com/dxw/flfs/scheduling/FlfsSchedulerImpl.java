@@ -1,28 +1,44 @@
 package com.dxw.flfs.scheduling;
 
+import com.dxw.common.models.Batch;
+import com.dxw.common.utils.TimeUtil;
 import com.dxw.flfs.communication.PlcProxy;
 import com.dxw.flfs.communication.PlcProxyFactory;
+import com.dxw.flfs.data.FlfsDao;
+import com.dxw.flfs.data.FlfsDaoImpl;
+import com.dxw.flfs.data.HibernateService;
 
-import static com.dxw.flfs.scheduling.SchedulerConfig.MIXING_BARREL_CAPACITY;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 /**
  * Created by zhang on 2016/4/3.
  */
 public class FlfsSchedulerImpl implements FlfsScheduler {
 
-    private int day = 0;
+    private Batch batch;
+    private HibernateService hibernateService;
+
+    public FlfsSchedulerImpl(HibernateService hibernateService, Batch batch){
+        this.hibernateService = hibernateService;
+        this.batch = batch;
+    }
+
+    ScheduleResult lastScheduleResult = null;
 
     @Override
-    public ScheduleResult schedule6AM() {
+    public ScheduleResult schedule6AM() throws SchedulerException{
         float total = calcCurrentProduction();
-        return Distributer.distribute(total);
+        lastScheduleResult = Distributer.distribute(total);
+        return lastScheduleResult;
     }
 
     @Override
-    public ScheduleResult schedule6PM() {
+    public ScheduleResult schedule6PM() throws SchedulerException{
         float total = calcCurrentProduction();
-        day++;
-        return Distributer.distribute(total);
+        lastScheduleResult = Distributer.distribute(total);
+        return lastScheduleResult;
     }
 
     /**
@@ -32,10 +48,16 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      * @return
      */
     private boolean isInInitStage() {
-        if (day < 10)
-            return false;
-        else
+        Date date = batch.getInStockDate();
+
+        LocalDate start = TimeUtil.fromDate(date);
+        LocalDate end = start.plus(batch.getInStockDuration(), ChronoUnit.DAYS);
+        LocalDate now = LocalDate.now();
+
+        if(now.compareTo(end)<=0){
             return true;
+        }
+        return false;
     }
 
     /**
@@ -44,17 +66,17 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      * @return
      */
     private float calcLastProduction() {
-        return MIXING_BARREL_CAPACITY * getLastMixingBarrelCount();
+        if( this.lastScheduleResult == null)
+            return 0;
+        float total = 0;
+
+        short[] barrels = lastScheduleResult.getBarrels();
+        for(int i=0;i<barrels.length;i++){
+            total += barrels[i];
+        }
+        return total;
     }
 
-    /**
-     * 获取上一次所做的搅拌桶数
-     *
-     * @return
-     */
-    private int getLastMixingBarrelCount() {
-        return 100;
-    }
 
     /**
      * 获取上一次的总泵出量
@@ -63,7 +85,7 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      */
     float lastTotalPumpedVolume =0;
     private float getLastPumpedVolume() {
-        PlcProxy proxy = PlcProxyFactory.getPrimaryPlcProxy();
+        PlcProxy proxy = PlcProxyFactory.getPlcProxy();
         float[] data = proxy.getFlowValues();
 
         float volume = data[0] - lastTotalPumpedVolume;
@@ -77,7 +99,7 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      * @return
      */
     private float calcLastConsumed() {
-        return getLastPumpedVolume() * SchedulerConfig.FEED_DENSITY;
+        return getLastPumpedVolume() * SchedulerParams.FEED_DENSITY;
     }
 
     /**
@@ -94,7 +116,7 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      *
      * @return
      */
-    private float getLastAverageConsumption() {
+    private float getLastAverageConsumption() throws Exception {
         return calcLastConsumed() / getLastInSty();
     }
 
@@ -103,8 +125,10 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      *
      * @return
      */
-    private float getLastInSty() {
-        return 1000;
+    private float getLastInSty() throws Exception{
+        try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
+            return dao.findLastPigsByBatch(batch);
+        }
     }
 
     /**
@@ -112,8 +136,11 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      *
      * @return
      */
-    private float getCurrentInSty() {
-        return 1000;
+    private float getCurrentInSty() throws Exception{
+        try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
+            return dao.findLastPigsByBatch(batch);
+        }
+
     }
 
     /**
@@ -121,22 +148,30 @@ public class FlfsSchedulerImpl implements FlfsScheduler {
      *
      * @return
      */
-    private float calcEstimatedAverageConsumption() {
+    private float calcEstimatedAverageConsumption() throws Exception{
         if (isInInitStage()) {
             //在入栏阶段，先采用理论值
-            return 1;
+            LocalDate now = LocalDate.now();
+            LocalDate start = TimeUtil.fromDate(batch.getInStockDate());
+            int index = now.getDayOfYear() - start.getDayOfYear();
+            return SchedulerParams.INIT_STAGE_COMSUMPTIONS[index];
         } else {
             float c = getLastAverageConsumption();
-            return c * (1 + SchedulerConfig.DAILY_INCREASING_PERCENT);
+            return c * (1 + SchedulerParams.DAILY_INCREASING_PERCENT);
         }
     }
 
     /**
-     * 计算当前要生产的
+     * 计算当前需要生产的
      *
      * @return
      */
-    private float calcCurrentProduction() {
-        return getCurrentInSty() * calcEstimatedAverageConsumption() - calcCurrentFeedRemaining();
+    private float calcCurrentProduction() throws SchedulerException{
+        try{
+            return getCurrentInSty() * calcEstimatedAverageConsumption() - calcCurrentFeedRemaining();
+        }
+        catch(Exception ex){
+            throw new SchedulerException(ex);
+        }
     }
 }

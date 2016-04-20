@@ -5,9 +5,15 @@
  */
 package com.dxw.flfs.app;
 
+import com.dxw.common.models.AppConfig;
 import com.dxw.common.services.ServiceException;
+import com.dxw.common.services.ServiceRegistry;
+import com.dxw.common.services.ServiceRegistryImpl;
+import com.dxw.common.services.Services;
+import com.dxw.flfs.data.FlfsDao;
+import com.dxw.flfs.data.FlfsDaoImpl;
+import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.ui.MainFrame;
-import com.dxw.flfs.ui.wizards.SelectShedDialog;
 import org.quartz.SchedulerException;
 
 import javax.swing.*;
@@ -27,11 +33,15 @@ import java.util.logging.Logger;
  * @author pronics3
  */
 public class FlfsApp {
+    private static String appId;
     public static String getAppId() {
         return appId;
     }
 
-    private static String appId;
+    private static AppConfig appConfig;
+    public static AppConfig getAppConfig() {
+        return appConfig;
+    }
 
     private FlfsApp()
             throws ServiceException, SchedulerException {
@@ -40,6 +50,7 @@ public class FlfsApp {
             JOptionPane.showMessageDialog(null, "无法获取程序appId！", "消息提示", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
+
         AppInitializer.initServices();
     }
 
@@ -56,11 +67,22 @@ public class FlfsApp {
         return null;
     }
 
+    private void loadAppConfig() {
+        ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+        HibernateService hibernateService = (HibernateService)registry.lookupService(Services.HIBERNATE_SERVICE);
+        try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
+            appConfig = dao.findAppConfig(appId);
+        }
+        catch(Exception ex){
 
+        }
+        JOptionPane.showMessageDialog(null, "无法获取appConfig！", "消息提示", JOptionPane.ERROR_MESSAGE);
+        System.exit(0);
+    }
 
     private void start() throws SchedulerException {
 
-        if( needReset()) {
+        /*if( needReset()) {
             SelectShedDialog dialog = new SelectShedDialog();
             dialog.pack();
 
@@ -69,7 +91,9 @@ public class FlfsApp {
 
             if (!dialog.getDialogResult())
                 System.exit(0);
-        }
+        }*/
+
+        loadAppConfig();
 
         System.setProperty("awt.useSystemAAFontSettings", "on");
         System.setProperty("swing.aatext", "true");
@@ -144,6 +168,8 @@ public class FlfsApp {
             });
         });
     }
+
+
 
     /**
      * 是否需要重置

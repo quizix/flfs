@@ -6,7 +6,12 @@
 package com.dxw.common.utils;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -30,5 +35,26 @@ public class TimeUtil {
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String s = f.format(Calendar.getInstance().getTime());
         return s;
+    }
+
+
+    /**
+     * 判断是上午还是下午
+     * @return
+     */
+    public static boolean isAmOrPm(){
+        LocalTime time = LocalTime.now();
+        if( time.getHour() <=12)
+            return true;
+        else
+            return false;
+    }
+
+    public static LocalDate fromDate(Date date){
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    }
+
+    public static Date toDate(LocalDate localDate){
+        return  Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }

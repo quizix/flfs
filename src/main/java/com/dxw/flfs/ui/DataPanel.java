@@ -1,10 +1,13 @@
 package com.dxw.flfs.ui;
 
-import com.dxw.common.ms.NotificationFlags;
 import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
+import com.dxw.flfs.communication.PlcModelField;
+import com.dxw.flfs.communication.PlcProxy;
+import com.dxw.flfs.communication.PlcProxyFactory;
+import com.dxw.flfs.communication.PlcProxyModel;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -24,7 +27,7 @@ public class DataPanel {
     private ImageIcon iconAlert;
     private AbstractTableModel dataModel;
 
-    private String[] fermentBarrelcolumnNames = {"发酵罐#", "状态"};
+    private String[] fermentBarrelColumnNames = {"发酵罐#", "状态"};
 
     private Object[][] fermentData = {
             {"1", "空"},
@@ -37,62 +40,62 @@ public class DataPanel {
     };
 
     NotificationManager notificationManager;
+    PlcProxy proxy;
 
     public DataPanel() {
         iconAlert = new ImageIcon(this.getClass().getResource("/images/alert-icon.png"));
         ServiceRegistry r = ServiceRegistryImpl.getInstance();
-
         notificationManager = (NotificationManager) r.lookupService(Services.NOTIFICATION_MANAGER);
-        if (notificationManager != null) {
-            notificationManager.addReceiver((tag, notification) -> {
-                if (tag.equals("DATA")) {
 
-                    switch (notification.getFlag()) {
-                        case NotificationFlags.FERMENT_BARREL_STATUS: {
-                            boolean[] data = (boolean[]) notification.getContent();
-                            for (int i = 0; i < Math.min(data.length, fermentData.length); i++) {
-                                fermentData[i][1] = (data[i]) ? "满" : "空";
-                                dataModel.fireTableCellUpdated(i, 1);
-                            }
-                            dataModel.fireTableDataChanged();
-                        }
-                        break;
-                        case NotificationFlags.MATERIAL_TOWER_STATUS: {
-                            boolean[] data = (boolean[]) notification.getContent();
+        proxy = PlcProxyFactory.getPlcProxy();
+        proxy.addModelChangedListener( event-> {
+            long field =event.getField();
+            PlcProxyModel model = event.getModel();
 
-                            if (data[0]) {
-                                lblMaterialTowerLow.setIcon(iconAlert);
-                                lblMaterialTowerLow.setText("");
-                            } else {
-                                lblMaterialTowerLow.setIcon(null);
-                                lblMaterialTowerLow.setText("正常");
-                            }
-                        }
-                        break;
-                        case NotificationFlags.FERMENT_BARREL_ACTION: {
-                            short[] data = (short[]) notification.getContent();
-
-                            lblFermentBarrelIn.setText(Short.toString(data[0]));
-                            lblFermentBarrelOut.setText(Short.toString(data[1]));
-                        }
-                        break;
-                        case NotificationFlags.MIXING_BARREL_STATUS: {
-                            boolean status = (boolean) notification.getContent();
-
-                            lblMixingBarrelStatus.setText(status ? "运行" : "空闲");
-                        }
-                        case NotificationFlags.FERMENT_BARREL_PH_VALUE: {
-                            float value = (float)notification.getContent();
-
-                            lblPh.setText(Float.toString(value));
-                        }
-                        break;
-                        default:
-                            break;
-                    }
+            if( field == PlcModelField.FERMENT_BARREL_STATUS){
+                boolean[] data = model.getFermentBarrelStatus();
+                for (int i = 0; i < Math.min(data.length, fermentData.length); i++) {
+                    fermentData[i][1] = (data[i]) ? "满" : "空";
+                    dataModel.fireTableCellUpdated(i, 1);
                 }
-            });
-        }
+                dataModel.fireTableDataChanged();
+            }
+            else if( field == PlcModelField.MATERIAL_TOWER_ALARM){
+                Boolean lowAlarm = model.getMaterialTowerLowAlarm();
+                Boolean emptyAlarm = model.getMaterialTowerEmptyAlarm();
+
+                if (lowAlarm) {
+                    lblMaterialTowerLow.setIcon(iconAlert);
+                    lblMaterialTowerLow.setText("");
+                } else {
+                    lblMaterialTowerLow.setIcon(null);
+                    lblMaterialTowerLow.setText("正常");
+                }
+
+                if (emptyAlarm) {
+                    lblMaterialTowerEmpty.setIcon(iconAlert);
+                    lblMaterialTowerEmpty.setText("");
+                } else {
+                    lblMaterialTowerEmpty.setIcon(null);
+                    lblMaterialTowerEmpty.setText("正常");
+                }
+            }
+            else if( field == PlcModelField.FERMENT_BARREL_IN_OUT){
+                short in = model.getFermentBarrelInNo();
+                short out = model.getFermentBarrelOutNo();
+                lblFermentBarrelIn.setText(Short.toString(in));
+                lblFermentBarrelOut.setText(Short.toString(out));
+            }
+            else if( field == PlcModelField.MIXING_BARREL_STATUS){
+                Short status = model.getMixingBarrelStatus();
+                lblMixingBarrelStatus.setText(status==0 ? "空闲":"运行");
+            }
+            else if( field == PlcModelField.PH_VALUE){
+                float ph = model.getPh();
+                lblPh.setText(Float.toString(ph));
+            }
+
+        } );
     }
 
     private void createUIComponents() {
@@ -110,7 +113,7 @@ public class DataPanel {
             }
 
             public String getColumnName(int col) {
-                return fermentBarrelcolumnNames[col];
+                return fermentBarrelColumnNames[col];
             }
 
         };

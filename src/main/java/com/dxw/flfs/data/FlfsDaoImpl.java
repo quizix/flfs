@@ -38,6 +38,32 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
+    public Batch findBatchByCode(String code) {
+        Query query =
+                session.createQuery("from Batch where code=:code")
+                        .setParameter("code",code);
+
+        List list = query.list();
+        if (list.size() > 0) {
+            return (Batch) list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public AppConfig findAppConfig(String appId) {
+        Query query =
+                session.createQuery("from AppConfig where appId=:appId")
+                        .setParameter("appId",appId);
+
+        List list = query.list();
+        if (list.size() > 0) {
+            return (AppConfig) list.get(0);
+        }
+        return null;
+    }
+
+    @Override
     public List findAllSheds() {
         Query query = session.createQuery("from Shed");
         return query.list();
@@ -85,10 +111,7 @@ public class FlfsDaoImpl implements FlfsDao {
         return null;
     }
 
-    @Override
-    public Batch findBatchByCode(String code) {
-        return null;
-    }
+
 
     @Override
     public User findUserByName(String name) {
@@ -111,9 +134,16 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public long findTotalPigInShed(String code) {
-        Query query = session.createQuery("select sum(s.pigNumber) from Sty s where s.shed.code=:code")
-                .setParameter("code", code);
+    public long findCurrentPigsByBatch(Batch batch) {
+        Query query = session.createQuery("select sum(sties.currentNumber) from Batch b join b.sties sties where b.code=:code")
+                .setParameter("code", batch.getCode());
+        return (long) query.uniqueResult();
+    }
+
+    @Override
+    public long findLastPigsByBatch(Batch batch) {
+        Query query = session.createQuery("select sum(sties.lastNumber) from Batch b join b.sties sties where b.code=:code")
+                .setParameter("code", batch.getCode());
         return (long) query.uniqueResult();
     }
 
@@ -137,14 +167,15 @@ public class FlfsDaoImpl implements FlfsDao {
 
     @Override
     public void begin() {
-        if (session != null) {
+        if (session != null)
             session.beginTransaction();
-        }
+
     }
 
     @Override
     public void commit() {
-        session.getTransaction().commit();
+        if( session != null)
+            session.getTransaction().commit();
     }
 
     @Override
