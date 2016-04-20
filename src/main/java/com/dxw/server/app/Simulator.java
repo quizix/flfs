@@ -111,7 +111,7 @@ public class Simulator {
             processImage.setInput(10, true);    //发酵罐7#空
 
             //Input registers
-            processImage.setNumeric(RegisterRange.INPUT_REGISTER, 1, DataType.FOUR_BYTE_FLOAT, new Float(
+            processImage.setNumeric(RegisterRange.INPUT_REGISTER, 3, DataType.FOUR_BYTE_FLOAT, new Float(
                     6.45)); // pH值
 
 

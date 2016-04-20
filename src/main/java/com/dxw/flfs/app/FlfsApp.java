@@ -74,10 +74,10 @@ public class FlfsApp {
             appConfig = dao.findAppConfig(appId);
         }
         catch(Exception ex){
-
+            JOptionPane.showMessageDialog(null, "无法获取appConfig！", "消息提示", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
-        JOptionPane.showMessageDialog(null, "无法获取appConfig！", "消息提示", JOptionPane.ERROR_MESSAGE);
-        System.exit(0);
+
     }
 
     private void start() throws SchedulerException {

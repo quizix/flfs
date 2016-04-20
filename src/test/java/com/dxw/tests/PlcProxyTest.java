@@ -89,7 +89,7 @@ public class PlcProxyTest {
     public void testGetPhValue() {
         System.out.println("ph value:");
         float f = plcProxy.getPhValue();
-        assertTrue(f == 6.3f);
+        assertTrue(f == 6.45f);
         System.out.println(f);
     }
 
