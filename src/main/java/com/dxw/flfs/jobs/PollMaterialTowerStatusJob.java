@@ -8,8 +8,8 @@ package com.dxw.flfs.jobs;
 import com.dxw.common.ms.NotificationFlags;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyFactory;
+import com.dxw.flfs.communication.PlcDelegate;
+import com.dxw.flfs.communication.PlcDelegateFactory;
 
 /**
  * 轮询料塔状态
@@ -20,7 +20,7 @@ public class PollMaterialTowerStatusJob extends AbstractJob{
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         notify("开始轮询料塔状态");
-        PlcProxy proxy = PlcProxyFactory.getPlcProxy();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
 
         boolean[] status = proxy.getMaterialTowerStatus();
 

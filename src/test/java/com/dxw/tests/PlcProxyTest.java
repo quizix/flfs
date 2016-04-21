@@ -6,8 +6,8 @@
 package com.dxw.tests;
 
 import com.dxw.common.services.ServiceException;
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyFactory;
+import com.dxw.flfs.communication.PlcDelegate;
+import com.dxw.flfs.communication.PlcDelegateFactory;
 import org.junit.*;
 
 import static org.junit.Assert.assertNotNull;
@@ -22,10 +22,10 @@ public class PlcProxyTest {
     public PlcProxyTest() {
     }
 
-    static PlcProxy plcProxy;
+    static PlcDelegate plcProxy;
     @BeforeClass
     public static void setUpClass() {
-        plcProxy = PlcProxyFactory.getPlcProxy();
+        plcProxy = PlcDelegateFactory.getPlcProxy();
     }
 
     @AfterClass

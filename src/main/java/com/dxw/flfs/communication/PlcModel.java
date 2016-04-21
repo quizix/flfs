@@ -6,10 +6,10 @@ import java.util.Date;
  * 表示PLC的状态
  * Created by zhang on 2016-04-19.
  */
-public class PlcProxyModel {
+public class PlcModel {
 
-    PlcProxy proxy;
-    public PlcProxyModel(PlcProxy proxy){
+    PlcDelegate proxy;
+    public PlcModel(PlcDelegate proxy){
         this.proxy = proxy;
     }
 

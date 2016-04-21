@@ -1,9 +1,9 @@
 package com.dxw.server.ui;
 
-import com.dxw.flfs.communication.Plc;
-import com.dxw.flfs.communication.PlcConfig;
-import com.dxw.flfs.communication.PlcException;
-import com.dxw.flfs.communication.PlcFactory;
+import com.dxw.flfs.communication.base.Plc;
+import com.dxw.flfs.communication.base.PlcConfig;
+import com.dxw.flfs.communication.base.PlcException;
+import com.dxw.flfs.communication.base.PlcFactory;
 
 import javax.swing.*;
 

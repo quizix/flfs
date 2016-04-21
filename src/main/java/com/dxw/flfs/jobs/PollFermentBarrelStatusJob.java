@@ -8,8 +8,8 @@ package com.dxw.flfs.jobs;
 import com.dxw.common.ms.NotificationFlags;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyFactory;
+import com.dxw.flfs.communication.PlcDelegate;
+import com.dxw.flfs.communication.PlcDelegateFactory;
 
 /**
  * 轮询发酵罐状态作业
@@ -21,7 +21,7 @@ public class PollFermentBarrelStatusJob extends AbstractJob{
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        PlcProxy proxy = PlcProxyFactory.getPlcProxy();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
 
         notify("开始轮询发酵罐状态");
         boolean[] status = proxy.getFermentBarrelStatus();

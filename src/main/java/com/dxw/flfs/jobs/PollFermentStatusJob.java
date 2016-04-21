@@ -1,8 +1,8 @@
 package com.dxw.flfs.jobs;
 
 import com.dxw.common.ms.NotificationFlags;
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyFactory;
+import com.dxw.flfs.communication.PlcDelegate;
+import com.dxw.flfs.communication.PlcDelegateFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -13,7 +13,7 @@ import org.quartz.JobExecutionException;
 public class PollFermentStatusJob extends AbstractJob {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        PlcProxy proxy = PlcProxyFactory.getPlcProxy();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
 
         float value = proxy.getPhValue();
 

@@ -3,7 +3,7 @@ package com.dxw.flfs.communication;
 /**
  * Created by zhang on 2016-04-20.
  */
-public interface PlcProxyEventSource {
+public interface PlcEventSource {
     void fireModelChanged(PlcModelChangedEvent event);
 
     void addModelChangedListener(PlcModelChangedListener l);

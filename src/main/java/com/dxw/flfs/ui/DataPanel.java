@@ -5,9 +5,9 @@ import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
 import com.dxw.flfs.communication.PlcModelField;
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyFactory;
-import com.dxw.flfs.communication.PlcProxyModel;
+import com.dxw.flfs.communication.PlcDelegate;
+import com.dxw.flfs.communication.PlcDelegateFactory;
+import com.dxw.flfs.communication.PlcModel;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -40,17 +40,17 @@ public class DataPanel {
     };
 
     NotificationManager notificationManager;
-    PlcProxy proxy;
+    PlcDelegate proxy;
 
     public DataPanel() {
         iconAlert = new ImageIcon(this.getClass().getResource("/images/alert-icon.png"));
         ServiceRegistry r = ServiceRegistryImpl.getInstance();
         notificationManager = (NotificationManager) r.lookupService(Services.NOTIFICATION_MANAGER);
 
-        proxy = PlcProxyFactory.getPlcProxy();
+        proxy = PlcDelegateFactory.getPlcProxy();
         proxy.addModelChangedListener( event-> {
             long field =event.getField();
-            PlcProxyModel model = event.getModel();
+            PlcModel model = event.getModel();
 
             if( field == PlcModelField.FERMENT_BARREL_STATUS){
                 boolean[] data = model.getFermentBarrelStatus();

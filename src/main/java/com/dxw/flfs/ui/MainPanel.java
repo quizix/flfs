@@ -1,7 +1,7 @@
 package com.dxw.flfs.ui;
 
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyFactory;
+import com.dxw.flfs.communication.PlcDelegate;
+import com.dxw.flfs.communication.PlcDelegateFactory;
 
 import javax.swing.*;
 
@@ -11,15 +11,15 @@ import javax.swing.*;
 public class MainPanel {
     public MainPanel() {
         btnStart.addActionListener(e -> {
-            PlcProxy plcProxy = PlcProxyFactory.getPlcProxy();
+            PlcDelegate plcProxy = PlcDelegateFactory.getPlcProxy();
             plcProxy.start();
         });
         btnStop.addActionListener(e -> {
-            PlcProxy plcProxy = PlcProxyFactory.getPlcProxy();
+            PlcDelegate plcProxy = PlcDelegateFactory.getPlcProxy();
             plcProxy.halt();
         });
         btnClean.addActionListener(e -> {
-            PlcProxy plcProxy = PlcProxyFactory.getPlcProxy();
+            PlcDelegate plcProxy = PlcDelegateFactory.getPlcProxy();
             plcProxy.clean();
         });
     }

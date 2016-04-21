@@ -5,7 +5,7 @@ package com.dxw.flfs.communication;
  */
 public class PlcModelChangedEvent {
 
-    public PlcModelChangedEvent(long when, long field, PlcProxyModel model){
+    public PlcModelChangedEvent(long when, long field, PlcModel model){
         this.when = when;
         this.field = field;
         this.model = model;
@@ -17,14 +17,14 @@ public class PlcModelChangedEvent {
 
     private long when;
 
-    private PlcProxyModel model;
+    private PlcModel model;
     public long getField() {
         return field;
     }
 
     private long field;
 
-    public PlcProxyModel getModel() {
+    public PlcModel getModel() {
         return model;
     }
 
