@@ -1,5 +1,10 @@
 package com.dxw.flfs.ui;
 
+import com.dxw.flfs.ui.dialogs.BatchDialog;
+import com.dxw.flfs.ui.dialogs.ShedDialog;
+import com.dxw.flfs.ui.dialogs.StockDialog;
+import com.dxw.flfs.ui.wizards.SelectShedDialog;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -25,9 +30,58 @@ public class MainFrame extends JFrame {
         JMenuBar bar = new JMenuBar();
         this.setJMenuBar(bar);
 
-        JMenu menu = new JMenu();
-        menu.setText("系统");
-        bar.add(menu);
+        JMenu menuSystem = new JMenu();
+        menuSystem.setText("系统");
+        bar.add(menuSystem);
+
+        JMenuItem miExit = new JMenuItem();
+        miExit.setText("退出");
+        menuSystem.add(miExit);
+
+        JMenu menuManage = new JMenu();
+        menuManage.setText("管理");
+        bar.add(menuManage);
+
+        JMenuItem miShed = new JMenuItem();
+        miShed.setText("猪舍管理");
+        menuManage.add(miShed);
+
+        JMenuItem miBatch = new JMenuItem();
+        miBatch.setText("批次管理");
+        menuManage.add(miBatch);
+
+        JMenuItem miStock = new JMenuItem();
+        miStock.setText("库存管理");
+        menuManage.add(miStock);
+
+        miExit.addActionListener(e->{
+            System.exit(0);
+        });
+
+        miShed.addActionListener(e->{
+            ShedDialog dialog = new ShedDialog();
+            dialog.pack();
+
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+
+        });
+
+        miBatch.addActionListener(e->{
+            BatchDialog dialog = new BatchDialog();
+            dialog.pack();
+
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        });
+
+        miStock.addActionListener(e->{
+            StockDialog dialog = new StockDialog();
+            dialog.pack();
+
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        });
 
     }
 }
