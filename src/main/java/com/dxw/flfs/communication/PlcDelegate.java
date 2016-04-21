@@ -148,7 +148,7 @@ public interface PlcDelegate extends PlcEventSource {
      *
      * @param status
      */
-    void setStyStatus(boolean[] status);
+    void setStyStatus(short[] status);
 
     /**
      * 设置更新标志

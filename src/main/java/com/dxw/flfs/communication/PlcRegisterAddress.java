@@ -25,8 +25,6 @@ public class PlcRegisterAddress {
     final static int MATERIAL_TOWER_STATUS = 2;         //料位低警报（0正常，1警报），料位空警报（0正常，1警报）
     final static int FERMENT_BARREL_STATUS = 4;         //发酵罐状态（0有料，1空）
 
-
-
     /*
         holding register addresses
     */
@@ -37,14 +35,9 @@ public class PlcRegisterAddress {
     final static int PRODUCTION_PARAM = 6;              //做料参数，加水量 加干料量 加菌液量 7罐做料量
     final static int SYS_COMMAND_ADDRESS = 18;          //系统命令（0停机1运行2清洗）
     final static int PRODUCTION_UPDATE_FLAG = 19;       //数据更新标志（1更新0不更新）
-    final static int PLC_DATA_FEEDBACK_FLAG1 = 20;            //PLC数据更新反馈标志（2秒正脉冲）
+    final static int PLC_DATA_FEEDBACK_FLAG1 = 20;      //PLC数据更新反馈标志（2秒正脉冲）
     final static int FLOW_VALUES = 21;                  //截止6:00或18:00累计流量值
-
-    final static int FERMENT_BARREL_FLOWS = 22;         //吃完6罐累计流量值
-
-
     final static int VALVE_ACTION_COUNT = 35;           //15个阀门动作次数累计，3个泵工作时间累计
-
 
     /*
         input register addresses
@@ -55,8 +48,6 @@ public class PlcRegisterAddress {
     /////////   secondary plc
     final static int STY_STATUS_ADDRESS = 1;            //24个栏位状态(0空闲1使用)
     final static int STY_STATUS_UPDATE_FLAG = 25;       //数据更新标志（1更新0不更新）
-    final static int PLC_DATA_FEEDBACK_FLAG2 = 26;             //PLC数据更新反馈标志（2秒正脉冲）
+    final static int PLC_DATA_FEEDBACK_FLAG2 = 26;      //PLC数据更新反馈标志（2秒正脉冲）
     final static int FEEDING_PUMP_WORKING_HOURS = 27;   //喂料泵工作时间累计
-
-
 }

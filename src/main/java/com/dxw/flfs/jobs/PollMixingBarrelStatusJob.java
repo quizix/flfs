@@ -20,7 +20,7 @@ public class PollMixingBarrelStatusJob extends AbstractJob{
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
         notify("开始轮询搅拌桶状态");
-        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcDelegate();
         Short status = proxy.getMixingBarrelStatus();
 
         //if( status != null)

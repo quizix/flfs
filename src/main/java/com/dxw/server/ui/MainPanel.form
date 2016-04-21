@@ -15,7 +15,7 @@
           </grid>
         </constraints>
         <properties>
-          <dividerLocation value="272"/>
+          <dividerLocation value="279"/>
           <orientation value="0"/>
           <resizeWeight value="0.4"/>
         </properties>
@@ -26,12 +26,19 @@
               <splitpane position="left"/>
             </constraints>
           </nested-form>
-          <component id="d7ae8" class="javax.swing.JTextArea" binding="txtMessage">
+          <scrollpane id="84ba5">
             <constraints>
               <splitpane position="right"/>
             </constraints>
             <properties/>
-          </component>
+            <border type="none"/>
+            <children>
+              <component id="d5c94" class="javax.swing.JTextArea" binding="txtMessage">
+                <constraints/>
+                <properties/>
+              </component>
+            </children>
+          </scrollpane>
         </children>
       </splitpane>
       <component id="399a9" class="javax.swing.JRadioButton" binding="primaryRadioButton1" default-binding="true">

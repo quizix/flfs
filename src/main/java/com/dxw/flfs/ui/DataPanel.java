@@ -47,7 +47,7 @@ public class DataPanel {
         ServiceRegistry r = ServiceRegistryImpl.getInstance();
         notificationManager = (NotificationManager) r.lookupService(Services.NOTIFICATION_MANAGER);
 
-        proxy = PlcDelegateFactory.getPlcProxy();
+        proxy = PlcDelegateFactory.getPlcDelegate();
         proxy.addModelChangedListener( event-> {
             long field =event.getField();
             PlcModel model = event.getModel();

@@ -271,12 +271,12 @@ class PlcDelegateImpl implements PlcDelegate {
 
     //region 送料PLC
     @Override
-    public void setStyStatus(boolean[] status) {
+    public void setStyStatus(short[] status) {
          /*
             设置栏位信息：24个栏位，转化为2个short
             */
         try {
-            plcSecondary.setCoils(PlcRegisterAddress.STY_STATUS_ADDRESS, status);
+            plcSecondary.setRegisters(PlcRegisterAddress.STY_STATUS_ADDRESS, status);
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
@@ -318,7 +318,7 @@ class PlcDelegateImpl implements PlcDelegate {
     @Override
     public Integer getPumpCondition() {
         try {
-            int result = plcSecondary.getRegisterInt(PlcRegisterAddress.PLC_DATA_FEEDBACK_FLAG2, RegisterType.HoldingRegister);
+            int result = plcSecondary.getRegisterInt(PlcRegisterAddress.FEEDING_PUMP_WORKING_HOURS, RegisterType.HoldingRegister);
 
             return result;
         } catch (PlcException ex) {

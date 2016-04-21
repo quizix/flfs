@@ -9,11 +9,12 @@ import org.quartz.JobExecutionException;
 /**
  * Created by Administrator on 2016/4/6.
  * 轮询发酵状态
+ * 每半小时执行一次
  */
 public class PollFermentStatusJob extends AbstractJob {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcDelegate();
 
         float value = proxy.getPhValue();
 

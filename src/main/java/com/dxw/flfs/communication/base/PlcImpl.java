@@ -24,9 +24,9 @@ import com.serotonin.modbus4j.msg.WriteCoilsRequest;
 import com.serotonin.modbus4j.msg.WriteCoilsResponse;
 import com.serotonin.modbus4j.msg.WriteRegistersRequest;
 import com.serotonin.modbus4j.msg.WriteRegistersResponse;
+import com.sun.corba.se.spi.oa.ObjectAdapter;
 
 /**
- *
  * @author Administrator
  */
 class PlcImpl implements Plc {
@@ -39,6 +39,8 @@ class PlcImpl implements Plc {
         this.config = config;
         this.slaveId = config.getSlaveId();
     }
+
+    //private Object sync = new Object();
 
     @Override
     public boolean getCoil(int offset) throws PlcException {
@@ -61,12 +63,12 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
-        }
-        finally {
-            if( master != null){
+        } finally {
+            if (master != null) {
                 master.destroy();
             }
         }
+
     }
 
     @Override
@@ -88,9 +90,8 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
-        }
-        finally {
-            if( master != null){
+        } finally {
+            if (master != null) {
                 master.destroy();
             }
         }
@@ -118,9 +119,8 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
-        }
-        finally {
-            if( master != null){
+        } finally {
+            if (master != null) {
                 master.destroy();
             }
         }
@@ -156,12 +156,12 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
-        }
-        finally {
-            if( master != null){
+        } finally {
+            if (master != null) {
                 master.destroy();
             }
         }
+
     }
 
     @Override
@@ -192,13 +192,11 @@ class PlcImpl implements Plc {
             return Converter.shortsToInts(data);
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
-        }
-        finally {
-            if( master != null){
+        } finally {
+            if (master != null) {
                 master.destroy();
             }
         }
-
     }
 
     @Override
@@ -230,13 +228,11 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
-        }
-        finally {
-            if( master != null){
+        } finally {
+            if (master != null) {
                 master.destroy();
             }
         }
-
     }
 
     @Override
@@ -268,9 +264,8 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
-        }
-        finally {
-            if( master != null){
+        } finally {
+            if (master != null) {
                 master.destroy();
             }
         }
@@ -291,9 +286,8 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
-        }
-        finally {
-            if( master != null){
+        } finally {
+            if (master != null) {
                 master.destroy();
             }
         }
@@ -314,20 +308,23 @@ class PlcImpl implements Plc {
 
         } catch (ModbusInitException | ModbusTransportException ex) {
             throw new PlcException("Modbus发生异常:" + ex.getMessage(), ex);
-        }
-        finally {
-            if( master != null){
+        } finally {
+            if (master != null) {
                 master.destroy();
             }
         }
     }
 
+    Object sync = new Object();
+
     private ModbusMaster getTcpMaster() {
-        ModbusFactory factory = new ModbusFactory();
-        IpParameters primaryParams = new IpParameters();
-        primaryParams.setHost(config.getIp());
-        primaryParams.setPort(config.getPort());
-        return factory.createTcpMaster(primaryParams, false);
+        synchronized (sync) {
+            ModbusFactory factory = new ModbusFactory();
+            IpParameters params = new IpParameters();
+            params.setHost(config.getIp());
+            params.setPort(config.getPort());
+            return factory.createTcpMaster(params, false);
+        }
     }
 
 }

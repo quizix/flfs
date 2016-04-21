@@ -21,7 +21,7 @@ public class SetProductionInstructionJob extends AbstractJob {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         
         notify("开始下达做料信息");
-        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcDelegate();
         proxy.setProductionParam(0, 0, 0, new short[]{1,2,3});
     }
     

@@ -92,6 +92,7 @@ public class AppInitializer {
             config.setCreateTime(new Date());
             config.setModifyTime(new Date());
             config.setBatchCode("1");
+            config.setAppId(FlfsApp.getAppId());
             config.setHost("192.168.1.10");
             dao.update(config);
 
@@ -118,16 +119,17 @@ public class AppInitializer {
         scheduleMixingBarrelPollJob(s);
         scheduleFermentStatusPollJob(s);
         scheduleProductionInstructionJob(s);
+        scheduleSetStyStatusJob(s);
 
         s.start();
     }
     private static void scheduleFermentBarrelPollJob(Scheduler s) throws SchedulerException {
         JobDetail job = newJob(PollFermentBarrelStatusJob.class)
-                .withIdentity("pollFermentBarrwlStatusJob", "flfsGroup")
+                .withIdentity("pollFermentBarrelStatusJob", "flfsGroup")
                 .build();
 
         Trigger trigger = newTrigger()
-                .withIdentity("pollFermentBarrwlStatusTrigger", "flfsGroup")
+                .withIdentity("pollFermentBarrelStatusTrigger", "flfsGroup")
                 .startNow()
                 .withSchedule(
                         simpleSchedule()
@@ -198,6 +200,22 @@ public class AppInitializer {
                 .startNow()
                 .withSchedule(
                         cronSchedule("0 20 5/12 * * ?"))
+                .build();
+        s.scheduleJob(job, trigger);
+    }
+
+    private static void scheduleSetStyStatusJob(Scheduler s) throws SchedulerException {
+        JobDetail job = newJob(SetStyStatusJob.class)
+                .withIdentity("setStyStatusJob", "flfsGroup")
+                .build();
+
+        Trigger trigger = newTrigger()
+                .withIdentity("setStyStatusJobPollTrigger", "flfsGroup")
+                .startNow()
+                .withSchedule(
+                        simpleSchedule()
+                                .withIntervalInMinutes(1)
+                                .repeatForever())
                 .build();
         s.scheduleJob(job, trigger);
     }

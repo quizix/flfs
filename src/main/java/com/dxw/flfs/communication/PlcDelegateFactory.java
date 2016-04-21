@@ -17,7 +17,7 @@ public class PlcDelegateFactory {
 
     private static PlcDelegate proxy;
 
-    public static PlcDelegate getPlcProxy(){
+    public static PlcDelegate getPlcDelegate(){
         if(proxy ==null){
             Plc plcPrimary = PlcFactory.getPlc(PlcConfig.PRIMARY);
             Plc plcSecondary = PlcFactory.getPlc(PlcConfig.SECONDARY);

@@ -68,7 +68,7 @@ public class AutoAdaptScheduler implements FlfsScheduler {
      * @return
      */
     private float calcLastProduction() {
-        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcDelegate();
         PlcModel model = proxy.getModel();
 
         short[] barrels;
@@ -104,7 +104,7 @@ public class AutoAdaptScheduler implements FlfsScheduler {
      */
 
     private float getLastPumpedVolume() {
-        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcDelegate();
         PlcModel model = proxy.getModel();
 
         float[] data = proxy.getFlowValues();
