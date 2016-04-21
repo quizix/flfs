@@ -28,83 +28,29 @@ import static org.quartz.TriggerBuilder.newTrigger;
  */
 public class AppInitializer {
 
+    ServiceRegistry registry;
+    DbInitializer dbInitializer;
+    public AppInitializer(ServiceRegistry registry){
+        this.registry = registry;
+        dbInitializer = new DbInitializer(registry);
+    }
     /**
      * 初始化系统服务
      *
      * @throws ServiceException
      */
-    static void initServices() throws ServiceException {
-        ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+    public void initServices() throws ServiceException {
+        registerNotificationService();
+
+        dbInitializer.registerService();
+
+        dbInitializer.prepareData();
+    }
+
+    private void registerNotificationService() throws ServiceException {
         NotificationManager notificationManager = new NotificationManagerImpl();
         notificationManager.init();
         registry.register(notificationManager);
-
-        HibernateService hibernateService = new HibernateServiceImpl();
-        hibernateService.init();
-        registry.register(hibernateService);
-
-        //prepare the data.
-        try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
-            dao.begin();
-
-            Shed shed = new Shed();
-            shed.setCreateTime(new Date());
-            shed.setModifyTime(new Date());
-            shed.setAddress("江西鄱阳");
-            shed.setCode("12345678");
-            shed.setName("猪舍1");
-            dao.update(shed);
-
-            Batch batch = new Batch();
-            batch.setCode("1");
-            batch.setInStockNumber(100);
-            batch.setInStockDate(new Date());
-            batch.setInStockDuration(10);
-            batch.setCreateTime(new Date());
-            batch.setModifyTime(new Date());
-
-            dao.update(batch);
-
-            Set<Batch> batches = new HashSet<>();
-            batches.add(batch);
-
-            Set<Sty> sties = new HashSet<>();
-            for (int i = 0; i < 24; i++) {
-                Sty sty = new Sty();
-                sty.setCreateTime(new Date());
-                sty.setModifyTime(new Date());
-                sty.setCode(Integer.toString(i));
-                sty.setName("Sty" + i);
-                sty.setLastNumber(80 + i);
-                sty.setCurrentNumber(100 + i);
-                sty.setShed(shed);
-                sties.add(sty);
-                sty.setNo(i);
-
-                dao.update(sty);
-            }
-
-            batch.setSties(sties);
-
-            dao.update(batch);
-
-            AppConfig config = new AppConfig();
-            config.setCreateTime(new Date());
-            config.setModifyTime(new Date());
-            config.setBatchCode("1");
-            config.setAppId(FlfsApp.getAppId());
-            config.setHost("192.168.1.10");
-            dao.update(config);
-
-            dao.commit();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
-
-
-
 
 }

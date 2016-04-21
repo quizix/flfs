@@ -52,8 +52,9 @@ public class FlfsApp {
             JOptionPane.showMessageDialog(null, "无法获取程序appId！", "消息提示", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
-
-        AppInitializer.initServices();
+        //initialize the services.
+        new AppInitializer(ServiceRegistryImpl.getInstance())
+                .initServices();
     }
 
 
