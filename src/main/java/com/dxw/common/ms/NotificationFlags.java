@@ -4,6 +4,8 @@ package com.dxw.common.ms;
  * Created by Administrator on 2016/4/5.
  */
 public class NotificationFlags {
+    public final static int SYSTEM_STATUS = 0x1;
+
     public final static int MATERIAL_TOWER_STATUS = 0x10;
 
 

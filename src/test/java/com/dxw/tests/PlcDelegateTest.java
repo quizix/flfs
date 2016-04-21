@@ -153,7 +153,7 @@ public class PlcDelegateTest {
     @Test
     public void testSetStyStatus(){
         System.out.println("set sty status:");
-        boolean[] status = new boolean[24];
+        short[] status = new short[24];
         delegate.setStyStatus(status);
     }
 }

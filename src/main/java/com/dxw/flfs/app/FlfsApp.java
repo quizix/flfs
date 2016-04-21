@@ -6,6 +6,8 @@
 package com.dxw.flfs.app;
 
 import com.dxw.common.models.AppConfig;
+import com.dxw.common.ms.Notification;
+import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
@@ -160,7 +162,9 @@ public class FlfsApp {
                 @Override
                 public void windowOpened(WindowEvent e) {
                     try {
-                        AppInitializer.initJobs();
+                        new Keeper()
+                                .startJobs();
+
                     } catch (SchedulerException e1) {
                         e1.printStackTrace();
                     }
