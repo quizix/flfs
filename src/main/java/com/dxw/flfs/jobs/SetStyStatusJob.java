@@ -49,7 +49,7 @@ public class SetStyStatusJob extends AbstractJob {
 
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
 
-            Batch batch = dao.findBatchByCode(FlfsApp.getAppConfig().getBatchCode());
+            Batch batch = dao.findBatchByCode(FlfsApp.getContext().getBatchCode());
 
             Set<Sty> sties = batch.getSties();
             int size = sties.size();

@@ -35,46 +35,46 @@ import java.util.logging.Logger;
  * @author pronics3
  */
 public class FlfsApp {
-    private static String appId;
-    public static String getAppId() {
-        return appId;
-    }
-
-    private static AppConfig appConfig;
-    public static AppConfig getAppConfig() {
-        return appConfig;
-    }
+    private static AppContext context = new AppContext();
 
     private FlfsApp()
             throws ServiceException, SchedulerException {
-        appId = loadAppId();
-        if( appId == null ){
-            JOptionPane.showMessageDialog(null, "无法获取程序appId！", "消息提示", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-        }
+        loadAppId();
+
         //initialize the services.
         new AppInitializer(ServiceRegistryImpl.getInstance())
                 .initServices();
     }
 
+    public static AppContext getContext() {
+        return context;
+    }
 
-    private String loadAppId() {
+
+    private void loadAppId() {
+        String appId = null;
+
         Properties prop = new Properties();
         InputStream in = this.getClass().getResourceAsStream("/flfs.conf");
         try {
             prop.load(in);
-            return prop.getProperty("appId");
+            appId = prop.getProperty("appId");
+            context.setAppId(appId);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        if(appId == null){
+            JOptionPane.showMessageDialog(null, "无法获取程序appId！", "消息提示", JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
     }
 
     private void loadAppConfig() {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
         HibernateService hibernateService = (HibernateService)registry.lookupService(Services.HIBERNATE_SERVICE);
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
-            appConfig = dao.findAppConfig(appId);
+            AppConfig appConfig = dao.findAppConfig(context.getAppId());
+            context.setBatchCode(appConfig.getBatchCode());
         }
         catch(Exception ex){
             JOptionPane.showMessageDialog(null, "无法获取appConfig！", "消息提示", JOptionPane.ERROR_MESSAGE);

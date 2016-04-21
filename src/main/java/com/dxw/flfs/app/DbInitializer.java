@@ -83,7 +83,7 @@ public class DbInitializer {
             config.setCreateTime(new Date());
             config.setModifyTime(new Date());
             config.setBatchCode("1");
-            config.setAppId(FlfsApp.getAppId());
+            config.setAppId(FlfsApp.getContext().getAppId());
             config.setHost("192.168.1.10");
             dao.update(config);
 
