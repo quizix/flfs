@@ -5,8 +5,10 @@ import com.dxw.common.models.Sty;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
+import javafx.scene.control.TableSelectionModel;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
@@ -325,6 +327,8 @@ public class ShedDialog extends JDialog {
             }
             model.fireTableDataChanged();
 
+            if(model.getRowCount() >0)
+                tableShed.setRowSelectionInterval(0, 0);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -334,8 +338,24 @@ public class ShedDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        shedDataModel = new DefaultTableModel(shedColumns, 0);
+        shedDataModel = new DefaultTableModel(shedColumns, 0){
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+        };
+
+        shedDataModel.addTableModelListener( e->{
+            int type = e.getType();
+            if( type == TableModelEvent.INSERT || type == TableModelEvent.DELETE)
+                tableShed.setRowSelectionInterval(0, 0);
+
+
+        });
+
         tableShed = new JTable(shedDataModel);
+        tableShed.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 
         tableShed.getSelectionModel().addListSelectionListener(e -> {
 
@@ -370,8 +390,22 @@ public class ShedDialog extends JDialog {
         });
 
 
-        styDataModel = new DefaultTableModel(styColumns, 0);
+
+        styDataModel = new DefaultTableModel(styColumns, 0){
+            @Override
+            public boolean isCellEditable(int i, int i1) {
+                return false;
+            }
+        };
         tableSty = new JTable(styDataModel);
+        tableSty.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        styDataModel.addTableModelListener( e->{
+            int type = e.getType();
+            if( type == TableModelEvent.INSERT || type == TableModelEvent.DELETE)
+                tableSty.setRowSelectionInterval(0, 0);
+
+
+        });
         tableSty.getSelectionModel().addListSelectionListener(e -> {
 
             int rowIndex = tableSty.getSelectedRow();
@@ -384,5 +418,7 @@ public class ShedDialog extends JDialog {
             btnDeleteSty.setEnabled(true);
 
         });
+
+
     }
 }
