@@ -2,9 +2,9 @@ package com.dxw.flfs.scheduling;
 
 import com.dxw.common.models.Batch;
 import com.dxw.common.utils.TimeUtil;
-import com.dxw.flfs.communication.PlcProxy;
-import com.dxw.flfs.communication.PlcProxyFactory;
-import com.dxw.flfs.communication.PlcProxyModel;
+import com.dxw.flfs.communication.PlcDelegate;
+import com.dxw.flfs.communication.PlcDelegateFactory;
+import com.dxw.flfs.communication.PlcModel;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
@@ -68,8 +68,8 @@ public class AutoAdaptScheduler implements FlfsScheduler {
      * @return
      */
     private float calcLastProduction() {
-        PlcProxy proxy = PlcProxyFactory.getPlcProxy();
-        PlcProxyModel model = proxy.getModel();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
+        PlcModel model = proxy.getModel();
 
         short[] barrels;
         if(amOrPm)
@@ -104,8 +104,8 @@ public class AutoAdaptScheduler implements FlfsScheduler {
      */
 
     private float getLastPumpedVolume() {
-        PlcProxy proxy = PlcProxyFactory.getPlcProxy();
-        PlcProxyModel model = proxy.getModel();
+        PlcDelegate proxy = PlcDelegateFactory.getPlcProxy();
+        PlcModel model = proxy.getModel();
 
         float[] data = proxy.getFlowValues();
 

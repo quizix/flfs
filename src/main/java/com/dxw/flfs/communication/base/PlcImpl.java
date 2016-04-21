@@ -5,7 +5,6 @@
  */
 package com.dxw.flfs.communication.base;
 
-import com.dxw.flfs.communication.RegisterType;
 import com.serotonin.modbus4j.ModbusFactory;
 import com.serotonin.modbus4j.ModbusMaster;
 import com.serotonin.modbus4j.exception.ModbusInitException;

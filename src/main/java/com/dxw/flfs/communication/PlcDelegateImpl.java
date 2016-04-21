@@ -12,6 +12,7 @@ import com.dxw.common.services.Services;
 import com.dxw.common.utils.TimeUtil;
 import com.dxw.flfs.communication.base.Plc;
 import com.dxw.flfs.communication.base.PlcException;
+import com.dxw.flfs.communication.base.RegisterType;
 
 import java.util.ArrayList;
 import java.util.List;

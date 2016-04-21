@@ -5,8 +5,6 @@
  */
 package com.dxw.flfs.communication.base;
 
-import com.dxw.flfs.communication.RegisterType;
-
 /**
  * 对Modbus的读写寄存器操作进行封装
  *
