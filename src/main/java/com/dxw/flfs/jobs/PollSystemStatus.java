@@ -21,8 +21,8 @@ import static groovy.xml.Entity.not;
  */
 public class PollSystemStatus extends AbstractJob {
 
-    private int phCountDown = 60;
-    private int materialTowerCountDown = 10;
+    private static int phCountDown = 0;
+    private static int materialTowerCountDown = 0;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -37,7 +37,7 @@ public class PollSystemStatus extends AbstractJob {
         }
 
         //查询料塔状态:10分钟执行一次
-        if(--materialTowerCountDown ==0)
+        if(materialTowerCountDown-- ==0)
         {
             boolean[] status = delegate.getMaterialTowerStatus();
 
@@ -71,7 +71,7 @@ public class PollSystemStatus extends AbstractJob {
 
 
         //发酵罐PH值:60分钟执行一次
-        if (--phCountDown == 0) {
+        if (phCountDown-- == 0) {
             Float value = delegate.getPhValue();
             if (value != null)
                 notifyData(NotificationFlags.FERMENT_BARREL_PH_VALUE, value);

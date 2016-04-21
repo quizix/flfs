@@ -24,6 +24,7 @@ public class DataPanel {
     private JLabel lblMaterialTowerLow;
     private JLabel lblMaterialTowerEmpty;
     private JLabel lblMixingBarrelStatus;
+    private JLabel lblSystemStatus;
     private ImageIcon iconAlert;
     private AbstractTableModel dataModel;
 
@@ -48,19 +49,38 @@ public class DataPanel {
         notificationManager = (NotificationManager) r.lookupService(Services.NOTIFICATION_MANAGER);
 
         proxy = PlcDelegateFactory.getPlcDelegate();
-        proxy.addModelChangedListener( event-> {
-            long field =event.getField();
+        proxy.addModelChangedListener(event -> {
+            long field = event.getField();
             PlcModel model = event.getModel();
 
-            if( field == PlcModelField.FERMENT_BARREL_STATUS){
+            if (field == PlcModelField.SYSTEM_STATUS) {
+                Short status = model.getSystemStatus();
+                switch(status) {
+                    case 1:
+                        this.lblSystemStatus.setText("停机");
+                        break;
+                    case 2:
+                        this.lblSystemStatus.setText("做料");
+                        break;
+                    case 3:
+                        this.lblSystemStatus.setText("清洗");
+                        break;
+                    case 4:
+                        this.lblSystemStatus.setText("紧停");
+                        break;
+                    case 5:
+                        this.lblSystemStatus.setText("冷启动");
+                        break;
+                }
+
+            } else if (field == PlcModelField.FERMENT_BARREL_STATUS) {
                 boolean[] data = model.getFermentBarrelStatus();
                 for (int i = 0; i < Math.min(data.length, fermentData.length); i++) {
                     fermentData[i][1] = (data[i]) ? "满" : "空";
                     dataModel.fireTableCellUpdated(i, 1);
                 }
                 dataModel.fireTableDataChanged();
-            }
-            else if( field == PlcModelField.MATERIAL_TOWER_ALARM){
+            } else if (field == PlcModelField.MATERIAL_TOWER_ALARM) {
                 Boolean lowAlarm = model.getMaterialTowerLowAlarm();
                 Boolean emptyAlarm = model.getMaterialTowerEmptyAlarm();
 
@@ -79,23 +99,21 @@ public class DataPanel {
                     lblMaterialTowerEmpty.setIcon(null);
                     lblMaterialTowerEmpty.setText("正常");
                 }
-            }
-            else if( field == PlcModelField.FERMENT_BARREL_IN_OUT){
+            } else if (field == PlcModelField.FERMENT_BARREL_IN_OUT) {
                 short in = model.getFermentBarrelInNo();
                 short out = model.getFermentBarrelOutNo();
                 lblFermentBarrelIn.setText(Short.toString(in));
                 lblFermentBarrelOut.setText(Short.toString(out));
-            }
-            else if( field == PlcModelField.MIXING_BARREL_STATUS){
+            } else if (field == PlcModelField.MIXING_BARREL_STATUS) {
                 Short status = model.getMixingBarrelStatus();
-                lblMixingBarrelStatus.setText(status==0 ? "空闲":"运行");
-            }
-            else if( field == PlcModelField.PH_VALUE){
+                lblMixingBarrelStatus.setText(status == 0 ? "空闲" : "运行");
+            } else if (field == PlcModelField.PH_VALUE) {
                 float ph = model.getPh();
                 lblPh.setText(Float.toString(ph));
             }
 
-        } );
+
+        });
     }
 
     private void createUIComponents() {

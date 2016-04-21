@@ -149,7 +149,9 @@ class PlcDelegateImpl implements PlcDelegate {
     @Override
     public short[] getFermentBarrelAction() {
         try {
-            return plcPrimary.getRegistersShort(PlcRegisterAddress.FERMENT_BARREL_WORKING_PARAM, RegisterType.HoldingRegister, 2);
+            short[] data = plcPrimary.getRegistersShort(PlcRegisterAddress.FERMENT_BARREL_WORKING_PARAM, RegisterType.HoldingRegister, 2);
+            if( data != null)
+                model.setFermentBarrelInNo(data[0], data[1]);
         } catch (PlcException ex) {
             sendNotification(ex.getMessage());
         }
