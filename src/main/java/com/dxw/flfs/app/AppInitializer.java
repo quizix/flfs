@@ -44,7 +44,7 @@ public class AppInitializer {
 
         dbInitializer.registerService();
 
-        dbInitializer.prepareData();
+        //dbInitializer.prepareData();
     }
 
     private void registerNotificationService() throws ServiceException {

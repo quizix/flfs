@@ -111,6 +111,15 @@ public class FlfsDaoImpl implements FlfsDao {
         return null;
     }
 
+    @Override
+    public Shed findShedById(Long id) {
+        return session.load(Shed.class, id);
+    }
+
+    @Override
+    public Sty findStyById(Long id) {
+        return session.load(Sty.class, id);
+    }
 
 
     @Override

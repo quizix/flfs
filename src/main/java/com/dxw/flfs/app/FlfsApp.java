@@ -68,10 +68,10 @@ public class FlfsApp {
             System.exit(0);
         }
     }
-
+    HibernateService hibernateService;
     private void loadAppConfig() {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
-        HibernateService hibernateService = (HibernateService)registry.lookupService(Services.HIBERNATE_SERVICE);
+        hibernateService = (HibernateService)registry.lookupService(Services.HIBERNATE_SERVICE);
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
             AppConfig appConfig = dao.findAppConfig(context.getAppId());
             context.setBatchCode(appConfig.getBatchCode());
@@ -98,8 +98,8 @@ public class FlfsApp {
 
         loadAppConfig();
 
-        System.setProperty("awt.useSystemAAFontSettings", "on");
-        System.setProperty("swing.aatext", "true");
+        //System.setProperty("awt.useSystemAAFontSettings", "on");
+        //WSystem.setProperty("swing.aatext", "true");
 
         //<editor-fold defaultstate="collapsed" desc="#Set ui font ">
         Font font = new Font("微软雅黑", Font.PLAIN,12);
@@ -157,7 +157,7 @@ public class FlfsApp {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            JFrame frame = new MainFrame();
+            JFrame frame = new MainFrame(hibernateService);
 
             frame.addWindowListener(new WindowAdapter() {
                 @Override
@@ -166,8 +166,8 @@ public class FlfsApp {
                         new Keeper()
                                 .startJobs();
 
-                    } catch (SchedulerException e1) {
-                        e1.printStackTrace();
+                    } catch (SchedulerException ex) {
+                        ex.printStackTrace();
                     }
                 }
             });

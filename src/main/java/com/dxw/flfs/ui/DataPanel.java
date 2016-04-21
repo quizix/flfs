@@ -41,15 +41,15 @@ public class DataPanel {
     };
 
     NotificationManager notificationManager;
-    PlcDelegate proxy;
+    PlcDelegate delegate;
 
     public DataPanel() {
         iconAlert = new ImageIcon(this.getClass().getResource("/images/alert-icon.png"));
         ServiceRegistry r = ServiceRegistryImpl.getInstance();
         notificationManager = (NotificationManager) r.lookupService(Services.NOTIFICATION_MANAGER);
 
-        proxy = PlcDelegateFactory.getPlcDelegate();
-        proxy.addModelChangedListener(event -> {
+        delegate = PlcDelegateFactory.getPlcDelegate();
+        delegate.addModelChangedListener(event -> {
             long field = event.getField();
             PlcModel model = event.getModel();
 

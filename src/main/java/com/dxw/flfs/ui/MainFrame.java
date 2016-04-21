@@ -1,5 +1,6 @@
 package com.dxw.flfs.ui;
 
+import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.ui.dialogs.BatchDialog;
 import com.dxw.flfs.ui.dialogs.ShedDialog;
 import com.dxw.flfs.ui.dialogs.StockDialog;
@@ -13,8 +14,9 @@ import java.awt.*;
  */
 public class MainFrame extends JFrame {
 
-
-    public MainFrame(){
+    HibernateService hibernateService;
+    public MainFrame(HibernateService hibernateService){
+        this.hibernateService = hibernateService;
         initComponents();
     }
 
@@ -58,10 +60,11 @@ public class MainFrame extends JFrame {
             System.exit(0);
         });
 
-        miShed.addActionListener(e->{
-            ShedDialog dialog = new ShedDialog();
-            dialog.pack();
 
+        miShed.addActionListener(e->{
+            ShedDialog dialog = new ShedDialog(hibernateService);
+            dialog.setTitle("猪舍管理");
+            dialog.setSize(800,600);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
 
@@ -69,16 +72,16 @@ public class MainFrame extends JFrame {
 
         miBatch.addActionListener(e->{
             BatchDialog dialog = new BatchDialog();
-            dialog.pack();
-
+            dialog.setTitle("批次管理");
+            dialog.setSize(800,600);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         });
 
         miStock.addActionListener(e->{
             StockDialog dialog = new StockDialog();
-            dialog.pack();
-
+            dialog.setTitle("库存管理");
+            dialog.setSize(800,600);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         });
