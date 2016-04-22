@@ -17,15 +17,19 @@ public interface FlfsDao extends AutoCloseable {
 
     Sty findStyByCode(String code);
 
+    Batch findBatchByCode(String code);
+
     Shed findShedById(Long id);
 
     Sty findStyById(Long id);
 
-    Batch findBatchByCode(String code);
+    Batch findBatchById(Long id);
 
     AppConfig findAppConfig(String appId);
 
     List findAllSheds();
+
+    List findAllBatches();
     
     List findStiesByShed(String code);
 

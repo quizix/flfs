@@ -5,17 +5,16 @@ import com.dxw.common.models.Sty;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
-import javafx.scene.control.TableSelectionModel;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Date;
 import java.util.List;
-
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 
 public class ShedDialog extends JDialog {
     private JPanel contentPane;
@@ -60,20 +59,18 @@ public class ShedDialog extends JDialog {
             public void windowClosing(WindowEvent e) {
                 onCancel();
             }
+            @Override
+            public void windowOpened(WindowEvent e) {
+                super.windowOpened(e);
+
+                ShedDialog.this.load();
+            }
         });
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(e -> onCancel(),
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-                super.windowOpened(e);
-
-                ShedDialog.this.loadSheds();
-            }
-        });
         btnAddShed.addActionListener(e -> {
             this.btnShedAddOrSave.setText("添加");
             this.txtShedCode.setText("");
@@ -85,10 +82,11 @@ public class ShedDialog extends JDialog {
         btnEditShed.addActionListener(e -> {
             this.btnShedAddOrSave.setText("修改");
             int rowIndex = tableShed.getSelectedRow();
-            String code = (String) tableShed.getModel().getValueAt(rowIndex, 2);
+
+            Long id = (Long)(tableShed.getModel().getValueAt(rowIndex, 0));
 
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
-                Shed shed = dao.findShedByCode(code);
+                Shed shed = dao.findShedById(id);
 
                 if( shed != null){
                     this.txtShedName.setText( shed.getName());
@@ -309,7 +307,7 @@ public class ShedDialog extends JDialog {
         dispose();
     }
 
-    private void loadSheds() {
+    private void load() {
 
         try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
             final List sheds = dao.findAllSheds();
@@ -347,10 +345,10 @@ public class ShedDialog extends JDialog {
 
         shedDataModel.addTableModelListener( e->{
             int type = e.getType();
-            if( type == TableModelEvent.INSERT || type == TableModelEvent.DELETE)
-                tableShed.setRowSelectionInterval(0, 0);
-
-
+            if( type == TableModelEvent.INSERT || type == TableModelEvent.DELETE) {
+                if(tableShed.getRowCount() >0)
+                    tableShed.setRowSelectionInterval(0, 0);
+            }
         });
 
         tableShed = new JTable(shedDataModel);
@@ -368,10 +366,10 @@ public class ShedDialog extends JDialog {
             btnEditShed.setEnabled(true);
             btnAddSty.setEnabled(true);
 
-            String code = (String) tableShed.getModel().getValueAt(rowIndex, 2);
+            Long id = (Long)(tableShed.getModel().getValueAt(rowIndex, 0));
 
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
-                Shed shed = dao.findShedByCode(code);
+                Shed shed = dao.findShedById(id);
 
                 DefaultTableModel model = (DefaultTableModel) tableSty.getModel();
                 model.getDataVector().removeAllElements();

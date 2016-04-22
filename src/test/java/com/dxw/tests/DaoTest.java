@@ -89,7 +89,7 @@ public class DaoTest {
             batch.setCode("1");
             batch.setModifyTime(new Date());
             batch.setInStockDuration(100);
-            batch.setInStockDate(new Date());
+            batch.setStartDate(new Date());
             batch.setInStockNumber(100);
             batch.setSties(sties);
 

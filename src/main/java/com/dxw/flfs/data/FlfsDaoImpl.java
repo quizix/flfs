@@ -70,6 +70,12 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
+    public List findAllBatches() {
+        Query query = session.createQuery("from Batch");
+        return query.list();
+    }
+
+    @Override
     public List findAllUsers() {
         Query query = session.createQuery("from User");
         return query.list();
@@ -119,6 +125,11 @@ public class FlfsDaoImpl implements FlfsDao {
     @Override
     public Sty findStyById(Long id) {
         return session.load(Sty.class, id);
+    }
+
+    @Override
+    public Batch findBatchById(Long id) {
+        return session.load(Batch.class, id);
     }
 
 

@@ -7,11 +7,14 @@ import com.dxw.common.models.Sty;
 import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.Services;
+import com.dxw.common.utils.TimeUtil;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.data.HibernateServiceImpl;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalUnit;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,13 +49,16 @@ public class DbInitializer {
             shed.setName("猪舍1");
             dao.update(shed);
 
+            Date now = new Date();
+            LocalDate later = TimeUtil.fromDate(now);
+            later.plusDays(10);
             Batch batch = new Batch();
             batch.setCode("1");
             batch.setInStockNumber(100);
-            batch.setInStockDate(new Date());
-            batch.setInStockDuration(10);
-            batch.setCreateTime(new Date());
-            batch.setModifyTime(new Date());
+            batch.setStartDate(now);
+            batch.setStartDate(new Date());
+            batch.setCreateTime(now);
+            batch.setModifyTime(now);
 
             dao.update(batch);
 

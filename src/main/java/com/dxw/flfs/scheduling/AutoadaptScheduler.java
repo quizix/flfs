@@ -49,10 +49,8 @@ public class AutoAdaptScheduler implements FlfsScheduler {
      * @return
      */
     private boolean isInitStage() {
-        Date date = batch.getInStockDate();
-
-        LocalDate start = TimeUtil.fromDate(date);
-        LocalDate end = start.plus(batch.getInStockDuration(), ChronoUnit.DAYS);
+        Date endDate = batch.getStartDate();
+        LocalDate end = TimeUtil.fromDate(endDate);
 
         LocalDate now = LocalDate.now();
 
@@ -170,7 +168,7 @@ public class AutoAdaptScheduler implements FlfsScheduler {
         if (isInitStage()) {
             //在入栏阶段，先采用理论值
             LocalDate now = LocalDate.now();
-            LocalDate start = TimeUtil.fromDate(batch.getInStockDate());
+            LocalDate start = TimeUtil.fromDate(batch.getStartDate());
             int index = now.getDayOfYear() - start.getDayOfYear();
             return SchedulerParams.INIT_STAGE_COMSUMPTIONS[index];
         } else {

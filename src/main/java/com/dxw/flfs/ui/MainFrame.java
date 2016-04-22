@@ -71,7 +71,7 @@ public class MainFrame extends JFrame {
         });
 
         miBatch.addActionListener(e->{
-            BatchDialog dialog = new BatchDialog();
+            BatchDialog dialog = new BatchDialog(hibernateService);
             dialog.setTitle("批次管理");
             dialog.setSize(800,600);
             dialog.setLocationRelativeTo(null);

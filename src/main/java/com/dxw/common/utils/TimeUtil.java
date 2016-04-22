@@ -5,6 +5,7 @@
  */
 package com.dxw.common.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -19,6 +20,19 @@ import java.util.Date;
  */
 public class TimeUtil {
 
+    public static String formatDate(Date date){
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        return f.format(date);
+    }
+
+    public static Date parseDate(String source){
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return f.parse(source);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
     public static String getCurrentTime() {
         SimpleDateFormat f = new SimpleDateFormat("HH:mm:ss");
         String s = f.format(Calendar.getInstance().getTime());

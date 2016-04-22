@@ -38,16 +38,16 @@ public class Batch{
     private String code;
 
     /**
-     * 入栏时间
+     * 入栏开始时间
      */
-    @Column(name="inStockDate")
-    private Date inStockDate;
+    @Column(name="startDate")
+    private Date startDate;
 
     /**
-     * 入栏时间：先简化模型，每天入栏数量一样
+     * 入栏结束时间
      */
-    @Column(name="inStockDuration")
-    private int inStockDuration;
+    @Column(name="endDate")
+    private Date endDate;
 
     /**
      * 每天入栏数量
@@ -112,20 +112,20 @@ public class Batch{
         this.inStockNumber = inStockNumber;
     }
 
-    public int getInStockDuration() {
-        return inStockDuration;
+
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setInStockDuration(int inStockDuration) {
-        this.inStockDuration = inStockDuration;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getInStockDate() {
-        return inStockDate;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setInStockDate(Date inStockDate) {
-        this.inStockDate = inStockDate;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
-
 }
