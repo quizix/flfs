@@ -65,6 +65,7 @@ public class Shed{
      * 栏位
      */
     @OneToMany(mappedBy = "shed")
+    @OrderBy("id")
     private Set<Sty> sties;
 
     public Long getId() {

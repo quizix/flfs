@@ -12,7 +12,10 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AddStyAssociationDialog extends JDialog {
     private JPanel contentPane;
@@ -23,7 +26,20 @@ public class AddStyAssociationDialog extends JDialog {
     private AbstractTableModel shedDataModel;
     private AbstractTableModel styDataModel;
 
-    private Batch batch;
+    private Set<Sty> sties;
+    private Set<Sty> selected;
+
+
+    public Set<Sty> getSelected() {
+
+        return selected;
+    }
+
+    public boolean getResult() {
+        return result;
+    }
+
+    boolean result = true;
 
     HibernateService hibernateService;
     private String[] shedColumns = {"猪舍编号", "名称", "编码", "创建时间", "修改时间",
@@ -31,9 +47,10 @@ public class AddStyAssociationDialog extends JDialog {
 
     private String[] styColumns = {"栏位编号", "名称", "编码", "创建时间", "修改时间",
     };
-    public AddStyAssociationDialog(HibernateService hibernateService, Batch batch) {
+    public AddStyAssociationDialog(HibernateService hibernateService, Set<Sty> sties) {
         this.hibernateService = hibernateService;
-        this.batch = batch;
+
+        this.sties = sties;
 
         setContentPane(contentPane);
         setModal(true);
@@ -65,11 +82,48 @@ public class AddStyAssociationDialog extends JDialog {
 
     private void onOK() {
         // add your code here
+        this.result = true;
+
+        DefaultTableModel model = (DefaultTableModel) tableSty.getModel();
+
+        List<Long> ids = new ArrayList<>();
+
+        int[] rowIndices = tableSty.getSelectedRows();
+        if( rowIndices != null && rowIndices.length!=0) {
+            for (int i = 0; i < rowIndices.length; i++) {
+                ids.add((Long) model.getValueAt(rowIndices[i], 0));
+            }
+        }
+        int rowIndex = tableShed.getSelectedRow();
+        Long id = (Long)(tableShed.getModel().getValueAt(rowIndex, 0));
+
+
+        selected = new HashSet<>();
+        try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
+            Shed shed = dao.findShedById(id);
+
+            if( shed.getSties() != null){
+                shed.getSties().stream()
+                        .filter(sty -> {
+                            if( ids.contains(sty.getId()))
+                                return true;
+                            return false;
+                        })
+                        .forEach(sty -> {
+                            selected.add(sty);
+                        });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //selected
+
         dispose();
     }
 
     private void onCancel() {
         // add your code here if necessary
+        this.result = false;
         dispose();
     }
 
@@ -131,16 +185,23 @@ public class AddStyAssociationDialog extends JDialog {
 
                 DefaultTableModel model = (DefaultTableModel) tableSty.getModel();
                 model.getDataVector().removeAllElements();
-                shed.getSties().stream()
-                        .filter(sty -> !batch.getSties().contains(sty))
-                        .forEach(sty -> {
-                            Object[] row = {sty.getId(), sty.getName(), sty.getCode(),
-                            sty.getCreateTime(), sty.getModifyTime()
-                    };
-                    model.addRow(row);
-                });
+                if( shed.getSties() != null){
+                    shed.getSties().stream()
+                            .filter(sty -> {
+                                for (Sty sty2 : this.sties) {
+                                    if( sty.getId().equals(sty2.getId()))
+                                        return false;
+                                }
+                                return true;
+                            })
+                            .forEach(sty -> {
+                                Object[] row = {sty.getId(), sty.getName(), sty.getCode(),
+                                        sty.getCreateTime(), sty.getModifyTime()
+                                };
+                                model.addRow(row);
+                            });
+                }
                 model.fireTableDataChanged();
-
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
@@ -160,20 +221,14 @@ public class AddStyAssociationDialog extends JDialog {
             int type = e.getType();
             if( type == TableModelEvent.INSERT || type == TableModelEvent.DELETE)
                 tableSty.setRowSelectionInterval(0, 0);
-
-
         });
         tableSty.getSelectionModel().addListSelectionListener(e -> {
 
             int rowIndex = tableSty.getSelectedRow();
             if (rowIndex == -1) {
-
                 return;
             }
-
-
         });
-
     }
 }
 

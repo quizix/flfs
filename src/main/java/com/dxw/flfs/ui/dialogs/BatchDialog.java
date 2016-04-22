@@ -14,10 +14,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class BatchDialog extends JDialog {
     private JPanel contentPane;
@@ -172,20 +169,47 @@ public class BatchDialog extends JDialog {
             int batchIndex = tableBatch.getSelectedRow();
             Long id = (Long)(tableBatch.getModel().getValueAt(batchIndex, 0));
 
-            Batch batch = null;
+            Set<Sty> sties = new HashSet<>();
 
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
-                batch = dao.findBatchById(id);
-
+                Batch batch = dao.findBatchById(id);
+                sties.addAll( batch.getSties());
 
             } catch (Exception e1) {
                 e1.printStackTrace();
+                return;
             }
 
             AddStyAssociationDialog dialog = new AddStyAssociationDialog(this.hibernateService,
-                    batch);
+                    sties);
+            dialog.setSize(800,600);
             dialog.setModal(true);
             dialog.setVisible(true);
+            if(dialog.getResult()){
+                Set<Sty> selected = dialog.getSelected();
+
+                try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
+                    dao.begin();
+                    Batch batch = dao.findBatchById(id);
+                    batch.getSties().addAll(selected);
+                    dao.update(batch);
+                    dao.commit();
+
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+
+                DefaultTableModel model = (DefaultTableModel) tableSty.getModel();
+                for (Sty sty : selected) {
+                    Object[] row = {sty.getId(), sty.getName(), sty.getCode(),
+                            sty.getCreateTime(), sty.getModifyTime()
+                    };
+                    model.addRow(row);
+                }
+                model.fireTableDataChanged();
+
+            }
+
         });
         btnRemoveSty.addActionListener(e -> {
             DefaultTableModel model = (DefaultTableModel) tableSty.getModel();

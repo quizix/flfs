@@ -12,7 +12,9 @@
       </nested-form>
       <toolbar id="d1023">
         <constraints border-constraint="North"/>
-        <properties/>
+        <properties>
+          <floatable value="false"/>
+        </properties>
         <border type="none"/>
         <children>
           <component id="ccf35" class="javax.swing.JButton" binding="btnStart">

@@ -61,6 +61,7 @@ public class Batch{
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(name="flfs_batch_sty",
             joinColumns=@JoinColumn(name="batchId"), inverseJoinColumns=@JoinColumn(name="styId"))
+    @OrderBy("id")
     private Set<Sty> sties;
 
     public Long getId() {

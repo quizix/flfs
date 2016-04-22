@@ -120,7 +120,9 @@
                       </grid>
                       <forms defaultalign-horz="false"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <floatable value="false"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="c1b4e" class="javax.swing.JButton" binding="btnAddShed">
@@ -246,7 +248,9 @@
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                       <forms/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <floatable value="false"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="a44a0" class="javax.swing.JButton" binding="btnAddSty">

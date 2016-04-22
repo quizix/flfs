@@ -48,7 +48,9 @@
                       </grid>
                       <forms defaultalign-horz="false"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <floatable value="false"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="62c4c" class="javax.swing.JButton" binding="btnAddBatch">
@@ -189,7 +191,9 @@
                       </grid>
                       <forms defaultalign-horz="false"/>
                     </constraints>
-                    <properties/>
+                    <properties>
+                      <floatable value="false"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="1bb50" class="javax.swing.JButton" binding="btnAddSty">
