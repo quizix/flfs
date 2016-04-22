@@ -63,7 +63,7 @@ public class ShedDialog extends JDialog {
             public void windowOpened(WindowEvent e) {
                 super.windowOpened(e);
 
-                ShedDialog.this.load();
+                ShedDialog.this.onLoad();
             }
         });
 
@@ -307,11 +307,10 @@ public class ShedDialog extends JDialog {
         dispose();
     }
 
-    private void load() {
+    private void onLoad() {
 
         try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
             final List sheds = dao.findAllSheds();
-
 
             DefaultTableModel model = (DefaultTableModel) tableShed.getModel();
             model.getDataVector().removeAllElements();

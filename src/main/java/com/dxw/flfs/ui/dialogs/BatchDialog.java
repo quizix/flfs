@@ -14,6 +14,8 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +33,6 @@ public class BatchDialog extends JDialog {
     private JButton btnAddOrSave;
     private JPanel pnlBatchProperties;
     private JButton btnEditBatch;
-    private JButton btnDeleteBatch;
     HibernateService hibernateService;
     private AbstractTableModel batchDataModel;
     private AbstractTableModel styDataModel;
@@ -127,53 +128,103 @@ public class BatchDialog extends JDialog {
                     e1.printStackTrace();
                 }
             }
-            /*else if (btnStyAddOrSave.getText().equals("修改")) {
+            else if (btnAddOrSave.getText().equals("修改")) {
+
                 try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                     dao.begin();
 
+                    int rowIndex = tableBatch.getSelectedRow();
 
                     Long id = (Long)(tableBatch.getModel().getValueAt(rowIndex, 0));
 
                     dao.begin();
 
-                    Batch batch = dao.findBatchById(id);
+                    Batch item = dao.findBatchById(id);
 
-                    sty.setCode(this.txtStyCode.getText());
-                    sty.setNo(Integer.parseInt(this.txtStyNo.getText()));
-                    sty.setName(this.txtStyName.getText());
+                    item.setCode(this.txtCode.getText());
+                    item.setStartDate( TimeUtil.parseDate( this.txtStartDate.getText()));
+                    item.setEndDate( TimeUtil.parseDate( this.txtEndDate.getText()));
+                    item.setInStockNumber(Integer.parseInt(this.txtInStockNumber.getText()));
+
                     Date now = new Date();
-                    sty.setModifyTime(now);
+                    item.setModifyTime(now);
 
-                    dao.update(sty);
+                    dao.update(item);
                     dao.commit();
 
-                    DefaultTableModel model = (DefaultTableModel) tableSty.getModel();
-                    int rowIndex = tableSty.getSelectedRow();
-                    model.setValueAt(sty.getId(), rowIndex, 0);
-                    model.setValueAt(sty.getName(), rowIndex, 1);
-                    model.setValueAt(sty.getCode(), rowIndex, 2);
-                    model.setValueAt(sty.getCreateTime(), rowIndex, 3);
-                    model.setValueAt(sty.getModifyTime(), rowIndex, 4);
+                    DefaultTableModel model = (DefaultTableModel) tableBatch.getModel();
+                    model.setValueAt(item.getId(), rowIndex, 0);
+                    model.setValueAt(item.getCode(), rowIndex, 1);
+                    model.setValueAt(item.getStartDate(), rowIndex, 2);
+                    model.setValueAt(item.getEndDate(), rowIndex, 3);
+                    model.setValueAt(item.getInStockNumber(), rowIndex, 4);
 
                     model.fireTableRowsUpdated(rowIndex, rowIndex);
 
-                    this.pnlStyProperties.setVisible(false);
+                    this.pnlBatchProperties.setVisible(false);
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-            }*/
+            }
         });
-        btnDeleteBatch.addActionListener(e -> {
 
-        });
         btnAddSty.addActionListener(e -> {
+            int batchIndex = tableBatch.getSelectedRow();
+            Long id = (Long)(tableBatch.getModel().getValueAt(batchIndex, 0));
 
+            Batch batch = null;
+
+            try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
+                batch = dao.findBatchById(id);
+
+
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+
+            AddStyAssociationDialog dialog = new AddStyAssociationDialog(this.hibernateService,
+                    batch);
+            dialog.setModal(true);
+            dialog.setVisible(true);
         });
         btnRemoveSty.addActionListener(e -> {
+            DefaultTableModel model = (DefaultTableModel) tableSty.getModel();
 
+            //取消关联
+
+            int[] rowIndices = tableSty.getSelectedRows();
+            if( rowIndices != null && rowIndices.length!=0){
+                List<Long> ids = new ArrayList<>();
+                for(int i=0;i<rowIndices.length;i++){
+                    ids.add( (Long)model.getValueAt(rowIndices[i], 0));
+                }
+
+                int batchIndex = tableBatch.getSelectedRow();
+                Long id = (Long)(tableBatch.getModel().getValueAt(batchIndex, 0));
+
+                try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
+                    dao.begin();
+
+                    Batch item = dao.findBatchById(id);
+                    item.getSties().removeIf( sty-> ids.contains(sty.getId()));
+
+                    dao.update(item);
+                    dao.commit();
+
+                    removeRows(model, rowIndices);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
         });
     }
-
+    public void removeRows(DefaultTableModel model, int[] indices) {
+        Arrays.sort(indices);
+        for (int i = indices.length - 1; i >= 0; i--) {
+            model.removeRow(indices[i]);
+            model.fireTableRowsDeleted(indices[i], indices[i]);
+        }
+    }
     private void onOK() {
         // add your code here
         dispose();

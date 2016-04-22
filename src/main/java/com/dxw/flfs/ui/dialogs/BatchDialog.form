@@ -66,14 +66,6 @@
                           <text value="修改批次"/>
                         </properties>
                       </component>
-                      <component id="bc060" class="javax.swing.JButton" binding="btnDeleteBatch">
-                        <constraints/>
-                        <properties>
-                          <enabled value="false"/>
-                          <icon value="images/delete-icon.png"/>
-                          <text value="删除批次"/>
-                        </properties>
-                      </component>
                     </children>
                   </toolbar>
                   <scrollpane id="fdba6">
@@ -97,7 +89,7 @@
                       <forms/>
                     </constraints>
                     <properties>
-                      <visible value="true"/>
+                      <visible value="false"/>
                     </properties>
                     <border type="none"/>
                     <children>
@@ -205,7 +197,7 @@
                         <properties>
                           <enabled value="false"/>
                           <icon value="images/add-icon.png"/>
-                          <text value="添加关联"/>
+                          <text value="添加关联..."/>
                         </properties>
                       </component>
                       <component id="50953" class="javax.swing.JButton" binding="btnRemoveSty">
