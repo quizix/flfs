@@ -46,6 +46,7 @@ public class DbInitializer {
             shed.setModifyTime(new Date());
             shed.setAddress("江西鄱阳");
             shed.setCode("12345678");
+            shed.setActive(true);
             shed.setName("猪舍1");
             dao.update(shed);
 
@@ -56,7 +57,7 @@ public class DbInitializer {
             batch.setCode("1");
             batch.setInStockNumber(100);
             batch.setStartDate(now);
-            batch.setStartDate(new Date());
+            batch.setEndDate(now);
             batch.setCreateTime(now);
             batch.setModifyTime(now);
 
