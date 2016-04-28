@@ -49,5 +49,15 @@ public class ServiceRegistryImpl implements ServiceRegistry{
     public Service getService(String name) {
         return services.get(name);
     }
-    
+
+    @Override
+    public void dispose() throws ServiceException {
+        for(String key: services.keySet()){
+            Service service = services.get(key);
+
+            if( service != null)
+                service.destroy();
+        }
+    }
+
 }

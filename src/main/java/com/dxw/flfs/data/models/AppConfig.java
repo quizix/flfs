@@ -1,9 +1,9 @@
 package com.dxw.flfs.data.models;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by zhang on 2016/4/6.
@@ -42,11 +42,9 @@ public class AppConfig{
     @Column(name="host")
     private String host;
 
-    /**
-     * batchCode
-     */
-    @Column(name="batchCode")
-    private String batchCode;
+    @Column(name="status")
+    @ColumnDefault("0")
+    private int status;
 
     //private Set<Sty> sties = new HashSet<>();
 
@@ -91,13 +89,14 @@ public class AppConfig{
         this.host = host;
     }
 
-    public String getBatchCode() {
-        return batchCode;
+    public int getStatus() {
+        return status;
     }
 
-    public void setBatchCode(String batchCode) {
-        this.batchCode = batchCode;
+    public void setStatus(int status) {
+        this.status = status;
     }
+
 
     /*public Set<Sty> getSties() {
         return sties;

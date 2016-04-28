@@ -5,12 +5,9 @@
  */
 package com.dxw.flfs.jobs;
 
-import com.dxw.flfs.data.models.Batch;
-import com.dxw.flfs.data.models.Sty;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
-import com.dxw.flfs.app.FlfsApp;
 import com.dxw.flfs.communication.PlcDelegate;
 import com.dxw.flfs.communication.PlcDelegateFactory;
 import com.dxw.flfs.data.FlfsDao;
@@ -18,8 +15,6 @@ import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-
-import java.util.Set;
 
 /**
  * 发送栏位空/满信息
@@ -48,7 +43,7 @@ public class SetStyStatusJob extends AbstractJob {
 
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
 
-            Batch batch = dao.findBatchByCode(FlfsApp.getContext().getBatchCode());
+            /*Batch batch = dao.findBatchByCode(FlfsApp.getContext().getBatchCode());
 
             Set<Sty> sties = batch.getSties();
             int size = sties.size();
@@ -56,7 +51,8 @@ public class SetStyStatusJob extends AbstractJob {
             int i=0;
             for(Sty sty: sties){
                 status[i++] = (short)((sty.getCurrentNumber()==0)?0:1);
-            }
+            }*/
+            short[] status = new short[24];
             return status;
 
         } catch (Exception e) {

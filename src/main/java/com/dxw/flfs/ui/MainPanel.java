@@ -24,6 +24,16 @@ public class MainPanel {
         });
     }
 
+    public void setActionEnable(String action, boolean enable){
+        if(action.equals("start"))
+            btnStart.setEnabled(enable);
+        else if(action.equals("stop"))
+            btnStart.setEnabled(enable);
+        else if(action.equals("clean"))
+            btnStart.setEnabled(enable);
+
+    }
+
     public JPanel getRoot() {
         return root;
     }
@@ -33,11 +43,4 @@ public class MainPanel {
     private JButton btnStop;
     private JButton btnClean;
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("MainPanel");
-        frame.setContentPane(new MainPanel().root);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
 }

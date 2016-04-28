@@ -5,21 +5,16 @@
  */
 package com.dxw.flfs.app;
 
-import com.dxw.flfs.data.models.AppConfig;
 import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
-import com.dxw.flfs.data.FlfsDao;
-import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.ui.MainFrame;
 import org.quartz.SchedulerException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -62,20 +57,18 @@ public class FlfsApp {
         }
 
     }
-    HibernateService hibernateService;
-    private void loadAppConfig() {
+    /*private void loadAppConfig() {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
         hibernateService = (HibernateService)registry.getService(Services.HIBERNATE_SERVICE);
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
             AppConfig appConfig = dao.findAppConfig(context.getAppId());
-            context.setBatchCode(appConfig.getBatchCode());
+            //context.setBatchCode(appConfig.getBatchCode());
         }
         catch(Exception ex){
             JOptionPane.showMessageDialog(null, "无法获取appConfig！", "消息提示", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
-
-    }
+    }*/
 
     private void start() throws SchedulerException {
 
@@ -90,7 +83,7 @@ public class FlfsApp {
                 System.exit(0);
         }*/
 
-        loadAppConfig();
+        //loadAppConfig();
 
         //System.setProperty("awt.useSystemAAFontSettings", "on");
         //WSystem.setProperty("swing.aatext", "true");
@@ -151,9 +144,11 @@ public class FlfsApp {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
+            ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+            HibernateService hibernateService = (HibernateService)registry.getService(Services.HIBERNATE_SERVICE);
             JFrame frame = new MainFrame(hibernateService);
 
-            frame.addWindowListener(new WindowAdapter() {
+            /*frame.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowOpened(WindowEvent e) {
                     try {
@@ -164,18 +159,8 @@ public class FlfsApp {
                         ex.printStackTrace();
                     }
                 }
-            });
+            });*/
         });
-    }
-
-
-
-    /**
-     * 是否需要重置
-     * @return
-     */
-    private boolean needReset(){
-        return true;
     }
 
     private void destory() {

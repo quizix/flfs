@@ -1,13 +1,23 @@
 package com.dxw.flfs.ui;
 
+import com.dxw.common.services.ServiceException;
+import com.dxw.common.services.ServiceRegistry;
+import com.dxw.common.services.ServiceRegistryImpl;
+import com.dxw.flfs.app.FlfsApp;
 import com.dxw.flfs.data.HibernateService;
+import com.dxw.flfs.data.dal.DefaultGenericRepository;
+import com.dxw.flfs.data.dal.UnitOfWork;
+import com.dxw.flfs.data.models.AppConfig;
 import com.dxw.flfs.ui.dialogs.BatchDialog;
 import com.dxw.flfs.ui.dialogs.ShedDialog;
 import com.dxw.flfs.ui.dialogs.StockDialog;
-import com.dxw.flfs.ui.wizards.SelectShedDialog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Collection;
+import java.util.Optional;
 
 /**
  * Created by Administrator on 2016/4/2.
@@ -20,14 +30,27 @@ public class MainFrame extends JFrame {
         initComponents();
     }
 
+    MainPanel mainPanel;
     private void initComponents() {
-
         this.setTitle("发酵式液态饲料饲喂系统——[稻香湾科技]");
         this.setMinimumSize(new Dimension(800,600));
-        this.setContentPane(new MainPanel().getRoot());
+        mainPanel = new MainPanel();
+        this.setContentPane(mainPanel.getRoot());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                MainFrame.this.onInit();
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e){
+                MainFrame.this.onDestroy();
+            }
+        });
 
         JMenuBar bar = new JMenuBar();
         this.setJMenuBar(bar);
@@ -86,5 +109,50 @@ public class MainFrame extends JFrame {
             dialog.setVisible(true);
         });
 
+    }
+
+    private void onInit() {
+        String appId = FlfsApp.getContext().getAppId();
+
+        try(UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
+            DefaultGenericRepository<AppConfig, Long> r = uow.getAppConfigRepository();
+            Collection<AppConfig> configs = r.findAll();
+
+            Optional<AppConfig> config = configs.stream()
+                    .filter(c-> c.getAppId().equals(appId))
+                    .findFirst();
+
+            if( !config.isPresent()){
+                JOptionPane.showMessageDialog(null, "无法获取应用程序配置信息！", "消息提示", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);       }
+            else {
+                AppConfig appConfig = config.get();
+
+                if( appConfig.getStatus() == 0){
+                    //stopped
+                    mainPanel.setActionEnable("start", true);
+                    mainPanel.setActionEnable("stop", false);
+                    mainPanel.setActionEnable("clean", true);
+                }
+                else{
+                    //started
+                    mainPanel.setActionEnable("start", false);
+                    mainPanel.setActionEnable("stop", true);
+                    mainPanel.setActionEnable("clean", true);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onDestroy() {
+        ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+        try {
+            registry.dispose();
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
     }
 }

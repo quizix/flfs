@@ -21,6 +21,7 @@
     <orderEntry type="library" name="Gradle: org.postgresql:postgresql:9.4.1208.jre7" level="project" />
     <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:5.1.38" level="project" />
     <orderEntry type="library" name="Gradle: com.jgoodies:jgoodies-forms:1.9.0" level="project" />
+    <orderEntry type="library" name="Gradle: javax.validation:validation-api:1.0.0.GA" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.11" level="project" />
     <orderEntry type="library" name="Gradle: commons-logging:commons-logging:1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: c3p0:c3p0:0.9.1.1" level="project" />

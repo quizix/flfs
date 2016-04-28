@@ -15,4 +15,6 @@ public interface ServiceRegistry {
     void unregister(Service service) throws ServiceException;
     
     Service getService(String name);
+
+    void dispose() throws ServiceException;
 }

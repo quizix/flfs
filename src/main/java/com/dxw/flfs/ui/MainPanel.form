@@ -20,23 +20,26 @@
           <component id="ccf35" class="javax.swing.JButton" binding="btnStart">
             <constraints/>
             <properties>
+              <enabled value="false"/>
               <hideActionText value="false"/>
               <icon value="images/Start-icon.png"/>
-              <text value="Start"/>
+              <text value="启动"/>
             </properties>
           </component>
           <component id="a83cd" class="javax.swing.JButton" binding="btnStop">
             <constraints/>
             <properties>
+              <enabled value="false"/>
               <icon value="images/Stop-red-icon.png"/>
-              <text value="Stop"/>
+              <text value="停止"/>
             </properties>
           </component>
           <component id="22214" class="javax.swing.JButton" binding="btnClean">
             <constraints/>
             <properties>
+              <enabled value="false"/>
               <icon value="images/Clear-icon.png"/>
-              <text value="Clean"/>
+              <text value="清洗"/>
             </properties>
           </component>
         </children>
