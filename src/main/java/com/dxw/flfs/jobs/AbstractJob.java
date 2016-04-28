@@ -21,7 +21,7 @@ public abstract class AbstractJob implements Job {
 
     public AbstractJob() {
         this.notificationManager = (NotificationManager) ServiceRegistryImpl.getInstance()
-                .lookupService(Services.NOTIFICATION_MANAGER);;
+                .getService(Services.NOTIFICATION_MANAGER);;
     }
     
     protected void notify(String message){

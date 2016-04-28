@@ -26,7 +26,7 @@ public class TestJob implements Job{
             
             ServiceRegistry registry = ServiceRegistryImpl.getInstance();
         
-        NotificationManager notificationManger = (NotificationManager)registry.lookupService(Services.NOTIFICATION_MANAGER);
+        NotificationManager notificationManger = (NotificationManager)registry.getService(Services.NOTIFICATION_MANAGER);
         
         if(notificationManger != null){
             Notification notification = new Notification();

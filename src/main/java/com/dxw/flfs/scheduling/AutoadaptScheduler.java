@@ -1,6 +1,6 @@
 package com.dxw.flfs.scheduling;
 
-import com.dxw.common.models.Batch;
+import com.dxw.flfs.data.models.Batch;
 import com.dxw.common.utils.TimeUtil;
 import com.dxw.flfs.communication.PlcDelegate;
 import com.dxw.flfs.communication.PlcDelegateFactory;
@@ -10,7 +10,6 @@ import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 /**

@@ -14,5 +14,5 @@ public interface ServiceRegistry {
     
     void unregister(Service service) throws ServiceException;
     
-    Service lookupService(String name);
+    Service getService(String name);
 }

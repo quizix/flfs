@@ -46,7 +46,7 @@ public class ServiceRegistryImpl implements ServiceRegistry{
     }
 
     @Override
-    public Service lookupService(String name) {
+    public Service getService(String name) {
         return services.get(name);
     }
     

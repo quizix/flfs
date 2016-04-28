@@ -1,8 +1,7 @@
 package com.dxw.flfs.ui.dialogs;
 
-import com.dxw.common.models.Batch;
-import com.dxw.common.models.Shed;
-import com.dxw.common.models.Sty;
+import com.dxw.flfs.data.models.Batch;
+import com.dxw.flfs.data.models.Sty;
 import com.dxw.common.utils.TimeUtil;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
@@ -13,7 +12,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
-import java.time.LocalDate;
 import java.util.*;
 
 public class BatchDialog extends JDialog {

@@ -1,4 +1,4 @@
-package com.dxw.common.models;
+package com.dxw.flfs.data.models;
 
 import javax.persistence.*;
 import java.util.Date;

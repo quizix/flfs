@@ -5,10 +5,10 @@
  */
 package com.dxw.tests;
 
-import com.dxw.common.models.Batch;
-import com.dxw.common.models.InStyPlan;
-import com.dxw.common.models.Shed;
-import com.dxw.common.models.Sty;
+import com.dxw.flfs.data.models.Batch;
+import com.dxw.flfs.data.models.InStyPlan;
+import com.dxw.flfs.data.models.Shed;
+import com.dxw.flfs.data.models.Sty;
 import com.dxw.common.services.ServiceException;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
@@ -88,7 +88,7 @@ public class DaoTest {
             batch.setCreateTime(new Date());
             batch.setCode("1");
             batch.setModifyTime(new Date());
-            batch.setInStockDuration(100);
+            //batch.setInStockDuration(100);
             batch.setStartDate(new Date());
             batch.setInStockNumber(100);
             batch.setSties(sties);

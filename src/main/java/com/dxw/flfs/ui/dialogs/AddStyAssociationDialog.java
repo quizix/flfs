@@ -1,8 +1,7 @@
 package com.dxw.flfs.ui.dialogs;
 
-import com.dxw.common.models.Batch;
-import com.dxw.common.models.Shed;
-import com.dxw.common.models.Sty;
+import com.dxw.flfs.data.models.Shed;
+import com.dxw.flfs.data.models.Sty;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;

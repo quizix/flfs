@@ -1,9 +1,9 @@
 package com.dxw.flfs.app;
 
-import com.dxw.common.models.AppConfig;
-import com.dxw.common.models.Batch;
-import com.dxw.common.models.Shed;
-import com.dxw.common.models.Sty;
+import com.dxw.flfs.data.models.AppConfig;
+import com.dxw.flfs.data.models.Batch;
+import com.dxw.flfs.data.models.Shed;
+import com.dxw.flfs.data.models.Sty;
 import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.Services;
@@ -14,7 +14,6 @@ import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.data.HibernateServiceImpl;
 
 import java.time.LocalDate;
-import java.time.temporal.TemporalUnit;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,10 +21,10 @@ import java.util.Set;
 /**
  * Created by zhang on 2016-04-21.
  */
-public class DbInitializer {
+public class DbInitiator {
     ServiceRegistry registry;
 
-    public DbInitializer(ServiceRegistry registry){
+    public DbInitiator(ServiceRegistry registry){
         this.registry = registry;
     }
 
@@ -37,7 +36,7 @@ public class DbInitializer {
 
     public void prepareData(){
         HibernateService hibernateService = (HibernateService)
-                this.registry.lookupService(Services.HIBERNATE_SERVICE);
+                this.registry.getService(Services.HIBERNATE_SERVICE);
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
             dao.begin();
 

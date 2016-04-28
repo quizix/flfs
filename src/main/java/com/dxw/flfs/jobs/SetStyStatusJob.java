@@ -5,8 +5,8 @@
  */
 package com.dxw.flfs.jobs;
 
-import com.dxw.common.models.Batch;
-import com.dxw.common.models.Sty;
+import com.dxw.flfs.data.models.Batch;
+import com.dxw.flfs.data.models.Sty;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
@@ -16,7 +16,6 @@ import com.dxw.flfs.communication.PlcDelegateFactory;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
-import org.hibernate.mapping.List;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -45,7 +44,7 @@ public class SetStyStatusJob extends AbstractJob {
 
     private short[] getStyStatus(){
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
-        HibernateService hibernateService = (HibernateService)registry.lookupService(Services.HIBERNATE_SERVICE);
+        HibernateService hibernateService = (HibernateService)registry.getService(Services.HIBERNATE_SERVICE);
 
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
 

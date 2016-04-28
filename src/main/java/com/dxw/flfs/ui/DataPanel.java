@@ -46,7 +46,7 @@ public class DataPanel {
     public DataPanel() {
         iconAlert = new ImageIcon(this.getClass().getResource("/images/alert-icon.png"));
         ServiceRegistry r = ServiceRegistryImpl.getInstance();
-        notificationManager = (NotificationManager) r.lookupService(Services.NOTIFICATION_MANAGER);
+        notificationManager = (NotificationManager) r.getService(Services.NOTIFICATION_MANAGER);
 
         delegate = PlcDelegateFactory.getPlcDelegate();
         delegate.addModelChangedListener(event -> {

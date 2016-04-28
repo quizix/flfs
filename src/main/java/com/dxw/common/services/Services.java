@@ -13,5 +13,7 @@ public class Services {
     public final static String NOTIFICATION_MANAGER = "notification_manager";
     
     public final static String HIBERNATE_SERVICE = "hibernate_service";
+
+    public final static String ENTITY_MANAGER_SERVICE = "entity_manager_service";
     
 }

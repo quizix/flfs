@@ -26,7 +26,7 @@ public class NotificationPanel {
     public NotificationPanel() {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 
-        notificationManger = (NotificationManager) registry.lookupService(Services.NOTIFICATION_MANAGER);
+        notificationManger = (NotificationManager) registry.getService(Services.NOTIFICATION_MANAGER);
 
         if (notificationManger != null) {
             notificationManger.addReceiver((String tag, Notification notification) -> {

@@ -27,7 +27,7 @@ class PlcDelegateImpl implements PlcDelegate {
         this.plcPrimary = plcPrimary;
         this.plcSecondary = plcSecondary;
         notificationManager = (NotificationManager)
-                ServiceRegistryImpl.getInstance().lookupService(Services.NOTIFICATION_MANAGER);
+                ServiceRegistryImpl.getInstance().getService(Services.NOTIFICATION_MANAGER);
     }
     //region event related.
     List<PlcModelChangedListener> listeners = new ArrayList<>();

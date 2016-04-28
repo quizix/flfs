@@ -1,14 +1,17 @@
-package com.dxw.common.models;
+package com.dxw.flfs.data.models;
 
 import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by zhang on 2016/4/6.
+ * PH值
+ *
+ * @author pronics3
+ *
  */
 @Entity
-@Table(name="flfs_app_config")
-public class AppConfig {
+@Table(name="flfs_ph")
+public class Ph{
     /**
      * 内部id
      */
@@ -29,22 +32,17 @@ public class AppConfig {
     protected Date modifyTime;
 
     /**
-     * app Id
+     * ph值
      */
-    @Column(name="appId")
-    private String appId;
+    @Column(name="value")
+    private float value;
 
     /**
-     * host
+     * 猪舍
      */
-    @Column(name="host")
-    private String host;
-
-    /**
-     * batchCode
-     */
-    @Column(name="batchCode")
-    private String batchCode;
+    @ManyToOne
+    @JoinColumn(name="shedId")
+    private Shed shed;
 
 
     public Long getId() {
@@ -71,27 +69,24 @@ public class AppConfig {
         this.modifyTime = modifyTime;
     }
 
-    public String getAppId() {
-        return appId;
+    public Shed getShed() {
+        return shed;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
+    public void setShed(Shed shed) {
+        this.shed = shed;
     }
 
-    public String getHost() {
-        return host;
+    public float getValue() {
+        return value;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setValue(float value) {
+        this.value = value;
     }
 
-    public String getBatchCode() {
-        return batchCode;
-    }
-
-    public void setBatchCode(String batchCode) {
-        this.batchCode = batchCode;
+    @Override
+    public String toString() {
+        return "";
     }
 }

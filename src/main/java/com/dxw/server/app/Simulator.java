@@ -64,7 +64,7 @@ public class Simulator {
 
     public Simulator() {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
-        notificationManager = (NotificationManager) registry.lookupService(Services.NOTIFICATION_MANAGER);
+        notificationManager = (NotificationManager) registry.getService(Services.NOTIFICATION_MANAGER);
 
     }
 

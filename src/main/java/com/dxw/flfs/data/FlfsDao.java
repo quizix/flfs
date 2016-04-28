@@ -5,7 +5,7 @@
  */
 package com.dxw.flfs.data;
 
-import com.dxw.common.models.*;
+import com.dxw.flfs.data.models.*;
 
 import java.util.Date;
 import java.util.List;

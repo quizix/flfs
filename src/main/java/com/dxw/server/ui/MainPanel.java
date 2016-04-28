@@ -34,7 +34,7 @@ public class MainPanel {
     private void init() {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 
-        notificationManager = (NotificationManager) registry.lookupService(Services.NOTIFICATION_MANAGER);
+        notificationManager = (NotificationManager) registry.getService(Services.NOTIFICATION_MANAGER);
 
         if (notificationManager != null) {
             notificationManager.addReceiver((String tag, Notification notification) -> {

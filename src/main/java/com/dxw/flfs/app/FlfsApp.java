@@ -5,9 +5,7 @@
  */
 package com.dxw.flfs.app;
 
-import com.dxw.common.models.AppConfig;
-import com.dxw.common.ms.Notification;
-import com.dxw.common.ms.NotificationManager;
+import com.dxw.flfs.data.models.AppConfig;
 import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
@@ -42,7 +40,7 @@ public class FlfsApp {
         loadAppId();
 
         //initialize the services.
-        new AppInitializer(ServiceRegistryImpl.getInstance())
+        new AppInitiator(ServiceRegistryImpl.getInstance())
                 .initServices();
     }
 
@@ -52,26 +50,22 @@ public class FlfsApp {
 
 
     private void loadAppId() {
-        String appId = null;
-
         Properties prop = new Properties();
-        InputStream in = this.getClass().getResourceAsStream("/flfs.conf");
+        InputStream in = this.getClass().getResourceAsStream("/flfs.config");
         try {
             prop.load(in);
-            appId = prop.getProperty("appId");
+            String appId = prop.getProperty("appId");
             context.setAppId(appId);
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if(appId == null){
             JOptionPane.showMessageDialog(null, "无法获取程序appId！", "消息提示", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
+
     }
     HibernateService hibernateService;
     private void loadAppConfig() {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
-        hibernateService = (HibernateService)registry.lookupService(Services.HIBERNATE_SERVICE);
+        hibernateService = (HibernateService)registry.getService(Services.HIBERNATE_SERVICE);
         try (FlfsDao dao = new FlfsDaoImpl(hibernateService)) {
             AppConfig appConfig = dao.findAppConfig(context.getAppId());
             context.setBatchCode(appConfig.getBatchCode());

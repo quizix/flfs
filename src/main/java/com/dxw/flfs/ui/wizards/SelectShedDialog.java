@@ -1,6 +1,6 @@
 package com.dxw.flfs.ui.wizards;
 
-import com.dxw.common.models.Shed;
+import com.dxw.flfs.data.models.Shed;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
 import com.dxw.flfs.data.FlfsDao;
@@ -63,7 +63,7 @@ public class SelectShedDialog extends JDialog {
 
     private void createUIComponents() {
         comboBox1 = new JComboBox();
-        HibernateService s = (HibernateService) ServiceRegistryImpl.getInstance().lookupService(Services.HIBERNATE_SERVICE);
+        HibernateService s = (HibernateService) ServiceRegistryImpl.getInstance().getService(Services.HIBERNATE_SERVICE);
         try (FlfsDao dao = new FlfsDaoImpl(s)) {
             List sheds = dao.findAllSheds();
             for(Object o: sheds){
