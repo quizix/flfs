@@ -9,6 +9,7 @@ import org.apache.batik.swing.svg.SVGDocumentLoaderAdapter;
 import org.apache.batik.swing.svg.SVGDocumentLoaderEvent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.net.URL;
 
@@ -23,8 +24,8 @@ public class SvgPanel {
     private void createUIComponents() {
 
         panel = new JPanel();
-        panel.setBackground(new java.awt.Color(255, 255, 255));
-        panel.setLayout(new java.awt.BorderLayout());
+        panel.setBackground(new Color(255, 255, 255));
+        panel.setLayout(new BorderLayout());
         initSvg();
     }
 
@@ -79,4 +80,5 @@ public class SvgPanel {
             ex.printStackTrace();
         }
     }
+
 }

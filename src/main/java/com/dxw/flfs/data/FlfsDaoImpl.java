@@ -51,14 +51,14 @@ public class FlfsDaoImpl implements FlfsDao {
     }
 
     @Override
-    public AppConfig findAppConfig(String appId) {
+    public SiteConfig findSiteConfig(String siteCode) {
         Query query =
-                session.createQuery("from AppConfig where appId=:appId")
-                        .setParameter("appId",appId);
+                session.createQuery("from SiteConfig where siteCode=:siteCode")
+                        .setParameter("siteCode",siteCode);
 
         List list = query.list();
         if (list.size() > 0) {
-            return (AppConfig) list.get(0);
+            return (SiteConfig) list.get(0);
         }
         return null;
     }

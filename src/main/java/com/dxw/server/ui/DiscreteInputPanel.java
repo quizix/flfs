@@ -4,6 +4,8 @@ import com.dxw.flfs.communication.base.Plc;
 import com.dxw.flfs.communication.base.PlcConfig;
 import com.dxw.flfs.communication.base.PlcException;
 import com.dxw.flfs.communication.base.PlcFactory;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 import javax.swing.*;
 
@@ -28,10 +30,11 @@ public class DiscreteInputPanel {
             boolean result;
             try {
                 result = plc.getDiscreteInput(offset);
-                this.txtReadResult.setText( Boolean.toString(result));
+                this.txtReadResult.setText(Boolean.toString(result));
             } catch (PlcException ex) {
-                this.txtReadResult.setText( ex.getMessage());
+                this.txtReadResult.setText(ex.getMessage());
             }
         });
     }
+
 }

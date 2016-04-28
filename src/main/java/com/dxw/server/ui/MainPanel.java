@@ -8,6 +8,7 @@ import com.dxw.common.services.Services;
 import com.dxw.flfs.communication.base.PlcConfig;
 
 import javax.swing.*;
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,11 +27,12 @@ public class MainPanel {
 
     NotificationManager notificationManager;
 
-    public MainPanel(){
+    public MainPanel() {
         init();
         primaryRadioButton1.addActionListener(e -> PlcConfig.ACTIVE = PlcConfig.PRIMARY);
         secondlyRadioButton.addActionListener(e -> PlcConfig.ACTIVE = PlcConfig.SECONDARY);
     }
+
     private void init() {
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 

@@ -1,8 +1,11 @@
 package com.dxw.server.ui;
 
 import com.dxw.flfs.communication.base.*;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Administrator on 2016/4/2.
@@ -64,4 +67,5 @@ public class HoldingRegisterPanel {
             }
         });
     }
+
 }

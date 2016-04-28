@@ -49,10 +49,10 @@ public class FlfsApp {
         InputStream in = this.getClass().getResourceAsStream("/flfs.config");
         try {
             prop.load(in);
-            String appId = prop.getProperty("appId");
-            context.setAppId(appId);
+            String siteCode = prop.getProperty("siteCode");
+            context.setSiteCode(siteCode);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "无法获取程序appId！", "消息提示", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "无法获取程序siteCode！", "消息提示", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
 

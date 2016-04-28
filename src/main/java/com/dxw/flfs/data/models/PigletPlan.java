@@ -1,16 +1,17 @@
 package com.dxw.flfs.data.models;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by zhang on 2016/4/6.
+ * 表示进猪计划
+ * * Created by zhang on 2016-04-28.
  */
 @Entity
-@Table(name="flfs_app_config")
-public class AppConfig{
+@Table(name="flfs_piglet_plan")
+public class PigletPlan {
+
+
     /**
      * 内部id
      */
@@ -31,23 +32,17 @@ public class AppConfig{
     protected Date modifyTime;
 
     /**
-     * app Id
+     * 日期
      */
-    @Column(name="appId")
-    private String appId;
+    @Column(name="date")
+    private Date date;
+
 
     /**
-     * host
+     * 数量
      */
-    @Column(name="host")
-    private String host;
-
-    @Column(name="status")
-    @ColumnDefault("0")
-    private int status;
-
-    //private Set<Sty> sties = new HashSet<>();
-
+    @Column(name="count")
+    private int count;
 
     public Long getId() {
         return id;
@@ -73,37 +68,19 @@ public class AppConfig{
         this.modifyTime = modifyTime;
     }
 
-    public String getAppId() {
-        return appId;
+    public Date getDate() {
+        return date;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public String getHost() {
-        return host;
+    public int getCount() {
+        return count;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setCount(int count) {
+        this.count = count;
     }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-
-    /*public Set<Sty> getSties() {
-        return sties;
-    }
-
-    public void setSties(Set<Sty> sties) {
-        this.sties = sties;
-    }
-    */
 }

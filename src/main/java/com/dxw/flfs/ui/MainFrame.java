@@ -7,7 +7,7 @@ import com.dxw.flfs.app.FlfsApp;
 import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.data.dal.DefaultGenericRepository;
 import com.dxw.flfs.data.dal.UnitOfWork;
-import com.dxw.flfs.data.models.AppConfig;
+import com.dxw.flfs.data.models.SiteConfig;
 import com.dxw.flfs.ui.dialogs.BatchDialog;
 import com.dxw.flfs.ui.dialogs.ShedDialog;
 import com.dxw.flfs.ui.dialogs.StockDialog;
@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
     private void initComponents() {
         this.setTitle("发酵式液态饲料饲喂系统——[稻香湾科技]");
         this.setMinimumSize(new Dimension(800,600));
-        mainPanel = new MainPanel();
+        mainPanel = new MainPanel(hibernateService);
         this.setContentPane(mainPanel.getRoot());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -112,23 +112,24 @@ public class MainFrame extends JFrame {
     }
 
     private void onInit() {
-        String appId = FlfsApp.getContext().getAppId();
+        String siteCode = FlfsApp.getContext().getSiteCode();
 
         try(UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
-            DefaultGenericRepository<AppConfig, Long> r = uow.getAppConfigRepository();
-            Collection<AppConfig> configs = r.findAll();
+            DefaultGenericRepository<SiteConfig> r = uow.getSiteConfigRepository();
+            Collection<SiteConfig> configs = r.findAll();
 
-            Optional<AppConfig> config = configs.stream()
-                    .filter(c-> c.getAppId().equals(appId))
+            Optional<SiteConfig> config = configs.stream()
+                    .filter(c-> c.getSiteCode().equals(siteCode))
                     .findFirst();
 
             if( !config.isPresent()){
                 JOptionPane.showMessageDialog(null, "无法获取应用程序配置信息！", "消息提示", JOptionPane.ERROR_MESSAGE);
-                System.exit(0);       }
+                System.exit(0);
+            }
             else {
-                AppConfig appConfig = config.get();
+                SiteConfig siteConfig = config.get();
 
-                if( appConfig.getStatus() == 0){
+                if( siteConfig.getStatus() == 0){
                     //stopped
                     mainPanel.setActionEnable("start", true);
                     mainPanel.setActionEnable("stop", false);

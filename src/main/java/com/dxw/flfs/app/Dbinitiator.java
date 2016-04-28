@@ -1,9 +1,5 @@
 package com.dxw.flfs.app;
 
-import com.dxw.flfs.data.models.AppConfig;
-import com.dxw.flfs.data.models.Batch;
-import com.dxw.flfs.data.models.Shed;
-import com.dxw.flfs.data.models.Sty;
 import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.Services;
@@ -12,6 +8,10 @@ import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.data.HibernateServiceImpl;
+import com.dxw.flfs.data.models.Batch;
+import com.dxw.flfs.data.models.Shed;
+import com.dxw.flfs.data.models.SiteConfig;
+import com.dxw.flfs.data.models.Sty;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -85,11 +85,11 @@ public class DbInitiator {
 
             dao.update(batch);
 
-            AppConfig config = new AppConfig();
+            SiteConfig config = new SiteConfig();
             config.setCreateTime(new Date());
             config.setModifyTime(new Date());
             //config.setBatchCode("1");
-            config.setAppId(FlfsApp.getContext().getAppId());
+            config.setSiteCode(FlfsApp.getContext().getSiteCode());
             config.setHost("192.168.1.10");
             dao.update(config);
 

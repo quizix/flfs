@@ -5,7 +5,7 @@ import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.data.HibernateServiceImpl;
 import com.dxw.flfs.data.dal.DefaultGenericRepository;
 import com.dxw.flfs.data.dal.UnitOfWork;
-import com.dxw.flfs.data.models.AppConfig;
+import com.dxw.flfs.data.models.SiteConfig;
 import org.junit.*;
 
 import java.util.Collection;
@@ -48,16 +48,16 @@ public class UnitOfWorkTest {
     public void loadAppConfig(){
         String appId = "93876c73-64d7-4f46-a422-6b16d25b5a43";
         try(UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
-            DefaultGenericRepository<AppConfig, Long> r = uow.getAppConfigRepository();
-            Collection<AppConfig> configs = r.findAll();
+            DefaultGenericRepository<SiteConfig> r = uow.getSiteConfigRepository();
+            Collection<SiteConfig> configs = r.findAll();
 
-            Optional<AppConfig> config = configs.stream()
-                    .filter(c-> c.getAppId().equals(appId))
+            Optional<SiteConfig> config = configs.stream()
+                    .filter(c-> c.getSiteCode().equals(appId))
                     .findFirst();
             /* AppConfig config = r.find(appId); */
 
             if( config.isPresent())
-                System.out.println(config.get().getAppId());
+                System.out.println(config.get().getSiteCode());
 
         } catch (Exception e) {
             e.printStackTrace();

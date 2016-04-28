@@ -25,7 +25,7 @@ public interface FlfsDao extends AutoCloseable {
 
     Batch findBatchById(Long id);
 
-    AppConfig findAppConfig(String appId);
+    SiteConfig findSiteConfig(String siteCode);
 
     List findAllSheds();
 

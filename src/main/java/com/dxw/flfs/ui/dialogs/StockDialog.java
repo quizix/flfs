@@ -1,6 +1,7 @@
 package com.dxw.flfs.ui.dialogs;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class StockDialog extends JDialog {
@@ -57,4 +58,5 @@ public class StockDialog extends JDialog {
         dialog.setVisible(true);
         System.exit(0);
     }
+
 }

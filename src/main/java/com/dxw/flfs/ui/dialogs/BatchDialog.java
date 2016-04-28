@@ -1,17 +1,19 @@
 package com.dxw.flfs.ui.dialogs;
 
-import com.dxw.flfs.data.models.Batch;
-import com.dxw.flfs.data.models.Sty;
 import com.dxw.common.utils.TimeUtil;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
+import com.dxw.flfs.data.models.Batch;
+import com.dxw.flfs.data.models.Sty;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.*;
 
 public class BatchDialog extends JDialog {
@@ -36,6 +38,7 @@ public class BatchDialog extends JDialog {
     };
     private String[] styColumns = {"栏位编号", "名称", "编码", "创建时间", "修改时间",
     };
+
     public BatchDialog(HibernateService hibernateService) {
         this.hibernateService = hibernateService;
         setContentPane(contentPane);
@@ -48,6 +51,7 @@ public class BatchDialog extends JDialog {
             public void windowClosing(WindowEvent e) {
                 onCancel();
             }
+
             public void windowOpened(WindowEvent e) {
                 super.windowOpened(e);
 
@@ -72,13 +76,13 @@ public class BatchDialog extends JDialog {
             this.btnAddOrSave.setText("修改");
             int rowIndex = tableBatch.getSelectedRow();
 
-            Long id = (Long)(tableBatch.getModel().getValueAt(rowIndex, 0));
+            Long id = (Long) (tableBatch.getModel().getValueAt(rowIndex, 0));
 
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                 Batch batch = dao.findBatchById(id);
 
-                if( batch != null){
-                    this.txtCode.setText( batch.getCode());
+                if (batch != null) {
+                    this.txtCode.setText(batch.getCode());
                     this.txtStartDate.setText(TimeUtil.formatDate(batch.getStartDate()));
                     this.txtEndDate.setText(TimeUtil.formatDate(batch.getEndDate()));
                     this.txtInStockNumber.setText(Integer.toString(batch.getInStockNumber()));
@@ -90,7 +94,7 @@ public class BatchDialog extends JDialog {
                 e1.printStackTrace();
             }
         });
-        btnAddOrSave.addActionListener( e->{
+        btnAddOrSave.addActionListener(e -> {
             if (btnAddOrSave.getText().equals("添加")) {
                 try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
 
@@ -98,13 +102,13 @@ public class BatchDialog extends JDialog {
 
                     Batch batch = new Batch();
                     batch.setCode(this.txtCode.getText());
-                    batch.setInStockNumber( Integer.parseInt(this.txtInStockNumber.getText()));
+                    batch.setInStockNumber(Integer.parseInt(this.txtInStockNumber.getText()));
 
-                    batch.setStartDate( TimeUtil.parseDate(this.txtStartDate.getText()));
-                    batch.setEndDate( TimeUtil.parseDate(this.txtEndDate.getText()));
+                    batch.setStartDate(TimeUtil.parseDate(this.txtStartDate.getText()));
+                    batch.setEndDate(TimeUtil.parseDate(this.txtEndDate.getText()));
                     Date now = new Date();
-                    batch.setModifyTime( now );
-                    batch.setCreateTime( now );
+                    batch.setModifyTime(now);
+                    batch.setCreateTime(now);
                     dao.update(batch);
                     dao.commit();
 
@@ -116,29 +120,28 @@ public class BatchDialog extends JDialog {
                     };
                     model.addRow(row);
                     int size = model.getRowCount();
-                    model.fireTableRowsInserted(size-1, size-1);
+                    model.fireTableRowsInserted(size - 1, size - 1);
 
 
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-            }
-            else if (btnAddOrSave.getText().equals("修改")) {
+            } else if (btnAddOrSave.getText().equals("修改")) {
 
                 try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                     dao.begin();
 
                     int rowIndex = tableBatch.getSelectedRow();
 
-                    Long id = (Long)(tableBatch.getModel().getValueAt(rowIndex, 0));
+                    Long id = (Long) (tableBatch.getModel().getValueAt(rowIndex, 0));
 
                     dao.begin();
 
                     Batch item = dao.findBatchById(id);
 
                     item.setCode(this.txtCode.getText());
-                    item.setStartDate( TimeUtil.parseDate( this.txtStartDate.getText()));
-                    item.setEndDate( TimeUtil.parseDate( this.txtEndDate.getText()));
+                    item.setStartDate(TimeUtil.parseDate(this.txtStartDate.getText()));
+                    item.setEndDate(TimeUtil.parseDate(this.txtEndDate.getText()));
                     item.setInStockNumber(Integer.parseInt(this.txtInStockNumber.getText()));
 
                     Date now = new Date();
@@ -165,13 +168,13 @@ public class BatchDialog extends JDialog {
 
         btnAddSty.addActionListener(e -> {
             int batchIndex = tableBatch.getSelectedRow();
-            Long id = (Long)(tableBatch.getModel().getValueAt(batchIndex, 0));
+            Long id = (Long) (tableBatch.getModel().getValueAt(batchIndex, 0));
 
             Set<Sty> sties = new HashSet<>();
 
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                 Batch batch = dao.findBatchById(id);
-                sties.addAll( batch.getSties());
+                sties.addAll(batch.getSties());
 
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -180,10 +183,10 @@ public class BatchDialog extends JDialog {
 
             AddStyAssociationDialog dialog = new AddStyAssociationDialog(this.hibernateService,
                     sties);
-            dialog.setSize(800,600);
+            dialog.setSize(800, 600);
             dialog.setModal(true);
             dialog.setVisible(true);
-            if(dialog.getResult()){
+            if (dialog.getResult()) {
                 Set<Sty> selected = dialog.getSelected();
 
                 try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
@@ -215,20 +218,20 @@ public class BatchDialog extends JDialog {
             //取消关联
 
             int[] rowIndices = tableSty.getSelectedRows();
-            if( rowIndices != null && rowIndices.length!=0){
+            if (rowIndices != null && rowIndices.length != 0) {
                 List<Long> ids = new ArrayList<>();
-                for(int i=0;i<rowIndices.length;i++){
-                    ids.add( (Long)model.getValueAt(rowIndices[i], 0));
+                for (int i = 0; i < rowIndices.length; i++) {
+                    ids.add((Long) model.getValueAt(rowIndices[i], 0));
                 }
 
                 int batchIndex = tableBatch.getSelectedRow();
-                Long id = (Long)(tableBatch.getModel().getValueAt(batchIndex, 0));
+                Long id = (Long) (tableBatch.getModel().getValueAt(batchIndex, 0));
 
                 try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                     dao.begin();
 
                     Batch item = dao.findBatchById(id);
-                    item.getSties().removeIf( sty-> ids.contains(sty.getId()));
+                    item.getSties().removeIf(sty -> ids.contains(sty.getId()));
 
                     dao.update(item);
                     dao.commit();
@@ -240,6 +243,7 @@ public class BatchDialog extends JDialog {
             }
         });
     }
+
     public void removeRows(DefaultTableModel model, int[] indices) {
         Arrays.sort(indices);
         for (int i = indices.length - 1; i >= 0; i--) {
@@ -247,6 +251,7 @@ public class BatchDialog extends JDialog {
             model.fireTableRowsDeleted(indices[i], indices[i]);
         }
     }
+
     private void onOK() {
         // add your code here
         dispose();
@@ -259,16 +264,16 @@ public class BatchDialog extends JDialog {
 
 
     private void createUIComponents() {
-        batchDataModel = new DefaultTableModel(batchColumns, 0){
+        batchDataModel = new DefaultTableModel(batchColumns, 0) {
             @Override
             public boolean isCellEditable(int row, int col) {
                 return false;
             }
         };
 
-        batchDataModel.addTableModelListener( e->{
+        batchDataModel.addTableModelListener(e -> {
             int type = e.getType();
-            if( type == TableModelEvent.INSERT || type == TableModelEvent.DELETE) {
+            if (type == TableModelEvent.INSERT || type == TableModelEvent.DELETE) {
                 /*if(tableBatch.getRowCount() >0)
                     tableBatch.setRowSelectionInterval(0, 0);*/
             }
@@ -288,7 +293,7 @@ public class BatchDialog extends JDialog {
             btnEditBatch.setEnabled(true);
             btnAddSty.setEnabled(true);
 
-            Long id = (Long)(tableBatch.getModel().getValueAt(rowIndex, 0));
+            Long id = (Long) (tableBatch.getModel().getValueAt(rowIndex, 0));
 
 
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
@@ -309,7 +314,7 @@ public class BatchDialog extends JDialog {
             }
         });
 
-        styDataModel = new DefaultTableModel(styColumns, 0){
+        styDataModel = new DefaultTableModel(styColumns, 0) {
             @Override
             public boolean isCellEditable(int i, int i1) {
                 return false;
@@ -317,9 +322,9 @@ public class BatchDialog extends JDialog {
         };
         tableSty = new JTable(styDataModel);
 
-        styDataModel.addTableModelListener( e->{
+        styDataModel.addTableModelListener(e -> {
             int type = e.getType();
-            if( type == TableModelEvent.INSERT || type == TableModelEvent.DELETE) {
+            if (type == TableModelEvent.INSERT || type == TableModelEvent.DELETE) {
                 //tableSty.setRowSelectionInterval(0, 0);
             }
 
@@ -336,14 +341,14 @@ public class BatchDialog extends JDialog {
         });
     }
 
-    private void load(){
+    private void load() {
         try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
             final List batches = dao.findAllBatches();
 
             DefaultTableModel model = (DefaultTableModel) tableBatch.getModel();
             model.getDataVector().removeAllElements();
             for (Object item : batches) {
-                Batch batch = (Batch)item;
+                Batch batch = (Batch) item;
 
                 Object[] row = {batch.getId(), batch.getCode(), batch.getStartDate(),
                         batch.getEndDate(), batch.getInStockNumber()
@@ -352,11 +357,12 @@ public class BatchDialog extends JDialog {
             }
             model.fireTableDataChanged();
 
-            if(model.getRowCount() >0)
+            if (model.getRowCount() > 0)
                 tableBatch.setRowSelectionInterval(0, 0);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }

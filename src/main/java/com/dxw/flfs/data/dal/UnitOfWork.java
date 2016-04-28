@@ -1,6 +1,8 @@
 package com.dxw.flfs.data.dal;
 
-import com.dxw.flfs.data.models.AppConfig;
+import com.dxw.flfs.data.models.PigletPlan;
+import com.dxw.flfs.data.models.Shed;
+import com.dxw.flfs.data.models.SiteConfig;
 import com.dxw.flfs.data.models.User;
 import org.hibernate.Session;
 
@@ -11,8 +13,11 @@ public class UnitOfWork implements AutoCloseable {
 
     private Session session;
 
-    private DefaultGenericRepository<User,Long> userRepository;
-    private DefaultGenericRepository<AppConfig,Long> appConfigRepository;
+    private DefaultGenericRepository<User> userRepository;
+    private DefaultGenericRepository<Shed> shedRepository;
+    private DefaultGenericRepository<SiteConfig> siteConfigRepository;
+    private DefaultGenericRepository<PigletPlan> pigletPlanRepository;
+
     //private DefaultGenericRepository<User> userRepository;
     //private DefaultGenericRepository<User> userRepository;
 
@@ -23,16 +28,16 @@ public class UnitOfWork implements AutoCloseable {
     /*public void flush(){
         session.flush();
     }*/
-    public DefaultGenericRepository<User, Long> getUserRepository() {
+    public DefaultGenericRepository<User> getUserRepository() {
         if( userRepository == null)
-            userRepository = new DefaultGenericRepository<>(session, User.class, Long.class);
+            userRepository = new DefaultGenericRepository<>(session, User.class);
         return userRepository;
     }
 
-    public DefaultGenericRepository<AppConfig, Long> getAppConfigRepository() {
-        if(appConfigRepository==null )
-            appConfigRepository = new DefaultGenericRepository<>(session, AppConfig.class, Long.class);
-        return appConfigRepository;
+    public DefaultGenericRepository<SiteConfig> getSiteConfigRepository() {
+        if(siteConfigRepository==null )
+            siteConfigRepository = new DefaultGenericRepository<>(session, SiteConfig.class);
+        return siteConfigRepository;
     }
 
     @Override
@@ -41,5 +46,31 @@ public class UnitOfWork implements AutoCloseable {
             session.close();
     }
 
+    public void begin(){
+        if( this.session != null)
+            session.beginTransaction();
+    }
 
+    public void commit(){
+        if( this.session != null)
+            session.getTransaction().commit();
+    }
+
+    public void rollback(){
+        if( this.session != null)
+            session.getTransaction().rollback();
+    }
+
+
+    public DefaultGenericRepository<Shed> getShedRepository() {
+        if( shedRepository == null)
+            shedRepository = new DefaultGenericRepository<>(session, Shed.class);
+        return shedRepository;
+    }
+
+    public DefaultGenericRepository<PigletPlan> getPigletPlanRepository() {
+        if( pigletPlanRepository == null)
+            pigletPlanRepository = new DefaultGenericRepository<>(session, PigletPlan.class);
+        return pigletPlanRepository;
+    }
 }

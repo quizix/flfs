@@ -27,13 +27,13 @@
     <property name="hbm2ddl.auto">update</property>
 
     <mapping class="com.dxw.flfs.data.models.Batch" />
-    <mapping class="com.dxw.flfs.data.models.InStyPlan" />
+    <mapping class="com.dxw.flfs.data.models.PigletPlan" />
     <mapping class="com.dxw.flfs.data.models.OperationLog" />
     <mapping class="com.dxw.flfs.data.models.Ph" />
     <mapping class="com.dxw.flfs.data.models.ProductionInstruction" />
     <mapping class="com.dxw.flfs.data.models.Shed" />
     <mapping class="com.dxw.flfs.data.models.Sty" />
-    <mapping class="com.dxw.flfs.data.models.AppConfig" />
+    <mapping class="com.dxw.flfs.data.models.SiteConfig" />
     <mapping class="com.dxw.flfs.data.models.User" />
     <mapping class="com.dxw.flfs.data.models.WorkingCondition" />
 

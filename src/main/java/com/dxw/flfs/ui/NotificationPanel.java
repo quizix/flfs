@@ -24,6 +24,7 @@ public class NotificationPanel {
     private JPanel panel1;
 
     public NotificationPanel() {
+
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 
         notificationManger = (NotificationManager) registry.getService(Services.NOTIFICATION_MANAGER);
@@ -74,4 +75,5 @@ public class NotificationPanel {
         //设置编辑器要处理的文档内容类型，有text/html,text/rtf.text/plain三种类型。
         this.textPane.setDocument(doc);
     }
+
 }

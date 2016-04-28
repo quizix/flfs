@@ -4,8 +4,11 @@ import com.dxw.flfs.communication.base.Plc;
 import com.dxw.flfs.communication.base.PlcConfig;
 import com.dxw.flfs.communication.base.PlcException;
 import com.dxw.flfs.communication.base.PlcFactory;
+import com.jgoodies.forms.layout.CellConstraints;
+import com.jgoodies.forms.layout.FormLayout;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Administrator on 2016/4/2.

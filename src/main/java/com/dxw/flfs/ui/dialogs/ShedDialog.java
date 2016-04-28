@@ -1,10 +1,10 @@
 package com.dxw.flfs.ui.dialogs;
 
-import com.dxw.flfs.data.models.Shed;
-import com.dxw.flfs.data.models.Sty;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
+import com.dxw.flfs.data.models.Shed;
+import com.dxw.flfs.data.models.Sty;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -59,6 +59,7 @@ public class ShedDialog extends JDialog {
             public void windowClosing(WindowEvent e) {
                 onCancel();
             }
+
             @Override
             public void windowOpened(WindowEvent e) {
                 super.windowOpened(e);
@@ -83,13 +84,13 @@ public class ShedDialog extends JDialog {
             this.btnShedAddOrSave.setText("修改");
             int rowIndex = tableShed.getSelectedRow();
 
-            Long id = (Long)(tableShed.getModel().getValueAt(rowIndex, 0));
+            Long id = (Long) (tableShed.getModel().getValueAt(rowIndex, 0));
 
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                 Shed shed = dao.findShedById(id);
 
-                if( shed != null){
-                    this.txtShedName.setText( shed.getName());
+                if (shed != null) {
+                    this.txtShedName.setText(shed.getName());
                     this.txtShedCode.setText(shed.getCode());
                     this.txtShedAddress.setText(shed.getAddress());
 
@@ -132,8 +133,7 @@ public class ShedDialog extends JDialog {
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-            }
-            else if (btnShedAddOrSave.getText().equals("修改")) {
+            } else if (btnShedAddOrSave.getText().equals("修改")) {
                 try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                     dao.begin();
 
@@ -180,8 +180,8 @@ public class ShedDialog extends JDialog {
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                 Sty sty = dao.findStyById(id);
 
-                if( sty != null){
-                    this.txtStyName.setText( sty.getName());
+                if (sty != null) {
+                    this.txtStyName.setText(sty.getName());
                     this.txtStyCode.setText(sty.getCode());
                     this.txtStyNo.setText(Integer.toString(sty.getNo()));
 
@@ -231,8 +231,7 @@ public class ShedDialog extends JDialog {
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
-            }
-            else if (btnStyAddOrSave.getText().equals("修改")) {
+            } else if (btnStyAddOrSave.getText().equals("修改")) {
                 try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                     dao.begin();
 
@@ -264,8 +263,8 @@ public class ShedDialog extends JDialog {
             }
         });
         btnDeleteSty.addActionListener(e -> {
-            if(JOptionPane.showConfirmDialog(null, "确定要删除此栏位?", "删除栏位",JOptionPane.YES_NO_OPTION)
-                !=JOptionPane.YES_OPTION)
+            if (JOptionPane.showConfirmDialog(null, "确定要删除此栏位?", "删除栏位", JOptionPane.YES_NO_OPTION)
+                    != JOptionPane.YES_OPTION)
                 return;
 
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
@@ -291,12 +290,12 @@ public class ShedDialog extends JDialog {
 
     private Long getSelectedStyId() {
         int rowIndex = tableSty.getSelectedRow();
-        return  (Long)(tableSty.getModel().getValueAt(rowIndex, 0));
+        return (Long) (tableSty.getModel().getValueAt(rowIndex, 0));
     }
 
     private Long getSelectedShedId() {
         int rowIndex = tableShed.getSelectedRow();
-        return  (Long)(tableShed.getModel().getValueAt(rowIndex, 0));
+        return (Long) (tableShed.getModel().getValueAt(rowIndex, 0));
     }
 
     private void onOK() {
@@ -315,7 +314,7 @@ public class ShedDialog extends JDialog {
             DefaultTableModel model = (DefaultTableModel) tableShed.getModel();
             model.getDataVector().removeAllElements();
             for (Object item : sheds) {
-                Shed shed = (Shed)item;
+                Shed shed = (Shed) item;
 
                 Object[] row = {shed.getId(), shed.getName(), shed.getCode(),
                         shed.getCreateTime(), shed.getModifyTime()
@@ -324,7 +323,7 @@ public class ShedDialog extends JDialog {
             }
             model.fireTableDataChanged();
 
-            if(model.getRowCount() >0)
+            if (model.getRowCount() > 0)
                 tableShed.setRowSelectionInterval(0, 0);
 
         } catch (Exception e) {
@@ -335,17 +334,17 @@ public class ShedDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        shedDataModel = new DefaultTableModel(shedColumns, 0){
+        shedDataModel = new DefaultTableModel(shedColumns, 0) {
             @Override
             public boolean isCellEditable(int i, int i1) {
                 return false;
             }
         };
 
-        shedDataModel.addTableModelListener( e->{
+        shedDataModel.addTableModelListener(e -> {
             int type = e.getType();
-            if( type == TableModelEvent.INSERT || type == TableModelEvent.DELETE) {
-                if(tableShed.getRowCount() >0)
+            if (type == TableModelEvent.INSERT || type == TableModelEvent.DELETE) {
+                if (tableShed.getRowCount() > 0)
                     tableShed.setRowSelectionInterval(0, 0);
             }
         });
@@ -365,7 +364,7 @@ public class ShedDialog extends JDialog {
             btnEditShed.setEnabled(true);
             btnAddSty.setEnabled(true);
 
-            Long id = (Long)(tableShed.getModel().getValueAt(rowIndex, 0));
+            Long id = (Long) (tableShed.getModel().getValueAt(rowIndex, 0));
 
             try (FlfsDao dao = new FlfsDaoImpl(this.hibernateService)) {
                 Shed shed = dao.findShedById(id);
@@ -387,8 +386,7 @@ public class ShedDialog extends JDialog {
         });
 
 
-
-        styDataModel = new DefaultTableModel(styColumns, 0){
+        styDataModel = new DefaultTableModel(styColumns, 0) {
             @Override
             public boolean isCellEditable(int i, int i1) {
                 return false;
@@ -396,9 +394,9 @@ public class ShedDialog extends JDialog {
         };
         tableSty = new JTable(styDataModel);
         tableSty.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        styDataModel.addTableModelListener( e->{
+        styDataModel.addTableModelListener(e -> {
             int type = e.getType();
-            if( type == TableModelEvent.INSERT || type == TableModelEvent.DELETE)
+            if (type == TableModelEvent.INSERT || type == TableModelEvent.DELETE)
                 tableSty.setRowSelectionInterval(0, 0);
 
 
@@ -418,4 +416,5 @@ public class ShedDialog extends JDialog {
 
 
     }
+
 }

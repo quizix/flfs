@@ -4,10 +4,10 @@ import com.dxw.common.ms.NotificationManager;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.common.services.Services;
-import com.dxw.flfs.communication.PlcModelField;
 import com.dxw.flfs.communication.PlcDelegate;
 import com.dxw.flfs.communication.PlcDelegateFactory;
 import com.dxw.flfs.communication.PlcModel;
+import com.dxw.flfs.communication.PlcModelField;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -55,7 +55,7 @@ public class DataPanel {
 
             if (field == PlcModelField.SYSTEM_STATUS) {
                 Short status = model.getSystemStatus();
-                switch(status) {
+                switch (status) {
                     case 1:
                         this.lblSystemStatus.setText("停机");
                         break;
@@ -138,4 +138,5 @@ public class DataPanel {
 
         table1 = new JTable(dataModel);
     }
+
 }

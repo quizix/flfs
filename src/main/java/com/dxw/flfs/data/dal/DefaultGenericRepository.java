@@ -3,23 +3,22 @@ package com.dxw.flfs.data.dal;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
  * Created by zhang on 2016-04-28.
  */
-public class DefaultGenericRepository<ENTITY, PK_CLASS extends Serializable>
-        implements GenericRepository<ENTITY,PK_CLASS> {
+public class DefaultGenericRepository<ENTITY>
+        implements GenericRepository<ENTITY> {
 
     Session session;
     Class<ENTITY> entityClass;
-    Class<PK_CLASS> pkClass;
 
-    public DefaultGenericRepository(Session session, Class<ENTITY> entityClass, Class<PK_CLASS> pkClass){
+
+    public DefaultGenericRepository(Session session, Class<ENTITY> entityClass){
         this.session = session;
         this.entityClass = entityClass;
-        this.pkClass = pkClass;
+
     }
     @Override
     public ENTITY save(ENTITY entity) {
@@ -62,7 +61,7 @@ public class DefaultGenericRepository<ENTITY, PK_CLASS extends Serializable>
     }
 
     @Override
-    public ENTITY find(Serializable id) {
+    public ENTITY find(Long id) {
         return session.load(entityClass, id);
     }
 
