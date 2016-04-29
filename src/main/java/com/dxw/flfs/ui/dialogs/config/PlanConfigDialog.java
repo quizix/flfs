@@ -12,6 +12,8 @@ public class PlanConfigDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTable tablePlan;
+    private JButton button1;
+    private JButton button2;
 
     UnitOfWork unitOfWork;
     public PlanConfigDialog(UnitOfWork unitOfWork) {
