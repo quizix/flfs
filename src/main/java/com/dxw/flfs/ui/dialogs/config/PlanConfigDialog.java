@@ -1,6 +1,8 @@
 package com.dxw.flfs.ui.dialogs.config;
 
+import com.dxw.flfs.app.FlfsApp;
 import com.dxw.flfs.data.dal.UnitOfWork;
+import com.dxw.flfs.data.models.SiteConfig;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
@@ -12,8 +14,8 @@ public class PlanConfigDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTable tablePlan;
-    private JButton button1;
-    private JButton button2;
+    private JButton btnAddPlan;
+    private JButton btnEditPlan;
 
     UnitOfWork unitOfWork;
     public PlanConfigDialog(UnitOfWork unitOfWork) {
@@ -48,6 +50,22 @@ public class PlanConfigDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        /*DefaultGenericRepository<SiteConfig> r = unitOfWork.getSiteConfigRepository();
+        Collection<SiteConfig> configs = r.findAll();
+
+        Optional<SiteConfig> config = configs.stream()
+                .filter(c -> c.getSiteCode().equals(siteCode))
+                .findFirst();
+        siteConfig = config.get();
+
+        planDataModel.getDataVector().removeAllElements();
+        Set<PigletPlan> plans = siteConfig.getPlans();
+        for (PigletPlan item : plans) {
+            Object[] row = {item.getId(), item.getDate(), item.getCount()};
+            planDataModel.addRow(row);
+        }
+        planDataModel.fireTableDataChanged();*/
     }
 
     private void onOK() {
@@ -59,6 +77,8 @@ public class PlanConfigDialog extends JDialog {
 // add your code here if necessary
         dispose();
     }
+    private String siteCode = FlfsApp.getContext().getSiteCode();
+    SiteConfig siteConfig;
     private String[] planColumns = {"编号", "日期", "数量"
     };
     private DefaultTableModel planDataModel;

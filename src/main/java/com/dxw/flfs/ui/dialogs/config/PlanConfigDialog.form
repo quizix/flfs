@@ -98,16 +98,18 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="759ed" class="javax.swing.JButton" binding="button1" default-binding="true">
+                      <component id="9744" class="javax.swing.JButton" binding="btnAddPlan">
                         <constraints/>
                         <properties>
-                          <text value="Button"/>
+                          <icon value="images/add-icon.png"/>
+                          <text value="添加"/>
                         </properties>
                       </component>
-                      <component id="37949" class="javax.swing.JButton" binding="button2" default-binding="true">
+                      <component id="74ee2" class="javax.swing.JButton" binding="btnEditPlan">
                         <constraints/>
                         <properties>
-                          <text value="Button"/>
+                          <icon value="images/edit-icon.png"/>
+                          <text value="修改"/>
                         </properties>
                       </component>
                     </children>
