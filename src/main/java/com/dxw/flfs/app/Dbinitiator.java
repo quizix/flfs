@@ -1,13 +1,11 @@
 package com.dxw.flfs.app;
 
-import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.Services;
 import com.dxw.common.utils.TimeUtil;
 import com.dxw.flfs.data.FlfsDao;
 import com.dxw.flfs.data.FlfsDaoImpl;
 import com.dxw.flfs.data.HibernateService;
-import com.dxw.flfs.data.HibernateServiceImpl;
 import com.dxw.flfs.data.models.Batch;
 import com.dxw.flfs.data.models.Shed;
 import com.dxw.flfs.data.models.SiteConfig;
@@ -26,12 +24,6 @@ public class DbInitiator {
 
     public DbInitiator(ServiceRegistry registry){
         this.registry = registry;
-    }
-
-    public void registerService() throws ServiceException {
-        HibernateService hibernateService = new HibernateServiceImpl();
-        hibernateService.init();
-        registry.register(hibernateService);
     }
 
     public void prepareData(){

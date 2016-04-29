@@ -1,5 +1,7 @@
 package com.dxw.flfs.scheduling;
 
+import com.dxw.common.services.ServiceException;
+import com.dxw.common.services.Services;
 import com.dxw.flfs.app.FlfsApp;
 import com.dxw.flfs.communication.PlcDelegate;
 import com.dxw.flfs.communication.PlcDelegateFactory;
@@ -17,8 +19,6 @@ import java.util.Optional;
  * Created by zhang on 2016/4/3.
  */
 public class AdaptiveScheduler implements FlfsScheduler {
-
-
     private HibernateService hibernateService;
     private String siteCode = FlfsApp.getContext().getSiteCode();
     private boolean amOrPm;
@@ -34,34 +34,31 @@ public class AdaptiveScheduler implements FlfsScheduler {
     SiteConfig siteConfig = null;
 
     @Override
-    public ScheduleResult schedule6AM() throws SchedulerException {
+    public ScheduleResult schedule6AM(UnitOfWork uow) throws SchedulerException {
+        this.uow = uow;
         amOrPm = true;
         return doSchedule();
     }
 
     @Override
-    public ScheduleResult schedule6PM() throws SchedulerException {
+    public ScheduleResult schedule6PM(UnitOfWork uow) throws SchedulerException {
+        this.uow = uow;
         amOrPm = false;
         return doSchedule();
     }
 
     private ScheduleResult doSchedule() throws SchedulerException {
-        try (UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
+        GenericRepository<SiteConfig> repository = uow.getSiteConfigRepository();
+        Optional<SiteConfig> config =
+                repository.findAll().stream().filter(x -> x.getSiteCode().equals(siteCode)).findFirst();
 
-            GenericRepository<SiteConfig> repository = uow.getSiteConfigRepository();
-            Optional<SiteConfig> config =
-                    repository.findAll().stream().filter(x -> x.getSiteCode().equals(siteCode)).findFirst();
+        if (config.isPresent()) {
+            this.siteConfig = config.get();
+        } else
+            throw new SchedulerException("无法获取站点信息！");
 
-            if (config.isPresent()) {
-                this.siteConfig = config.get();
-            } else
-                throw new SchedulerException("无法获取站点信息！");
-
-            float total = calcCurrentProduction();
-            return distributor.distribute(total);
-        } catch (Exception ex) {
-            throw new SchedulerException(ex.getMessage());
-        }
+        float total = calcCurrentProduction();
+        return distributor.distribute(total);
     }
 
     /**
@@ -114,13 +111,12 @@ public class AdaptiveScheduler implements FlfsScheduler {
         PlcModel model = proxy.getModel();
 
         short[] barrels;
-        float dry,water;
-        if(amOrPm) {
+        float dry, water;
+        if (amOrPm) {
             barrels = model.getProductionAmountsPm();
             water = model.getWaterPm();
             dry = model.getDryPm();
-        }
-        else {
+        } else {
             barrels = model.getProductionAmountsAm();
             water = model.getWaterAm();
             dry = model.getDryAm();
@@ -133,7 +129,7 @@ public class AdaptiveScheduler implements FlfsScheduler {
             total += barrels[i];
         }
 
-        return total*(water+dry);
+        return total * (water + dry);
     }
 
     /**
@@ -212,13 +208,28 @@ public class AdaptiveScheduler implements FlfsScheduler {
      * @return
      */
     private float calcEstimatedAverageConsumption() throws Exception {
-        if( siteConfig.getStage() == 0){
+        if (siteConfig.getStage() == 0) {
             //小猪阶段
             return SchedulerParams.PIGLET_STAGE_COMSUMPTION;
-        }
-        else{
+        } else {
             float c = getLastAverageConsumption();
             return c * (1 + SchedulerParams.DAILY_INCREASING_PERCENT);
         }
+    }
+
+    @Override
+    public String getName() {
+        return Services.SCHEDULER_SERVICE;
+
+    }
+
+    @Override
+    public void init() throws ServiceException {
+
+    }
+
+    @Override
+    public void destroy() throws ServiceException {
+
     }
 }

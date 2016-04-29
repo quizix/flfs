@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
-public class SiteConfigDialog extends JDialog {
+public class SiteConfigWizard extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -47,7 +47,7 @@ public class SiteConfigDialog extends JDialog {
 
     int dialogResult = 0;
 
-    public SiteConfigDialog(UnitOfWork unitOfWork) {
+    public SiteConfigWizard(UnitOfWork unitOfWork) {
         this.unitOfWork = unitOfWork;
 
         setContentPane(contentPane);
@@ -169,8 +169,7 @@ public class SiteConfigDialog extends JDialog {
     private void onEditPlan() {
         this.btnAddSavePlanOk.setText("修改");
         int rowIndex = tablePlan.getSelectedRow();
-        Long id = (Long) (tablePlan.getModel().getValueAt(rowIndex, 0));
-        DefaultGenericRepository<PigletPlan> r = unitOfWork.getPigletPlanRepository();
+
 
         DefaultTableModel model = (DefaultTableModel) tablePlan.getModel();
         this.txtPlanDate.setText( TimeUtil.formatDate( (Date)model.getValueAt(rowIndex,1)));

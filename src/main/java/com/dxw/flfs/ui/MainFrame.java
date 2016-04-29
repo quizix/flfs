@@ -10,7 +10,7 @@ import com.dxw.flfs.data.dal.UnitOfWork;
 import com.dxw.flfs.data.models.SiteConfig;
 import com.dxw.flfs.ui.dialogs.BatchDialog;
 import com.dxw.flfs.ui.dialogs.ShedDialog;
-import com.dxw.flfs.ui.dialogs.StockDialog;
+import com.dxw.flfs.ui.dialogs.config.PlanConfigDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,15 +25,17 @@ import java.util.Optional;
 public class MainFrame extends JFrame {
 
     HibernateService hibernateService;
-    public MainFrame(HibernateService hibernateService){
+
+    public MainFrame(HibernateService hibernateService) {
         this.hibernateService = hibernateService;
         initComponents();
     }
 
     MainPanel mainPanel;
+
     private void initComponents() {
         this.setTitle("发酵式液态饲料饲喂系统——[稻香湾科技]");
-        this.setMinimumSize(new Dimension(800,600));
+        this.setMinimumSize(new Dimension(800, 600));
         mainPanel = new MainPanel(hibernateService);
         this.setContentPane(mainPanel.getRoot());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -47,7 +49,7 @@ public class MainFrame extends JFrame {
             }
 
             @Override
-            public void windowClosed(WindowEvent e){
+            public void windowClosed(WindowEvent e) {
                 MainFrame.this.onDestroy();
             }
         });
@@ -75,67 +77,84 @@ public class MainFrame extends JFrame {
         miBatch.setText("批次管理");
         menuManage.add(miBatch);
 
-        JMenuItem miStock = new JMenuItem();
+        /*JMenuItem miStock = new JMenuItem();
         miStock.setText("库存管理");
-        menuManage.add(miStock);
+        menuManage.add(miStock);*/
 
-        miExit.addActionListener(e->{
+        JMenuItem miPlan = new JMenuItem();
+        miPlan.setText("进猪计划");
+        menuManage.add(miPlan);
+
+        miExit.addActionListener(e -> {
             System.exit(0);
         });
 
 
-        miShed.addActionListener(e->{
+        miShed.addActionListener(e -> {
             ShedDialog dialog = new ShedDialog(hibernateService);
             dialog.setTitle("猪舍管理");
-            dialog.setSize(800,600);
+            dialog.setSize(800, 600);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
 
         });
 
-        miBatch.addActionListener(e->{
+        miBatch.addActionListener(e -> {
             BatchDialog dialog = new BatchDialog(hibernateService);
             dialog.setTitle("批次管理");
-            dialog.setSize(800,600);
+            dialog.setSize(800, 600);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         });
 
-        miStock.addActionListener(e->{
+        /*miPlan.addActionListener(e -> {
             StockDialog dialog = new StockDialog();
             dialog.setTitle("库存管理");
-            dialog.setSize(800,600);
+            dialog.setSize(800, 600);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-        });
+        });*/
 
+        miPlan.addActionListener(e -> {
+
+            try (UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
+                //AddPlanDialog dialog = new AddPlanDialog(uow);
+                PlanConfigDialog dialog = new PlanConfigDialog(uow);
+
+                dialog.setTitle("进猪计划");
+                dialog.setSize(800, 600);
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     private void onInit() {
         String siteCode = FlfsApp.getContext().getSiteCode();
 
-        try(UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
+        try (UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
             DefaultGenericRepository<SiteConfig> r = uow.getSiteConfigRepository();
             Collection<SiteConfig> configs = r.findAll();
 
             Optional<SiteConfig> config = configs.stream()
-                    .filter(c-> c.getSiteCode().equals(siteCode))
+                    .filter(c -> c.getSiteCode().equals(siteCode))
                     .findFirst();
 
-            if( !config.isPresent()){
+            if (!config.isPresent()) {
                 JOptionPane.showMessageDialog(null, "无法获取应用程序配置信息！", "消息提示", JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
-            }
-            else {
+            } else {
                 SiteConfig siteConfig = config.get();
 
-                if( siteConfig.getStatus() == 0){
+                if (siteConfig.getStatus() == 0) {
                     //stopped
                     mainPanel.setActionEnable("start", true);
                     mainPanel.setActionEnable("stop", false);
                     mainPanel.setActionEnable("clean", true);
-                }
-                else{
+                } else {
                     //started
                     mainPanel.setActionEnable("start", false);
                     mainPanel.setActionEnable("stop", true);

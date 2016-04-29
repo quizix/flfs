@@ -5,19 +5,22 @@
  */
 package com.dxw.flfs.scheduling;
 
+import com.dxw.common.services.Service;
+import com.dxw.flfs.data.dal.UnitOfWork;
+
 /**
  *
  * @author pronics3
  */
-public interface FlfsScheduler {
+public interface FlfsScheduler extends Service {
     /**
      * 每天上午6点进行排产，计算做料参数
      * @return 排产结果
      */
-    ScheduleResult schedule6AM() throws SchedulerException;
+    ScheduleResult schedule6AM(UnitOfWork unitOfWork) throws SchedulerException;
     /**
      * 每天下午6点进行排产，计算做料参数
      * @return 排产结果
      */
-    ScheduleResult schedule6PM() throws SchedulerException;
+    ScheduleResult schedule6PM(UnitOfWork unitOfWork) throws SchedulerException;
 }

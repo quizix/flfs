@@ -33,6 +33,9 @@ public class SchedulerParams {
             0.4f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.65f, 0.7f, 0.75f, 0.8f, 0.85f, 0.9f, 0.95f,
     };
 
+    //由于无法计算，所以小猪阶段，设定一个统一的消耗量
+    public static final float PIGLET_STAGE_COMSUMPTION = 0.6f;
+
     public static final int FERMENT_BARREL_NUMBER = 6;
 
     public static final float WATER_MATERIAL_RATIO = 2.5f;

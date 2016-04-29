@@ -48,6 +48,10 @@ public class SiteConfig{
     @ColumnDefault("0")
     private int status;
 
+    @Column(name="stage")
+    @ColumnDefault("0")
+    private int stage;
+
     /**
      * 本批次所对应的栏位
      */
@@ -126,5 +130,13 @@ public class SiteConfig{
 
     public void setPlans(Set<PigletPlan> plans) {
         this.plans = plans;
+    }
+
+    public int getStage() {
+        return stage;
+    }
+
+    public void setStage(int stage) {
+        this.stage = stage;
     }
 }

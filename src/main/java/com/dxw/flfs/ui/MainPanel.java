@@ -1,11 +1,16 @@
 package com.dxw.flfs.ui;
 
+import com.dxw.common.services.ServiceRegistry;
+import com.dxw.common.services.ServiceRegistryImpl;
+import com.dxw.common.services.Services;
 import com.dxw.flfs.app.Keeper;
 import com.dxw.flfs.communication.PlcDelegate;
 import com.dxw.flfs.communication.PlcDelegateFactory;
 import com.dxw.flfs.data.HibernateService;
 import com.dxw.flfs.data.dal.UnitOfWork;
-import com.dxw.flfs.ui.dialogs.config.SiteConfigDialog;
+import com.dxw.flfs.scheduling.FlfsScheduler;
+import com.dxw.flfs.scheduling.ScheduleResult;
+import com.dxw.flfs.ui.dialogs.config.SiteConfigWizard;
 
 import javax.swing.*;
 
@@ -34,8 +39,8 @@ public class MainPanel {
     private void startSystem() {
         try(UnitOfWork uow = new UnitOfWork(hibernateService.getSession())){
 
-            SiteConfigDialog dialog = new SiteConfigDialog(uow);
-            dialog.setTitle("猪舍管理");
+            SiteConfigWizard dialog = new SiteConfigWizard(uow);
+            dialog.setTitle("系统启动设置");
             dialog.setSize(800,600);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
@@ -47,12 +52,19 @@ public class MainPanel {
                 this.btnClean.setEnabled(true);
                 this.btnStop.setEnabled(true);
 
-                PlcDelegate plcProxy = PlcDelegateFactory.getPlcDelegate();
-                //发送做料指令
+                PlcDelegate plcDelegate = PlcDelegateFactory.getPlcDelegate();
 
+                //发送做料指令
+                ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+
+                FlfsScheduler scheduler = (FlfsScheduler) registry.getService(Services.SCHEDULER_SERVICE);
+                ScheduleResult result =
+                        scheduler.schedule6AM(uow);
+                plcDelegate.setProductionParam( result.getWater(), result.getDry(), result.getBacteria(),
+                        result.getBarrels());
 
                 //启动做料
-                plcProxy.start();
+                plcDelegate.start();
 
                 new Keeper().startJobs();
 
@@ -62,6 +74,8 @@ public class MainPanel {
 
             e.printStackTrace();
         }
+
+
 
     }
 

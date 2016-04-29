@@ -219,25 +219,25 @@ public class PlcModel {
     ////////////////////////////////////////
     //ferment barrel
     private boolean[] fermentBarrelStatus = new boolean[FERMENT_BARREL_COUNT];
-    private Float ph = null;
-    private Short fermentCountDown = null;
-    private Short fermentBarrelInNo = null;
-    private Short fermentBarrelOutNo = null;
+    private Float ph = 0F;
+    private Short fermentCountDown = 0;
+    private Short fermentBarrelInNo = 0;
+    private Short fermentBarrelOutNo = 0;
 
-    private Short accumulateFlowAm = null;
-    private Short accumulateFlowPm = null;
+    private Short accumulateFlowAm = 0;
+    private Short accumulateFlowPm = 0;
     private short[] accumulateFlows = new short[FERMENT_BARREL_COUNT];
 
     //////////////////////////////////////////////
     //production params
-    private Float waterAm = null;
-    private Float dryAm = null;
-    private Float bacteriaAm = null;
+    private Float waterAm = 0f;
+    private Float dryAm = 0f;
+    private Float bacteriaAm = 0F;
     private short[] productionAmountsAm= new short[FERMENT_BARREL_COUNT];
 
-    private Float waterPm = null;
-    private Float dryPm = null;
-    private Float bacteriaPm = null;
+    private Float waterPm = 0f;
+    private Float dryPm = 0f;
+    private Float bacteriaPm = 0f;
     private short[] productionAmountsPm= new short[FERMENT_BARREL_COUNT];
 
     private Long lastUpdateTime = null;
