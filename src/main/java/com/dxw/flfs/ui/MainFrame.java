@@ -10,7 +10,7 @@ import com.dxw.flfs.data.dal.UnitOfWork;
 import com.dxw.flfs.data.models.SiteConfig;
 import com.dxw.flfs.ui.dialogs.BatchDialog;
 import com.dxw.flfs.ui.dialogs.ShedDialog;
-import com.dxw.flfs.ui.dialogs.config.SiteConfigWizard1;
+import com.dxw.flfs.ui.dialogs.config.PlanConfigDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -120,7 +120,7 @@ public class MainFrame extends JFrame {
             try (UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
                 //AddPlanDialog dialog = new AddPlanDialog(uow);
                 //PlanConfigDialog dialog = new PlanConfigDialog(uow);
-                SiteConfigWizard1 dialog = new SiteConfigWizard1(uow);
+                PlanConfigDialog dialog = new PlanConfigDialog(uow);
 
                 dialog.setTitle("进猪计划");
                 dialog.setSize(800, 600);
