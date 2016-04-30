@@ -6,6 +6,9 @@ import com.dxw.flfs.data.models.SiteConfig;
 import com.dxw.flfs.data.models.User;
 import org.hibernate.Session;
 
+import java.util.Collection;
+import java.util.Optional;
+
 /**
  * Created by zhang on 2016-04-28.
  */
@@ -72,5 +75,19 @@ public class UnitOfWork implements AutoCloseable {
         if( pigletPlanRepository == null)
             pigletPlanRepository = new DefaultGenericRepository<>(session, PigletPlan.class);
         return pigletPlanRepository;
+    }
+
+    public SiteConfig getSiteConfig(String siteCode){
+        DefaultGenericRepository<SiteConfig> r = getSiteConfigRepository();
+        Collection<SiteConfig> configs = r.findAll();
+
+        Optional<SiteConfig> config = configs.stream()
+                .filter(c -> c.getSiteCode().equals(siteCode))
+                .findFirst();
+
+        if (config.isPresent()) {
+            return config.get();
+        }
+        return null;
     }
 }

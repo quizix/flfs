@@ -44,10 +44,18 @@ public class SiteConfig{
     @Column(name="host")
     private String host;
 
+    /**
+     * 0:表示系统已经启动做料程序
+     * 1：表示系统已经停止做料程序
+     */
     @Column(name="status")
     @ColumnDefault("0")
     private int status;
 
+    /**
+     * 0：表示小猪入场阶段
+     * 1：表示小猪入场结束
+     */
     @Column(name="stage")
     @ColumnDefault("0")
     private int stage;

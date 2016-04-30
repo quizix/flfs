@@ -98,7 +98,6 @@ public class PlanConfigDialog extends JDialog {
     private void onFinishPlan() {
 
         siteConfig.setStage(1);
-
         unitOfWork.getSiteConfigRepository().save(siteConfig);
     }
 

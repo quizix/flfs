@@ -4,8 +4,8 @@ import com.dxw.common.services.ServiceException;
 import com.dxw.common.services.ServiceRegistry;
 import com.dxw.common.services.ServiceRegistryImpl;
 import com.dxw.flfs.app.FlfsApp;
+import com.dxw.flfs.app.Keeper;
 import com.dxw.flfs.data.HibernateService;
-import com.dxw.flfs.data.dal.DefaultGenericRepository;
 import com.dxw.flfs.data.dal.UnitOfWork;
 import com.dxw.flfs.data.models.SiteConfig;
 import com.dxw.flfs.ui.dialogs.BatchDialog;
@@ -16,8 +16,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Collection;
-import java.util.Optional;
 
 /**
  * Created by Administrator on 2016/4/2.
@@ -77,10 +75,6 @@ public class MainFrame extends JFrame {
         miBatch.setText("批次管理");
         menuManage.add(miBatch);
 
-        /*JMenuItem miStock = new JMenuItem();
-        miStock.setText("库存管理");
-        menuManage.add(miStock);*/
-
         JMenuItem miPlan = new JMenuItem();
         miPlan.setText("进猪计划");
         menuManage.add(miPlan);
@@ -107,19 +101,9 @@ public class MainFrame extends JFrame {
             dialog.setVisible(true);
         });
 
-        /*miPlan.addActionListener(e -> {
-            StockDialog dialog = new StockDialog();
-            dialog.setTitle("库存管理");
-            dialog.setSize(800, 600);
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
-        });*/
-
         miPlan.addActionListener(e -> {
 
             try (UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
-                //AddPlanDialog dialog = new AddPlanDialog(uow);
-                //PlanConfigDialog dialog = new PlanConfigDialog(uow);
                 PlanConfigDialog dialog = new PlanConfigDialog(uow);
 
                 dialog.setTitle("进猪计划");
@@ -137,19 +121,12 @@ public class MainFrame extends JFrame {
         String siteCode = FlfsApp.getContext().getSiteCode();
 
         try (UnitOfWork uow = new UnitOfWork(hibernateService.getSession())) {
-            DefaultGenericRepository<SiteConfig> r = uow.getSiteConfigRepository();
-            Collection<SiteConfig> configs = r.findAll();
+            SiteConfig siteConfig = uow.getSiteConfig(siteCode);
 
-            Optional<SiteConfig> config = configs.stream()
-                    .filter(c -> c.getSiteCode().equals(siteCode))
-                    .findFirst();
-
-            if (!config.isPresent()) {
+            if (siteConfig == null) {
                 JOptionPane.showMessageDialog(null, "无法获取应用程序配置信息！", "消息提示", JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
             } else {
-                SiteConfig siteConfig = config.get();
-
                 if (siteConfig.getStatus() == 0) {
                     //stopped
                     mainPanel.setActionEnable("start", true);
@@ -160,6 +137,9 @@ public class MainFrame extends JFrame {
                     mainPanel.setActionEnable("start", false);
                     mainPanel.setActionEnable("stop", true);
                     mainPanel.setActionEnable("clean", true);
+
+                    //status为started，则自动启动后台定时服务
+                    new Keeper().startJobs();
                 }
             }
 

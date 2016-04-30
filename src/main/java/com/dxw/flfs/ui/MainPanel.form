@@ -37,7 +37,7 @@
           <component id="22214" class="javax.swing.JButton" binding="btnClean">
             <constraints/>
             <properties>
-              <enabled value="false"/>
+              <enabled value="true"/>
               <icon value="images/Clear-icon.png"/>
               <text value="清洗"/>
             </properties>
