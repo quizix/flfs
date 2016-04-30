@@ -8,176 +8,141 @@
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="e3588" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-        <margin top="0" left="0" bottom="0" right="0"/>
+      <grid id="e3588" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="a0efc" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-            <margin top="0" left="0" bottom="0" right="0"/>
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-            </constraints>
+          <grid id="f6be8" layout-manager="CardLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Center"/>
             <properties/>
             <border type="none"/>
             <children>
-              <splitpane id="dc4c2">
+              <grid id="96663" binding="pnlPlan" layout-manager="FormLayout">
+                <rowspec value="center:max(d;4px):noGrow"/>
+                <rowspec value="top:4dlu:noGrow"/>
+                <rowspec value="center:max(d;4px):noGrow"/>
+                <rowspec value="top:4dlu:noGrow"/>
+                <rowspec value="center:d:grow"/>
+                <colspec value="fill:d:grow"/>
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="200" height="200"/>
-                  </grid>
+                  <card name="Card2"/>
                 </constraints>
-                <properties>
-                  <orientation value="0"/>
-                  <resizeWeight value="0.5"/>
-                </properties>
-                <border type="none"/>
+                <properties/>
+                <border type="none" title="入栏计划"/>
                 <children>
-                  <grid id="f3ec7" layout-manager="FormLayout">
+                  <scrollpane id="89734">
                     <constraints>
-                      <splitpane position="left"/>
-                    </constraints>
-                    <properties/>
-                    <border type="none"/>
-                    <children/>
-                  </grid>
-                  <grid id="f6be8" layout-manager="CardLayout" hgap="0" vgap="0">
-                    <constraints>
-                      <splitpane position="right"/>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <forms defaultalign-horz="false" defaultalign-vert="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <grid id="96663" binding="pnlPlan" layout-manager="FormLayout">
-                        <rowspec value="center:max(d;4px):noGrow"/>
-                        <rowspec value="top:4dlu:noGrow"/>
-                        <rowspec value="center:max(d;4px):noGrow"/>
-                        <rowspec value="top:4dlu:noGrow"/>
-                        <rowspec value="center:d:grow"/>
-                        <colspec value="fill:d:grow"/>
+                      <component id="5d526" class="javax.swing.JTable" binding="tablePlan" custom-create="true">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                  <toolbar id="13858">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="-1" height="20"/>
+                      </grid>
+                      <forms defaultalign-horz="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="3903d" class="javax.swing.JButton" binding="btnAddPlan">
+                        <constraints/>
+                        <properties>
+                          <icon value="images/add-icon.png"/>
+                          <text value="添加"/>
+                        </properties>
+                      </component>
+                      <component id="5b1e" class="javax.swing.JButton" binding="btnEditPlan">
+                        <constraints/>
+                        <properties>
+                          <icon value="images/edit-icon.png"/>
+                          <text value="修改"/>
+                        </properties>
+                      </component>
+                      <component id="54f85" class="javax.swing.JButton" binding="btnFinishPlan">
+                        <constraints/>
+                        <properties>
+                          <icon value="images/success-icon.png"/>
+                          <text value="完成入栏"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </toolbar>
+                  <grid id="555d4" binding="pnlPigletPlanProperties" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <forms/>
+                    </constraints>
+                    <properties>
+                      <visible value="false"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="73149" class="javax.swing.JLabel">
                         <constraints>
-                          <card name="Card2"/>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="日期"/>
+                        </properties>
+                      </component>
+                      <component id="1b22f" class="javax.swing.JTextField" binding="txtPlanCount">
+                        <constraints>
+                          <grid row="0" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
                         </constraints>
                         <properties/>
-                        <border type="none" title="入栏计划"/>
-                        <children>
-                          <scrollpane id="89734">
-                            <constraints>
-                              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                              <forms defaultalign-horz="false" defaultalign-vert="false"/>
-                            </constraints>
-                            <properties/>
-                            <border type="none"/>
-                            <children>
-                              <component id="5d526" class="javax.swing.JTable" binding="tablePlan" custom-create="true">
-                                <constraints/>
-                                <properties/>
-                              </component>
-                            </children>
-                          </scrollpane>
-                          <toolbar id="13858">
-                            <constraints>
-                              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
-                                <preferred-size width="-1" height="20"/>
-                              </grid>
-                              <forms defaultalign-horz="false"/>
-                            </constraints>
-                            <properties/>
-                            <border type="none"/>
-                            <children>
-                              <component id="3903d" class="javax.swing.JButton" binding="btnAddPlan">
-                                <constraints/>
-                                <properties>
-                                  <icon value="images/add-icon.png"/>
-                                  <text value="添加"/>
-                                </properties>
-                              </component>
-                              <component id="5b1e" class="javax.swing.JButton" binding="btnEditPlan">
-                                <constraints/>
-                                <properties>
-                                  <icon value="images/edit-icon.png"/>
-                                  <text value="修改"/>
-                                </properties>
-                              </component>
-                              <component id="54f85" class="javax.swing.JButton" binding="btnFinishPlan">
-                                <constraints/>
-                                <properties>
-                                  <icon value="images/success-icon.png"/>
-                                  <text value="完成入栏"/>
-                                </properties>
-                              </component>
-                            </children>
-                          </toolbar>
-                          <grid id="555d4" binding="pnlPigletPlanProperties" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
-                            <margin top="0" left="0" bottom="0" right="0"/>
-                            <constraints>
-                              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-                              <forms/>
-                            </constraints>
-                            <properties>
-                              <visible value="false"/>
-                            </properties>
-                            <border type="none"/>
-                            <children>
-                              <component id="73149" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text value="日期"/>
-                                </properties>
-                              </component>
-                              <component id="1b22f" class="javax.swing.JTextField" binding="txtPlanCount">
-                                <constraints>
-                                  <grid row="0" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="150" height="-1"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="72d1a" class="javax.swing.JLabel">
-                                <constraints>
-                                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text value="数量"/>
-                                </properties>
-                              </component>
-                              <component id="94266" class="javax.swing.JTextField" binding="txtPlanDate">
-                                <constraints>
-                                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                                    <preferred-size width="281" height="25"/>
-                                  </grid>
-                                </constraints>
-                                <properties/>
-                              </component>
-                              <component id="bd302" class="javax.swing.JButton" binding="btnAddSavePlanOk">
-                                <constraints>
-                                  <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text value="确定"/>
-                                </properties>
-                              </component>
-                              <component id="e15bb" class="javax.swing.JButton" binding="btnAddSavePlanCancel">
-                                <constraints>
-                                  <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                                </constraints>
-                                <properties>
-                                  <text value="取消"/>
-                                </properties>
-                              </component>
-                            </children>
+                      </component>
+                      <component id="72d1a" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="数量"/>
+                        </properties>
+                      </component>
+                      <component id="94266" class="javax.swing.JTextField" binding="txtPlanDate">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="281" height="25"/>
                           </grid>
-                        </children>
-                      </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="bd302" class="javax.swing.JButton" binding="btnAddSavePlanOk">
+                        <constraints>
+                          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="确定"/>
+                        </properties>
+                      </component>
+                      <component id="e15bb" class="javax.swing.JButton" binding="btnAddSavePlanCancel">
+                        <constraints>
+                          <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="7" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="取消"/>
+                        </properties>
+                      </component>
                     </children>
                   </grid>
                 </children>
-              </splitpane>
+              </grid>
             </children>
           </grid>
         </children>
