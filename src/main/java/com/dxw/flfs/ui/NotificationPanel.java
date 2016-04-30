@@ -23,8 +23,9 @@ public class NotificationPanel {
     private JTextPane textPane;
     private JPanel panel1;
 
-    public NotificationPanel() {
-
+    JTabbedPane tabbedPane1;
+    public NotificationPanel(JTabbedPane tabbedPane1) {
+        this.tabbedPane1 = tabbedPane1;
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 
         notificationManger = (NotificationManager) registry.getService(Services.NOTIFICATION_MANAGER);
@@ -34,15 +35,21 @@ public class NotificationPanel {
                 onNotify(tag, notification);
             });
         }
+
+
     }
 
     private void onNotify(String tag, Notification notification) {
+        if( this.tabbedPane1.getSelectedIndex() != 1)
+            this.tabbedPane1.setSelectedIndex(1);
+
         long when = notification.getWhen();
 
         String message = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
                 .format(new Date(when));
         String m = String.format("[%s] %s %s", tag, message, notification.getContent().toString());
         addText(m);
+
 
     }
 

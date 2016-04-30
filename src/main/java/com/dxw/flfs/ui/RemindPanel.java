@@ -29,7 +29,9 @@ public class RemindPanel {
     String[] columns = {"时间", "描述"};
     private NotificationManager notificationManger;
 
-    public RemindPanel() {
+    JTabbedPane tabbedPane1;
+    public RemindPanel(JTabbedPane tabbedPane1) {
+        this.tabbedPane1 = tabbedPane1;
 
         ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 
@@ -40,9 +42,13 @@ public class RemindPanel {
                 onNotify(tag, notification);
             });
         }
+
     }
 
     private void onNotify(String tag, Notification notification) {
+        if( this.tabbedPane1.getSelectedIndex() != 0)
+            this.tabbedPane1.setSelectedIndex(0);
+
         if (tag.equals(NotificationTags.Remind)) {
             planDataModel.addRow(new Object[]{
                     new Date(notification.getWhen()), notification.getContent()
@@ -51,6 +57,7 @@ public class RemindPanel {
                     planDataModel.getRowCount() - 1);
 
         }
+
     }
 
     private void createUIComponents() {

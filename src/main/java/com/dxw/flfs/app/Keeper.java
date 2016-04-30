@@ -48,7 +48,7 @@ public class Keeper {
                 .withIdentity("remindTrigger", "flfsGroup")
                 .startNow()
                 .withSchedule(
-                        cronSchedule("0/60 * * * * ?"))
+                        cronSchedule("0 0 8/24 * * ?"))
                 .build();
         s.scheduleJob(job, trigger);
     }

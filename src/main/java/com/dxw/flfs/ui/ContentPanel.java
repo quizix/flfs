@@ -8,5 +8,15 @@ import javax.swing.*;
 public class ContentPanel {
     private JPanel root;
     private JTabbedPane tabbedPane1;
+    private RemindPanel remindPanel;
+    private NotificationPanel notificationPanel;
 
+    private void createUIComponents() {
+
+        tabbedPane1 = new JTabbedPane();
+        remindPanel = new RemindPanel(tabbedPane1);
+        notificationPanel = new NotificationPanel(tabbedPane1);
+
+
+    }
 }

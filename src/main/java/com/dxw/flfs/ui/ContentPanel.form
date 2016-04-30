@@ -35,7 +35,7 @@
               </nested-form>
             </children>
           </grid>
-          <tabbedpane id="3cfa2" binding="tabbedPane1" default-binding="true">
+          <tabbedpane id="3cfa2" binding="tabbedPane1" custom-create="true" default-binding="true">
             <constraints>
               <splitpane position="right"/>
             </constraints>
@@ -51,7 +51,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <nested-form id="2c7a5" form-file="com/dxw/flfs/ui/RemindPanel.form">
+                  <nested-form id="2c7a5" form-file="com/dxw/flfs/ui/RemindPanel.form" binding="remindPanel" custom-create="true">
                     <constraints border-constraint="Center"/>
                   </nested-form>
                 </children>
@@ -63,7 +63,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <nested-form id="a909e" form-file="com/dxw/flfs/ui/NotificationPanel.form">
+                  <nested-form id="a909e" form-file="com/dxw/flfs/ui/NotificationPanel.form" binding="notificationPanel" custom-create="true">
                     <constraints border-constraint="Center"/>
                   </nested-form>
                 </children>
