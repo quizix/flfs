@@ -66,7 +66,7 @@ public class MainPanel {
                 siteConfig.setModifyTime(new Date());
                 siteConfig.setStatus(1);
                 uow.getSiteConfigRepository().save(siteConfig);
-                uow.commit();
+                //uow.commit();
 
                 new Keeper().startJobs();
             }
@@ -93,7 +93,7 @@ public class MainPanel {
             siteConfig.setModifyTime(new Date());
             siteConfig.setStatus(0);
             uow.getSiteConfigRepository().save(siteConfig);
-            uow.commit();
+            //uow.commit();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -107,9 +107,9 @@ public class MainPanel {
         if (action.equals("start"))
             btnStart.setEnabled(enable);
         else if (action.equals("stop"))
-            btnStart.setEnabled(enable);
+            btnStop.setEnabled(enable);
         else if (action.equals("clean"))
-            btnStart.setEnabled(enable);
+            btnClean.setEnabled(enable);
 
     }
 

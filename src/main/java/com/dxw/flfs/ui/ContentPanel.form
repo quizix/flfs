@@ -51,17 +51,9 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <scrollpane id="deb4f">
+                  <nested-form id="2c7a5" form-file="com/dxw/flfs/ui/RemindPanel.form">
                     <constraints border-constraint="Center"/>
-                    <properties/>
-                    <border type="none"/>
-                    <children>
-                      <component id="538be" class="javax.swing.JTable" binding="table1" default-binding="true">
-                        <constraints/>
-                        <properties/>
-                      </component>
-                    </children>
-                  </scrollpane>
+                  </nested-form>
                 </children>
               </grid>
               <grid id="5eb5c" layout-manager="BorderLayout" hgap="0" vgap="0">

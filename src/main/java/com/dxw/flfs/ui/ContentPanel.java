@@ -8,6 +8,5 @@ import javax.swing.*;
 public class ContentPanel {
     private JPanel root;
     private JTabbedPane tabbedPane1;
-    private JTable table1;
 
 }

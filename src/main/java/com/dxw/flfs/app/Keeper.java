@@ -1,6 +1,7 @@
 package com.dxw.flfs.app;
 
 import com.dxw.flfs.jobs.PollSystemStatus;
+import com.dxw.flfs.jobs.RemindJob;
 import com.dxw.flfs.jobs.SetProductionInstructionJob;
 import com.dxw.flfs.jobs.SetStyStatusJob;
 import org.quartz.JobDetail;
@@ -19,9 +20,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
  * Created by zhang on 2016-04-21.
  */
 public class Keeper {
-
     public Keeper() {
-
     }
 
     /**
@@ -35,9 +34,25 @@ public class Keeper {
         scheduleSystemStatusPollJob(s);
         scheduleProductionInstructionJob(s);
         scheduleSetStyStatusJob(s);
+        scheduleRemindJob(s);
 
         s.start();
     }
+
+    private void scheduleRemindJob(Scheduler s) throws SchedulerException{
+        JobDetail job = newJob(RemindJob.class)
+                .withIdentity("remindJob", "flfsGroup")
+                .build();
+        //使用cronSchedule， 0 0 8/24 * * ?，表示8点开始，每12个小时执行一次
+        Trigger trigger = newTrigger()
+                .withIdentity("remindTrigger", "flfsGroup")
+                .startNow()
+                .withSchedule(
+                        cronSchedule("0/60 * * * * ?"))
+                .build();
+        s.scheduleJob(job, trigger);
+    }
+
     private void scheduleSystemStatusPollJob(Scheduler s) throws SchedulerException {
         JobDetail job = newJob(PollSystemStatus.class)
                 .withIdentity("pollFermentBarrelStatusJob", "flfsGroup")
@@ -60,12 +75,12 @@ public class Keeper {
         JobDetail job = newJob(SetProductionInstructionJob.class)
                 .withIdentity("productionInstructionJob", "flfsGroup")
                 .build();
-        //使用cronSchedule， 0 18 5/12 * * ?，表示6点开始，每12个小时执行一次
+        //使用cronSchedule， 0 0 6/12 * * ?，表示6点开始，每12个小时执行一次
         Trigger trigger = newTrigger()
                 .withIdentity("productionInstructionTrigger", "flfsGroup")
                 .startNow()
                 .withSchedule(
-                        cronSchedule("0 20 5/12 * * ?"))
+                        cronSchedule("0 0 6/12 * * ?"))
                 .build();
         s.scheduleJob(job, trigger);
     }
