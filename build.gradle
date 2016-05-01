@@ -20,7 +20,8 @@ jar{
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.11','org.apache.commons:commons-lang3:3.4','com.infiniteautomation:modbus4j:3.0.1',
             'org.quartz-scheduler:quartz:2.2.2','org.apache.xmlgraphics:xmlgraphics-commons:2.1', 'org.apache.xmlgraphics:batik-svg-dom:1.8',
-            'org.apache.xmlgraphics:batik-swing:1.8', 'org.hibernate:hibernate-core:5.0.8.Final', 'org.postgresql:postgresql:9.4.1208.jre7',
+            'org.apache.xmlgraphics:batik-swing:1.8', 'org.apache.xmlgraphics:batik-codec:1.7',
+    'org.hibernate:hibernate-core:5.0.8.Final', 'org.postgresql:postgresql:9.4.1208.jre7',
             'mysql:mysql-connector-java:5.1.38', 'com.jgoodies:jgoodies-forms:1.9.0','javax.validation:validation-api:1.0.0.GA'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
