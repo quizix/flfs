@@ -33,6 +33,7 @@ public class AdvancedDistributor implements Distributor {
                 return new ScheduleResult(dry, water, bacteria, barrels);
 
             } else {
+
                 float dry = each / (1 + SchedulerParams.WATER_MATERIAL_RATIO);
                 float water = each - dry;
                 float bacteria = each * SchedulerParams.BACTERIA_RATIO;
